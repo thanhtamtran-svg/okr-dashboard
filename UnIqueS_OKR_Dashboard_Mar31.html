@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UniqueS Development — Tam's OKR Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f6f3;
+    color: #2d2a26;
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e8a44a;
+  }
+  .header h1 { font-size: 26px; font-weight: 700; color: #c47a2a; }
+  .header .subtitle { font-size: 14px; color: #8a8580; margin-top: 2px; }
+  .header .date { font-size: 12px; color: #b0a99f; margin-top: 4px; }
+
+  /* ── Tab Navigation ── */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    background: white;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a8580;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { background: #faf8f5; color: #4a4540; }
+  .tab-btn.active { background: #c47a2a; color: white; font-weight: 600; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Overall Progress ── */
+  .overall-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 24px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .ring-container { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+  .ring-container svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #ebe6df; stroke-width: 10; }
+  .ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease; }
+  .ring-label {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 26px; font-weight: 700; color: #c47a2a;
+  }
+  .overall-text h2 { font-size: 18px; font-weight: 600; }
+  .overall-text p { font-size: 13px; color: #8a8580; margin-top: 2px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 10px; border-radius: 12px; margin-top: 6px;
+  }
+  .badge.up { background: #e8f5e9; color: #2e7d32; }
+
+  /* ── Mini progress cards ── */
+  .obj-mini-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .obj-mini {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+  .obj-mini:hover { border-color: #e8a44a; transform: translateY(-1px); }
+  .obj-mini.selected { border-color: #c47a2a; }
+  .obj-mini-icon { font-size: 20px; margin-bottom: 6px; }
+  .obj-mini-title { font-size: 12px; font-weight: 600; color: #4a4540; line-height: 1.3; margin-bottom: 8px; }
+  .obj-mini-bar { height: 6px; background: #ebe6df; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+  .obj-mini-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .obj-mini-pct { font-size: 18px; font-weight: 700; }
+  .obj-mini-pct.c1 { color: #42a5f5; }
+  .obj-mini-pct.c2 { color: #ab47bc; }
+  .obj-mini-pct.c3 { color: #e8a44a; }
+  .fill-c1 { background: #42a5f5; }
+  .fill-c2 { background: #ab47bc; }
+  .fill-c3 { background: #e8a44a; }
+
+  /* ── Objective Detail Panel ── */
+  .obj-detail {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .obj-detail.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .obj-detail-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+  }
+  .obj-detail-header .icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .obj-detail-header .icon.o1 { background: #e3f2fd; }
+  .obj-detail-header .icon.o2 { background: #f3e5f5; }
+  .obj-detail-header .icon.o3 { background: #fff3e0; }
+  .obj-detail-header h3 { font-size: 16px; font-weight: 600; flex: 1; }
+  .obj-description { font-size: 12px; color: #8a8580; margin-bottom: 16px; padding-left: 48px; font-style: italic; }
+
+  /* ── KR Cards (clickable/expandable) ── */
+  .kr-card {
+    border: 1px solid #f0ece7;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .kr-card:hover { border-color: #d6cfc5; }
+  .kr-card.expanded { border-color: #e8a44a; }
+
+  .kr-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .kr-expand-icon {
+    width: 20px; height: 20px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: #b0a99f;
+    transition: transform 0.2s;
+  }
+  .kr-card.expanded .kr-expand-icon { transform: rotate(90deg); color: #c47a2a; }
+  .kr-summary-text { flex: 1; }
+  .kr-summary-title { font-size: 13px; font-weight: 500; color: #2d2a26; }
+  .kr-summary-meta { font-size: 11px; color: #b0a99f; margin-top: 2px; }
+  .kr-pct { font-size: 16px; font-weight: 700; flex-shrink: 0; min-width: 48px; text-align: right; }
+  .kr-minibar { width: 80px; height: 5px; background: #ebe6df; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+  .kr-minibar-fill { height: 100%; border-radius: 3px; }
+
+  .status-tag {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 1px 7px; border-radius: 6px; margin-left: 6px; vertical-align: middle;
+  }
+  .status-tag.on-track { background: #e8f5e9; color: #2e7d32; }
+  .status-tag.at-risk { background: #fff3e0; color: #e65100; }
+  .status-tag.behind { background: #ffebee; color: #c62828; }
+  .status-tag.overdue { background: #ffcdd2; color: #b71c1c; }
+  .status-tag.strong { background: #e3f2fd; color: #1565c0; }
+
+  /* KR expanded detail */
+  .kr-detail {
+    display: none;
+    padding: 0 16px 16px 48px;
+    animation: fadeIn 0.25s ease;
+  }
+  .kr-card.expanded .kr-detail { display: block; }
+
+  .kr-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .kr-detail-item label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #b0a99f; display: block; margin-bottom: 2px;
+  }
+  .kr-detail-item span {
+    font-size: 13px; color: #2d2a26;
+  }
+  .kr-detail-item a { color: #c47a2a; text-decoration: none; font-weight: 500; }
+  .kr-detail-item a:hover { text-decoration: underline; }
+
+  .kr-progress-bar {
+    height: 8px; background: #ebe6df; border-radius: 4px; overflow: hidden; margin: 10px 0;
+  }
+  .kr-progress-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+
+  .kr-milestones { margin-top: 10px; }
+  .kr-milestones h5 {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #b0a99f; margin-bottom: 6px;
+  }
+  .milestone {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 4px 0; font-size: 12px; color: #4a4540;
+  }
+  .milestone-dot {
+    width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; margin-top: 1px;
+  }
+  .milestone-dot.done { background: #e8f5e9; color: #2e7d32; }
+  .milestone-dot.pending { background: #f5f0ea; color: #b0a99f; }
+  .milestone a { color: #c47a2a; text-decoration: none; }
+  .milestone a:hover { text-decoration: underline; }
+
+  /* ── Social Media Panel ── */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .social-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+  .social-card:hover { border-color: #e8a44a; }
+  .social-card.expanded { border-color: #c47a2a; }
+  .social-card-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .social-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .social-icon.li { background: #e8f0fe; }
+  .social-icon.fb { background: #e3f2fd; }
+  .social-icon.web { background: #fff3e0; }
+  .social-card-name { font-size: 14px; font-weight: 600; }
+  .social-big-num { font-size: 32px; font-weight: 700; color: #2d2a26; }
+  .social-big-label { font-size: 11px; color: #8a8580; margin-bottom: 10px; }
+  .social-stats { display: flex; gap: 16px; }
+  .social-stat { text-align: center; }
+  .social-stat-val { font-size: 14px; font-weight: 600; color: #2d2a26; }
+  .social-stat-label { font-size: 10px; color: #b0a99f; }
+  .social-growth { font-size: 11px; font-weight: 600; color: #2e7d32; margin-top: 8px; }
+  .social-link {
+    display: inline-block; margin-top: 8px;
+    font-size: 11px; color: #c47a2a; text-decoration: none; font-weight: 500;
+  }
+  .social-link:hover { text-decoration: underline; }
+
+  /* Social detail (post list) */
+  .social-detail {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .social-detail.active { display: block; }
+  .social-detail h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .post-list { list-style: none; }
+  .post-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid #f5f0ea; font-size: 12px;
+  }
+  .post-item:last-child { border-bottom: none; }
+  .post-date { min-width: 56px; color: #b0a99f; font-weight: 500; flex-shrink: 0; }
+  .post-title { flex: 1; color: #4a4540; line-height: 1.4; }
+  .post-type {
+    font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .post-type.photo { background: #e3f2fd; color: #1565c0; }
+  .post-type.reel { background: #f3e5f5; color: #7b1fa2; }
+  .post-type.article { background: #fff3e0; color: #e65100; }
+  .post-reach { min-width: 60px; text-align: right; color: #8a8580; flex-shrink: 0; }
+
+  /* ── Timeline Panel ── */
+  .timeline-container {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .timeline-container h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .week-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f0ea;
+  }
+  .week-row:last-child { border-bottom: none; }
+  .week-label { font-size: 12px; font-weight: 600; color: #c47a2a; padding-top: 2px; }
+  .week-date { font-size: 10px; color: #b0a99f; }
+  .week-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .week-chip {
+    font-size: 11px; padding: 3px 10px; border-radius: 6px;
+    background: #f5f0ea; color: #4a4540;
+  }
+  .week-chip.highlight { background: #e8f5e9; color: #2e7d32; font-weight: 500; }
+  .week-chip.event { background: #fff3e0; color: #e65100; font-weight: 500; }
+  .week-chip.content { background: #e3f2fd; color: #1565c0; }
+
+  /* ── Feedforward ── */
+  .next-steps {
+    background: #fff9f0;
+    border: 1px solid #f0dfc4;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+  }
+  .next-steps h3 { font-size: 15px; font-weight: 600; color: #c47a2a; margin-bottom: 12px; }
+  .next-steps ul { list-style: none; }
+  .next-steps li {
+    font-size: 13px; color: #4a4540; padding: 6px 0 6px 20px;
+    position: relative; line-height: 1.5;
+  }
+  .next-steps li::before {
+    content: '→'; position: absolute; left: 0; color: #e8a44a; font-weight: 600;
+  }
+
+  .footer {
+    text-align: center; margin-top: 24px; font-size: 11px; color: #c0b8ae;
+  }
+  .footer a { color: #c47a2a; text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .obj-mini-row, .social-grid { grid-template-columns: 1fr; }
+    .kr-detail-grid { grid-template-columns: 1fr; }
+    .overall-section { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>UniqueS Development</h1>
+  <div class="subtitle">Tam's OKR Dashboard</div>
+  <div class="date">Data updated: March 31, 2026</div>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('social')">Social Media</button>
+  <button class="tab-btn" onclick="showTab('activities')">Activities</button>
+  <button class="tab-btn" onclick="showTab('actions')">Feedforward</button>
+</div>
+
+<!-- ═══════════════ OVERVIEW TAB ═══════════════ -->
+<div id="tab-overview" class="tab-panel active">
+
+  <!-- Overall Progress -->
+  <div class="overall-section">
+    <div class="ring-container">
+      <svg width="110" height="110" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+        <circle class="ring-fill" cx="60" cy="60" r="50"
+          stroke="#e8a44a" fill="none"
+          stroke-dasharray="314.16"
+          stroke-dashoffset="229.34"/>
+      </svg>
+      <div class="ring-label">27%</div>
+    </div>
+    <div class="overall-text">
+      <h2>Overall Progress</h2>
+      <p>8 Key Results across 3 Objectives</p>
+      <span class="badge up">+13% since last check (was 14%)</span>
+    </div>
+  </div>
+
+  <!-- Objective Mini Cards -->
+  <div class="obj-mini-row">
+    <div class="obj-mini selected" onclick="toggleObj(1)">
+      <div class="obj-mini-icon">🤖</div>
+      <div class="obj-mini-title">Building AI-Ready Workforce in Officience</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c1" style="width:42%"></div></div>
+      <div class="obj-mini-pct c1">42%</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(2)">
+      <div class="obj-mini-icon">🌱</div>
+      <div class="obj-mini-title">Expand Beyond Officience</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c2" style="width:13%"></div></div>
+      <div class="obj-mini-pct c2">13%</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(3)">
+      <div class="obj-mini-icon">📣</div>
+      <div class="obj-mini-title">Amplify Through Storytelling</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c3" style="width:26%"></div></div>
+      <div class="obj-mini-pct c3">26%</div>
+    </div>
+  </div>
+
+  <!-- ── Objective 1 Detail ── -->
+  <div id="obj-1" class="obj-detail active">
+    <div class="obj-detail-header">
+      <div class="icon o1">🤖</div>
+      <h3>1. Build an AI-Ready Workforce in Officience</h3>
+    </div>
+    <div class="obj-description">Empower individuals and organizations to thrive in an AI-driven world by offering practical AI learning experiences.</div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.1 — Deliver 4 AI sessions/month <span class="status-tag on-track">on track</span></div>
+          <div class="kr-summary-meta">Due: 31-Aug · 8 of 24 sessions delivered</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:33%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">33%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:33%"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>4 sessions/month × 6 months = 24 sessions</span></div>
+          <div class="kr-detail-item"><label>Current</label><span>8 sessions delivered (Dec 2025 – Mar 2026)</span></div>
+          <div class="kr-detail-item"><label>Audience</label><span>Officience learners (6–31 per session) · <a href="https://docs.google.com/spreadsheets/d/10JsXezCxGDSWdAV51GATuNo7WYvIbAhg/edit?usp=sharing" target="_blank">Learners tracker ↗</a></span></div>
+          <div class="kr-detail-item"><label>Format</label><span>Workshops, AI Mastery Day (multi-session)</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Workshops Delivered</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div>AI Agent Workshop (Dec 2025) — 17 Offies attended</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>AI Strategy Workshop (Jan 2026)</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Vibecoding Party (Mar 2026) — 6 Offies attended</div>
+          <h5 style="margin-top: 12px;">AI Mastery Day — Mar 2026 (31 Offies)</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div>S1: ChatGPT</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>S2: NotebookLM</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>S3: Google Flow</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>S4: Vibecoding tools</div>
+          <h5 style="margin-top: 12px;">Upcoming</h5>
+          <div class="milestone"><div class="milestone-dot pending">·</div>April session (brainstorming — TBD)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.2 — Complete AI mastery path + automate workflows <span class="status-tag on-track">on track</span></div>
+          <div class="kr-summary-meta">Due: 21-May · 30%→50% updated</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:50%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">50%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:50%"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>Master AI tools + automate 50% of social marketing workflow</span></div>
+          <div class="kr-detail-item"><label>Current</label><span>Claude Code mastered · 1 of 2 workflows automated</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Milestones</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Mastery Path Learning — Claude Code (completed)</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Workflow 1: <a href="https://content-formatter.vercel.app/" target="_blank">Content Formatter</a> shipped</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Workflow 2: not started</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Claude Certified Architect pursuit (in progress)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Objective 2 Detail ── -->
+  <div id="obj-2" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o2">🌱</div>
+      <h3>2. Expand Beyond Officience</h3>
+    </div>
+    <div class="obj-description">Bring UniqueS's human-centric, Teal-inspired learning to wider communities and partner organizations.</div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.1 — Deliver 4 external training programs <span class="status-tag on-track">early stage</span></div>
+          <div class="kr-summary-meta">Due: 28-Feb-2027 · No deliveries yet — ample time</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill" style="width:0%; background:#ef5350"></div></div>
+        <div class="kr-pct" style="color:#ef5350">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill" style="width:0%; background:#ef5350"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>4 in-house training programs (AI or core C-skills) for external organizations</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>28-Feb-2027 (11 months remaining)</span></div>
+          <div class="kr-detail-item"><label>Pipeline</label><span>UEH student communication skills session (planned), April kids+parents program with anh Phong</span></div>
+          <div class="kr-detail-item"><label>Next Step</label><span>Prioritize outreach to Impact Hub, UEH, and partner orgs</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Potential Opportunities</h5>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Communication skills for UEH students</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Kids+Parents AI program (with anh Phong)</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Impact Hub Saigon collaboration</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.2 — Engage 5 partner networks <span class="status-tag on-track">on track</span></div>
+          <div class="kr-summary-meta">Due: 31-Aug · 1 of 5 partners engaged</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:25%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">25%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:25%"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>5 partners or alumni networks to co-host or invite UniqueS sessions</span></div>
+          <div class="kr-detail-item"><label>Current</label><span>1 confirmed partnership activity</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Milestones</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div><a href="https://www.linkedin.com/company/uniques-vn/" target="_blank">Vibecoding Party for the low tech</a> — ~70 participants, co-hosted event</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Impact Hub Saigon — connection established</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>3 more partner engagements needed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Objective 3 Detail ── -->
+  <div id="obj-3" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o3">📣</div>
+      <h3>3. Amplify Presence Through Storytelling</h3>
+    </div>
+    <div class="obj-description">Position UniqueS as the hub where human-centric learning meets AI innovation through consistent, authentic communications.</div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.1 — Publish 1 story/week for 24 weeks <span class="status-tag on-track">on track</span></div>
+          <div class="kr-summary-meta">Due: 31-Aug · 4 of 24 weeks done</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:17%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">17%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:17%"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>1 story, insight, or learning reflection per week for 24 consecutive weeks</span></div>
+          <div class="kr-detail-item"><label>Current</label><span>4 weeks of consistent multi-platform content</span></div>
+          <div class="kr-detail-item"><label>Channels</label><span><a href="https://www.linkedin.com/company/uniques-vn/" target="_blank">LinkedIn</a> (10 posts), <a href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">Facebook</a> (7 posts), <a href="https://uniques.vn/vi/insights" target="_blank">Website</a> (3 articles)</span></div>
+          <div class="kr-detail-item"><label>Content Types</label><span>Thought leadership, event recaps, carousels, reels, bilingual</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Content Published (March)</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Week 1 (Mar 1-7): Workshop promotion posts + event announcements</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Week 2 (Mar 8-14): Idea carousel + Vibecoding preparation</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Week 3 (Mar 15-21): Vibecoding Party recap (reel) + branding posts</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Week 4 (Mar 22-28): "Future of Organizations" article (bilingual) + "Responding to Change" carousel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.2 — Launch landing page + training catalog <span class="status-tag strong">strong</span></div>
+          <div class="kr-summary-meta">Due: 31-Mar (today!) · Site live and functional</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:70%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">70%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:70%"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>Functional landing page with AI + C-skills catalog</span></div>
+          <div class="kr-detail-item"><label>URL</label><a href="https://uniques.vn/en" target="_blank">uniques.vn</a></div>
+          <div class="kr-detail-item"><label>Language</label><span>Bilingual (Vietnamese + English)</span></div>
+          <div class="kr-detail-item"><label>CTA</label><span>"Dat Lich Goi" (Book a Call) — active</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>What's Live</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Home page with brand positioning</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>4 service categories: Workshop, Training, Coaching, Facilitation</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div><a href="https://uniques.vn/vi/insights" target="_blank">Insights page</a> with 3 articles</div>
+          <div class="milestone"><div class="milestone-dot done">✓</div>Events page + Contact page + Booking CTA</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>To complete: detailed program descriptions, pricing, and testimonials</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.3 — Weekly internal updates (Diaries) <span class="status-tag on-track">on track</span></div>
+          <div class="kr-summary-meta">Due: 30-Jun · 4 of 24 weeks</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:17%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">17%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:17%"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>Weekly Activity Sharing posts on Diaries for alignment</span></div>
+          <div class="kr-detail-item"><label>Current</label><span>4 weekly posts in March</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Posts Published</h5>
+          <div class="milestone"><div class="milestone-dot done">✓</div><a href="https://diaries.offinity.io/posts/cd864472-ba97-49fb-ac9a-e8f65cd80b50" target="_blank">Activity Sharing: Week March 1–7, 2026</a></div>
+          <div class="milestone"><div class="milestone-dot done">✓</div><a href="https://diaries.offinity.io/posts/571e84c0-14b5-4835-81f2-b2a92088bb6a" target="_blank">Activity Sharing: March 8–14, 2026</a></div>
+          <div class="milestone"><div class="milestone-dot done">✓</div><a href="https://diaries.offinity.io/posts/ea2750c6-3493-4b79-bffa-9f7a283bdc91" target="_blank">Activity Sharing: March 15–21, 2026</a></div>
+          <div class="milestone"><div class="milestone-dot done">✓</div><a href="https://diaries.offinity.io/posts/8267f27f-ad04-438e-862e-ed5c250ec81d" target="_blank">Activity Sharing: March 22–28, 2026</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">▶</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.4 — Host 4 public workshops (1/quarter) <span class="status-tag" style="background:#fff3e0; color:#e65100;">not started</span></div>
+          <div class="kr-summary-meta">Rolling cadence: 1 every 3 months · 0 of 4 done</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill" style="width:0%; background:#ff9800"></div></div>
+        <div class="kr-pct" style="color:#ff9800">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-progress-bar"><div class="kr-progress-fill" style="width:0%; background:#ff9800"></div></div>
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Target</label><span>4 public workshops, 1 every 3 months</span></div>
+          <div class="kr-detail-item"><label>Cadence</label><span>1 workshop every 3 months (no fixed deadline)</span></div>
+        </div>
+        <div class="kr-milestones">
+          <h5>Workshops</h5>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Q1: No public workshop delivered yet</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Q2: April program planned (brainstorming — TBD)</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Q3: TBD</div>
+          <div class="milestone"><div class="milestone-dot pending">·</div>Q4: TBD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ SOCIAL MEDIA TAB ═══════════════ -->
+<div id="tab-social" class="tab-panel">
+
+  <div class="social-grid">
+    <div class="social-card" onclick="toggleSocial('linkedin')">
+      <div class="social-card-header">
+        <div class="social-icon li">🔗</div>
+        <div class="social-card-name">LinkedIn</div>
+      </div>
+      <div class="social-big-num">21</div>
+      <div class="social-big-label">followers</div>
+      <div class="social-stats">
+        <div class="social-stat"><div class="social-stat-val">~10</div><div class="social-stat-label">posts</div></div>
+        <div class="social-stat"><div class="social-stat-val">591</div><div class="social-stat-label">impressions</div></div>
+        <div class="social-stat"><div class="social-stat-val">18</div><div class="social-stat-label">reactions</div></div>
+      </div>
+      <div class="social-growth">+535% impressions · +1,700% reactions (Feb 28–Mar 29)</div>
+      <a class="social-link" href="https://www.linkedin.com/company/uniques-vn/" target="_blank">View page →</a>
+    </div>
+
+    <div class="social-card" onclick="toggleSocial('facebook')">
+      <div class="social-card-header">
+        <div class="social-icon fb">📘</div>
+        <div class="social-card-name">Facebook</div>
+      </div>
+      <div class="social-big-num">6</div>
+      <div class="social-big-label">followers</div>
+      <div class="social-stats">
+        <div class="social-stat"><div class="social-stat-val">7</div><div class="social-stat-label">posts</div></div>
+        <div class="social-stat"><div class="social-stat-val">641</div><div class="social-stat-label">total reach</div></div>
+        <div class="social-stat"><div class="social-stat-val">2</div><div class="social-stat-label">likes</div></div>
+      </div>
+      <div class="social-growth">Top post: 406 reach (Mar 4 workshop promo)</div>
+      <a class="social-link" href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">View page →</a>
+    </div>
+
+    <div class="social-card" onclick="toggleSocial('website')">
+      <div class="social-card-header">
+        <div class="social-icon web">🌐</div>
+        <div class="social-card-name">Website</div>
+      </div>
+      <div class="social-big-num">3</div>
+      <div class="social-big-label">articles published</div>
+      <div class="social-stats">
+        <div class="social-stat"><div class="social-stat-val">4</div><div class="social-stat-label">services</div></div>
+        <div class="social-stat"><div class="social-stat-val">2</div><div class="social-stat-label">languages</div></div>
+      </div>
+      <div class="social-growth" style="color:#e65100">Last article: Jan 13 (2+ months ago)</div>
+      <a class="social-link" href="https://uniques.vn/vi/insights" target="_blank">View insights →</a>
+    </div>
+  </div>
+
+  <!-- LinkedIn Posts Detail -->
+  <div id="social-linkedin" class="social-detail">
+    <h4>🔗 LinkedIn Posts (Dec 2025 – Mar 2026)</h4>
+    <ul class="post-list">
+      <li class="post-item"><span class="post-date">Mar 30</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7444186663754313728/" target="_blank">Responding to change — Vietnamese carousel</a></span><span class="post-type photo">Carousel</span><span class="post-reach">new</span></li>
+      <li class="post-item"><span class="post-date">Mar 26</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7442907489807024129/" target="_blank">The Future of Organizations in the AI Era (EN)</a></span><span class="post-type article">Article</span><span class="post-reach">26 imp</span></li>
+      <li class="post-item"><span class="post-date">Mar 25</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7442374723935756288/" target="_blank">Tương lai Tổ chức trong Kỷ nguyên AI (VI)</a></span><span class="post-type photo">Carousel</span><span class="post-reach">56 imp</span></li>
+      <li class="post-item"><span class="post-date">Mar 17</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7439520236204138496/" target="_blank">UniqueS branding/intro post</a></span><span class="post-type photo">Photo</span><span class="post-reach">53 imp</span></li>
+      <li class="post-item"><span class="post-date">Mar 16</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7439152691764752384/" target="_blank">Vibecoding Party video recap</a></span><span class="post-type reel">Reel</span><span class="post-reach">7+ rxn</span></li>
+      <li class="post-item"><span class="post-date">Mar 4</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7434803174168879104/" target="_blank">Vibecoding Party event announcement</a></span><span class="post-type photo">Photo</span><span class="post-reach">7 rxn</span></li>
+      <li class="post-item"><span class="post-date">Feb 9</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7426578180997672960/" target="_blank">"Organizing Work in the Age of AI" recap</a></span><span class="post-type photo">Photo</span><span class="post-reach">4+ rxn</span></li>
+      <li class="post-item"><span class="post-date">Dec 26</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7410266987781603328/" target="_blank">AI workshop video</a></span><span class="post-type reel">Reel</span><span class="post-reach">7+ rxn</span></li>
+      <li class="post-item"><span class="post-date">Dec 8</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7403710150311669762/" target="_blank">"Build Your First AI Agent" event promo</a></span><span class="post-type photo">Photo</span><span class="post-reach">2 rxn</span></li>
+      <li class="post-item"><span class="post-date">Dec 16</span><span class="post-title"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7406532971479883776/" target="_blank">AI Agent workshop announcement</a></span><span class="post-type photo">Photo</span><span class="post-reach">2 rxn</span></li>
+    </ul>
+  </div>
+
+  <!-- Facebook Posts Detail -->
+  <div id="social-facebook" class="social-detail">
+    <h4>📘 Facebook Posts (Feb – Mar 2026)</h4>
+    <ul class="post-list">
+      <li class="post-item"><span class="post-date">Mar 29</span><span class="post-title"><a href="https://www.facebook.com/61584593924814/posts/122124430437153130" target="_blank">Responding to change — carousel</a></span><span class="post-type photo">Photo</span><span class="post-reach">3 reach</span></li>
+      <li class="post-item"><span class="post-date">Mar 26</span><span class="post-title"><a href="https://www.facebook.com/61584593924814/posts/122124029019153130" target="_blank">The Future of Organizations in the AI Era</a></span><span class="post-type reel">Reel</span><span class="post-reach">6 reach</span></li>
+      <li class="post-item"><span class="post-date">Mar 24</span><span class="post-title"><a href="https://www.facebook.com/61584593924814/posts/122122709187153130" target="_blank">Tương lai của Tổ chức trong Kỷ nguyên AI</a></span><span class="post-type photo">Photo</span><span class="post-reach">8 reach · 1 like</span></li>
+      <li class="post-item"><span class="post-date">Mar 16</span><span class="post-title"><a href="https://www.facebook.com/61584593924814/posts/122121572841153130" target="_blank">Vibecoding Party</a></span><span class="post-type reel">Reel</span><span class="post-reach" style="color:#2e7d32; font-weight:600">186 reach · 1 like</span></li>
+      <li class="post-item"><span class="post-date">Mar 8</span><span class="post-title"><a href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">Bạn có một ý tưởng — nhưng không biết bắt đầu...</a></span><span class="post-type photo">Photo</span><span class="post-reach">11 reach</span></li>
+      <li class="post-item"><span class="post-date">Mar 4</span><span class="post-title"><a href="https://www.facebook.com/61584593924814/posts/122120981187153130" target="_blank">Bạn có một vấn đề trong công việc — nhưng...</a></span><span class="post-type photo">Photo</span><span class="post-reach" style="color:#2e7d32; font-weight:600">406 reach</span></li>
+      <li class="post-item"><span class="post-date">Feb 9</span><span class="post-title"><a href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">[English below] Tóm tắt: Tổ chức Công việc trong Kỷ nguyên AI</a></span><span class="post-type photo">Photo</span><span class="post-reach">21 reach</span></li>
+    </ul>
+  </div>
+
+  <!-- Website Articles Detail -->
+  <div id="social-website" class="social-detail">
+    <h4>🌐 Website Articles (uniques.vn/vi/insights)</h4>
+    <ul class="post-list">
+      <li class="post-item"><span class="post-date">Jan 13</span><span class="post-title"><a href="https://uniques.vn/vi/insights" target="_blank">Tương Lai Của Tổ Chức Trong Kỷ Nguyên AI</a></span><span class="post-type article">ai · future-of-work</span><span class="post-reach"></span></li>
+      <li class="post-item"><span class="post-date">Jan 7</span><span class="post-title"><a href="https://uniques.vn/vi/insights" target="_blank">Chào Mừng Đến Với UniqueS: Chuyển Đổi Học Tập</a></span><span class="post-type article">announcement · learning</span><span class="post-reach"></span></li>
+      <li class="post-item"><span class="post-date">Dec 20</span><span class="post-title"><a href="https://uniques.vn/vi/insights" target="_blank">Workshop: Xây Dựng AI Agent Đầu Tiên Cho Doanh Nghiệp</a></span><span class="post-type article">agent · workshop</span><span class="post-reach"></span></li>
+    </ul>
+    <div style="margin-top: 12px; padding: 10px; background:#fff3e0; border-radius: 8px; font-size: 12px; color:#e65100;">
+      <strong>Gap alert:</strong> No new article published since Jan 13 — that's 2.5 months. Consider converting recent LinkedIn carousels into full blog posts.
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ ACTIVITIES TAB ═══════════════ -->
+<div id="tab-activities" class="tab-panel">
+  <div class="timeline-container">
+    <h3>Activities — 2026</h3>
+
+    <div class="week-row" style="opacity:0.75">
+      <div><div class="week-label">Dec 2025</div><div class="week-date">Pre-launch</div></div>
+      <div class="week-items">
+        <span class="week-chip event">"Build Your First AI Agent" workshop</span>
+        <span class="week-chip content">Website article: AI Agent Workshop</span>
+      </div>
+    </div>
+
+    <div class="week-row" style="opacity:0.75">
+      <div><div class="week-label">Jan 2026</div><div class="week-date">Pre-launch</div></div>
+      <div class="week-items">
+        <span class="week-chip event">AI workshop session (video recording)</span>
+        <span class="week-chip content">Website: "Welcome to UniqueS" article</span>
+        <span class="week-chip content">Website: "Future of Orgs" article</span>
+      </div>
+    </div>
+
+    <div class="week-row" style="opacity:0.75">
+      <div><div class="week-label">Feb 2026</div><div class="week-date">Pre-launch</div></div>
+      <div class="week-items">
+        <span class="week-chip event">"Organizing Work in the Age of AI" workshop</span>
+        <span class="week-chip content">FB post: workshop summary (21 reach)</span>
+      </div>
+    </div>
+
+    <div class="week-row">
+      <div><div class="week-label">Week 1</div><div class="week-date">Mar 1–7</div></div>
+      <div class="week-items">
+        <span class="week-chip content">Vibecoding event promo (LI+FB)</span>
+        <span class="week-chip content">Workshop promotion posts</span>
+        <span class="week-chip highlight">Diaries: Activity Sharing W1</span>
+      </div>
+    </div>
+
+    <div class="week-row">
+      <div><div class="week-label">Week 2</div><div class="week-date">Mar 8–14</div></div>
+      <div class="week-items">
+        <span class="week-chip content">"Bạn có ý tưởng" post (FB)</span>
+        <span class="week-chip content">UniqueS branding post (LI)</span>
+        <span class="week-chip highlight">Diaries: Activity Sharing W2</span>
+      </div>
+    </div>
+
+    <div class="week-row">
+      <div><div class="week-label">Week 3</div><div class="week-date">Mar 15–21</div></div>
+      <div class="week-items">
+        <span class="week-chip event">Vibecoding Party (~70 pax)</span>
+        <span class="week-chip content">Vibecoding recap reel (LI+FB)</span>
+        <span class="week-chip highlight">Diaries: Activity Sharing W3</span>
+        <span class="week-chip">Training Location Database started</span>
+        <span class="week-chip">Business emails set up</span>
+      </div>
+    </div>
+
+    <div class="week-row">
+      <div><div class="week-label">Week 4</div><div class="week-date">Mar 22–28</div></div>
+      <div class="week-items">
+        <span class="week-chip content">"Future of Organizations" (LI+FB, bilingual)</span>
+        <span class="week-chip content">"Responding to Change" carousel (LI+FB)</span>
+        <span class="week-chip highlight">Diaries: Activity Sharing W4</span>
+        <span class="week-chip event">AI Mastery Day — 5 sessions, 31 Offies</span>
+        <span class="week-chip">Content Formatter shipped</span>
+        <span class="week-chip highlight">Joined Toastmasters International</span>
+      </div>
+    </div>
+
+    <div class="week-row" style="opacity: 0.5;">
+      <div><div class="week-label">Week 5</div><div class="week-date">Mar 29–Apr 4</div></div>
+      <div class="week-items">
+        <span class="week-chip">April planning: AI Safety, Mental Models, Claude Code</span>
+        <span class="week-chip">Kids+Parents program planning with anh Phong</span>
+        <span class="week-chip" style="border: 1px dashed #d6cfc5;">Next content to publish...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ NEXT STEPS TAB ═══════════════ -->
+<div id="tab-actions" class="tab-panel">
+
+  <!-- What's Working Well — Amplify -->
+  <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+    <h3 style="font-size: 15px; font-weight: 600; color: #2e7d32; margin-bottom: 14px;">Amplify These</h3>
+    <ul style="font-size: 13px; color: #4a4540; list-style: none; padding: 0;">
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Events drive visibility</strong> — Vibecoding (186 FB reach) + AI Mastery Day (31 learners). Anchor each month around 1 flagship event.
+      </li>
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Content repurposing works</strong> — "Future of Orgs" appeared as LI carousel, FB reel, VN post, and article. Keep this multiplier approach.
+      </li>
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Weekly diaries build trust</strong> — 4 consecutive weeks of Activity Sharing. Consistency signals reliability.
+      </li>
+      <li style="padding: 8px 0;">
+        <strong>LinkedIn is your strongest channel</strong> — +535% impressions, +1,700% reactions MoM. Keep the momentum.
+      </li>
+    </ul>
+  </div>
+
+  <!-- What to Do Better in April -->
+  <div style="background: white; border-radius: 16px; padding: 24px; margin-top: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+    <h3 style="font-size: 15px; font-weight: 600; color: #e65100; margin-bottom: 14px;">Do Better in April</h3>
+    <ul style="font-size: 13px; color: #4a4540; list-style: none; padding: 0;">
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Publish website articles</strong> — No new article since Jan 13. Target 1–2 in April. Quick win: convert "Responding to Change" carousel into a blog post.
+      </li>
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Grow LinkedIn followers</strong> — 21/200 (10.5%). Invite workshop participants, cross-promote from personal profile, engage in groups.
+      </li>
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Start external training pipeline</strong> — KR 2.1 at 0% (due Feb 2027). Kids+parents AI program with anh Phong could be the first delivery.
+      </li>
+      <li style="padding: 8px 0; border-bottom: 1px solid #f0ece7;">
+        <strong>Complete program catalog</strong> — KR 3.2 at 70%. Add descriptions, target audiences, session formats to uniques.vn.
+      </li>
+      <li style="padding: 8px 0;">
+        <strong>Decide on Facebook strategy</strong> — 6 followers, mostly single-digit reach. Invest more or focus energy on LinkedIn?
+      </li>
+    </ul>
+  </div>
+
+  <!-- Risk Register -->
+  <div style="background: white; border-radius: 16px; padding: 24px; margin-top: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+    <h3 style="font-size: 15px; font-weight: 600; color: #c47a2a; margin-bottom: 12px;">Risk Register</h3>
+    <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid #f0ece7;">
+        <td style="padding: 8px 0; font-weight: 600; color: #e65100; width: 70px;">MEDIUM</td>
+        <td style="padding: 8px 0;">KR 2.1 (external training) — 0%, due Feb 2027. No deliveries yet but pipeline forming.</td>
+        <td style="padding: 8px 0; color: #8a8580; text-align: right;">Action: close first contract Q2</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #f0ece7;">
+        <td style="padding: 8px 0; font-weight: 600; color: #e65100;">MEDIUM</td>
+        <td style="padding: 8px 0;">Website articles — 2.5 month gap since last publish.</td>
+        <td style="padding: 8px 0; color: #8a8580; text-align: right;">Action: publish 1 article in April</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0; font-weight: 600; color: #f9a825;">LOW</td>
+        <td style="padding: 8px 0;">LinkedIn follower growth slow (21/200). Content traction improving.</td>
+        <td style="padding: 8px 0; color: #8a8580; text-align: right;">Action: invite + cross-promote</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  Generated Mar 31, 2026 · Data from
+  <a href="https://docs.google.com/spreadsheets/d/1kPmUKBGYE_InZUmZshiPD18NCBpiN8RClcojAQTePeE/edit" target="_blank">OKR Spreadsheet</a>,
+  <a href="https://www.linkedin.com/company/uniques-vn/" target="_blank">LinkedIn</a>,
+  <a href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">Facebook</a>, and
+  <a href="https://uniques.vn/vi/insights" target="_blank">uniques.vn</a>
+</div>
+
+<script>
+  // ── Tab switching ──
+  function showTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // ── Objective mini-card selection ──
+  function toggleObj(n) {
+    document.querySelectorAll('.obj-mini').forEach(m => m.classList.remove('selected'));
+    document.querySelectorAll('.obj-detail').forEach(d => d.classList.remove('active'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('obj-' + n).classList.add('active');
+  }
+
+  // ── KR card expand/collapse ──
+  function toggleKR(card) {
+    // Don't toggle if clicking a link inside
+    if (event.target.tagName === 'A') return;
+    card.classList.toggle('expanded');
+  }
+
+  // ── Social media detail toggle ──
+  function toggleSocial(platform) {
+    const detail = document.getElementById('social-' + platform);
+    const card = event.currentTarget;
+    const wasActive = detail.classList.contains('active');
+
+    // Close all
+    document.querySelectorAll('.social-detail').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.social-card').forEach(c => c.classList.remove('expanded'));
+
+    // Toggle
+    if (!wasActive) {
+      detail.classList.add('active');
+      card.classList.add('expanded');
+    }
+  }
+</script>
+
+</body>
+</html>
