@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UnIqueS Development — Tam's OKR Dashboard — Sep 2026–Feb 2027</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f8f6f3;
+    color: #2d2a26;
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e8a44a;
+  }
+  .header h1 { font-size: 26px; font-weight: 700; color: #c47a2a; }
+  .header .subtitle { font-size: 14px; color: #8a8580; margin-top: 2px; }
+  .header .cycle {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 12px;
+    border: 1px solid #e8a44a;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c47a2a;
+    background: #fdf6ec;
+  }
+  .header .date { font-size: 12px; color: #b0a99f; margin-top: 6px; }
+
+  /* ── Tab Navigation ── */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    background: white;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8a8580;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { background: #faf8f5; color: #4a4540; }
+  .tab-btn.active { background: #c47a2a; color: white; font-weight: 600; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Overall Progress ── */
+  .overall-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 16px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .ring-container { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+  .ring-container svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #ebe6df; stroke-width: 10; }
+  .ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease; }
+  .ring-label {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 26px; font-weight: 700; color: #c47a2a;
+  }
+  .overall-text h2 { font-size: 18px; font-weight: 600; }
+  .overall-text p { font-size: 13px; color: #8a8580; margin-top: 2px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 10px; border-radius: 12px; margin-top: 6px;
+  }
+  .badge.neutral { background: #f5f0ea; color: #6b6560; }
+
+  /* ── Cycle elapsed strip ── */
+  .elapsed-box {
+    background: white; border-radius: 14px; padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 24px;
+  }
+  .elapsed-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; color: #8a8580; margin-bottom: 8px; gap: 12px;
+  }
+  .elapsed-head strong { color: #4a4540; font-size: 13px; }
+  .elapsed-track {
+    position: relative; height: 10px; background: #ebe6df;
+    border-radius: 5px; overflow: hidden;
+  }
+  .elapsed-fill { height: 100%; background: #e8a44a; border-radius: 5px; }
+  .elapsed-marks { position: relative; height: 34px; margin-top: 4px; }
+  .elapsed-mark {
+    position: absolute; transform: translateX(-50%);
+    font-size: 9.5px; color: #b0a99f; text-align: center; line-height: 1.25;
+    width: 74px;
+  }
+  .elapsed-mark::before {
+    content: ''; display: block; width: 1px; height: 6px;
+    background: #d6cfc5; margin: 0 auto 2px;
+  }
+  .elapsed-mark.key { color: #c62828; font-weight: 600; }
+  .elapsed-mark.key::before { background: #c62828; }
+
+  /* ── Mini progress cards ── */
+  .obj-mini-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .obj-mini {
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+  .obj-mini:hover { border-color: #e8a44a; transform: translateY(-1px); }
+  .obj-mini.selected { border-color: #c47a2a; }
+  .obj-mini-icon { font-size: 19px; margin-bottom: 6px; }
+  .obj-mini-title { font-size: 11.5px; font-weight: 600; color: #4a4540; line-height: 1.3; margin-bottom: 8px; }
+  .obj-mini-bar { height: 6px; background: #ebe6df; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+  .obj-mini-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .obj-mini-pct { font-size: 18px; font-weight: 700; }
+  .obj-mini-pct.c1 { color: #42a5f5; }
+  .obj-mini-pct.c2 { color: #ab47bc; }
+  .obj-mini-pct.c3 { color: #e8a44a; }
+  .obj-mini-pct.c4 { color: #66bb6a; }
+  .obj-mini-pct.c5 { color: #26a69a; }
+  .obj-mini-kr { font-size: 10px; color: #b0a99f; margin-top: 1px; }
+  .fill-c1 { background: #42a5f5; }
+  .fill-c2 { background: #ab47bc; }
+  .fill-c3 { background: #e8a44a; }
+  .fill-c4 { background: #66bb6a; }
+  .fill-c5 { background: #26a69a; }
+
+  /* ── Objective Detail Panel ── */
+  .obj-detail {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .obj-detail.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .obj-detail-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 4px;
+  }
+  .obj-detail-header .icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .obj-detail-header .icon.o1 { background: #e3f2fd; }
+  .obj-detail-header .icon.o2 { background: #f3e5f5; }
+  .obj-detail-header .icon.o3 { background: #fff3e0; }
+  .obj-detail-header .icon.o4 { background: #e8f5e9; }
+  .obj-detail-header .icon.o5 { background: #e0f2f1; }
+  .obj-detail-header h3 { font-size: 16px; font-weight: 600; flex: 1; }
+  .obj-description { font-size: 12px; color: #8a8580; margin-bottom: 16px; padding-left: 48px; font-style: italic; line-height: 1.55; }
+
+  /* ── KR Cards ── */
+  .kr-card {
+    border: 1px solid #f0ece7;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .kr-card:hover { border-color: #d6cfc5; }
+  .kr-card.expanded { border-color: #e8a44a; }
+
+  .kr-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .kr-expand-icon {
+    width: 20px; height: 20px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: #b0a99f;
+    transition: transform 0.2s;
+  }
+  .kr-card.expanded .kr-expand-icon { transform: rotate(90deg); color: #c47a2a; }
+  .kr-summary-text { flex: 1; }
+  .kr-summary-title { font-size: 13px; font-weight: 500; color: #2d2a26; }
+  .kr-summary-meta { font-size: 11px; color: #b0a99f; margin-top: 2px; }
+  .kr-pct { font-size: 16px; font-weight: 700; flex-shrink: 0; min-width: 48px; text-align: right; }
+  .kr-minibar { width: 80px; height: 5px; background: #ebe6df; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+  .kr-minibar-fill { height: 100%; border-radius: 3px; }
+
+  .status-tag {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 1px 7px; border-radius: 6px; margin-left: 6px; vertical-align: middle;
+  }
+  .status-tag.not-started { background: #f5f0ea; color: #8a8580; }
+  .status-tag.started { background: #e3f2fd; color: #1565c0; }
+  .status-tag.gap { background: #fdecec; color: #c62828; }
+
+  /* Provenance tags — only where the source document itself carries one */
+  .ptag {
+    display: inline-block; font-size: 9.5px; font-weight: 700;
+    padding: 1px 5px; border-radius: 4px; margin-left: 5px;
+    vertical-align: middle; letter-spacing: .3px;
+  }
+  .ptag.v { background: #e8f5e9; color: #2e7d32; }
+  .ptag.p { background: #fff3e0; color: #e65100; }
+
+  /* KR expanded detail */
+  .kr-detail {
+    display: none;
+    padding: 0 16px 16px 48px;
+    animation: fadeIn 0.25s ease;
+  }
+  .kr-card.expanded .kr-detail { display: block; }
+
+  .kr-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .kr-detail-item label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #b0a99f; display: block; margin-bottom: 2px;
+  }
+  .kr-detail-item span { font-size: 13px; color: #2d2a26; }
+
+  .kr-progress-bar {
+    height: 8px; background: #ebe6df; border-radius: 4px; overflow: hidden; margin: 10px 0;
+  }
+  .kr-progress-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+
+  .kr-milestones { margin-top: 10px; }
+  .kr-milestones h5 {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #b0a99f; margin-bottom: 6px; margin-top: 12px;
+  }
+  .milestone {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 4px 0; font-size: 12px; color: #4a4540; line-height: 1.5;
+  }
+  .milestone-dot {
+    width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; margin-top: 1px;
+  }
+  .milestone-dot.done { background: #e8f5e9; color: #2e7d32; }
+  .milestone-dot.pending { background: #f5f0ea; color: #b0a99f; }
+  .milestone-dot.open { background: #fdecec; color: #c62828; }
+  .milestone a { color: #c47a2a; text-decoration: none; }
+  .milestone a:hover { text-decoration: underline; }
+
+  /* ── Note boxes ── */
+  .note-box {
+    background: #fdf6ec; border-left: 3px solid #e8a44a; border-radius: 6px;
+    padding: 10px 12px; margin-top: 12px; font-size: 12px; color: #6b6560; line-height: 1.55;
+  }
+  .note-box.gap { background: #fdecec; border-left-color: #c62828; }
+  .note-box.quote { background: #f7f5f2; border-left-color: #b0a99f; font-style: italic; }
+  .note-box strong { color: #4a4540; }
+  .note-box a { color: #c47a2a; text-decoration: none; font-weight: 500; }
+  .note-box a:hover { text-decoration: underline; }
+
+  /* ── Panels & row lists ── */
+  .panel {
+    background: white; border-radius: 16px; padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px;
+  }
+  .panel h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .panel .panel-sub { font-size: 12px; color: #8a8580; margin-bottom: 16px; line-height: 1.55; }
+
+  .row-list { border-top: 1px solid #f5f0ea; }
+  .row-item {
+    display: grid; grid-template-columns: 150px 1fr auto;
+    gap: 12px; padding: 11px 0; border-bottom: 1px solid #f5f0ea;
+    font-size: 12.5px; align-items: start;
+  }
+  .row-item .row-key { font-weight: 600; color: #c47a2a; }
+  .row-item .row-val { color: #4a4540; line-height: 1.5; }
+  .row-item.hard { background: #fdecec; border-radius: 6px; padding: 11px 8px; }
+  .row-item.hard .row-key { color: #c62828; }
+
+  .q-item { padding: 12px 0; border-bottom: 1px solid #f5f0ea; }
+  .q-item:last-child { border-bottom: none; }
+  .q-item h6 { font-size: 12.5px; font-weight: 600; color: #2d2a26; margin-bottom: 3px; }
+  .q-item p { font-size: 12px; color: #6b6560; line-height: 1.55; }
+  .q-kr {
+    display: inline-block; font-size: 10px; font-weight: 700; color: #c47a2a;
+    background: #fdf6ec; padding: 1px 6px; border-radius: 4px; margin-right: 6px;
+  }
+
+  .legend {
+    background: white; border-radius: 14px; padding: 16px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px;
+    font-size: 11.5px; color: #6b6560; line-height: 1.9;
+  }
+  .legend strong { color: #4a4540; }
+
+  .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #c0b8ae; line-height: 1.7; }
+  .footer a { color: #c47a2a; text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 820px) {
+    .obj-mini-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .obj-mini-row { grid-template-columns: 1fr; }
+    .kr-detail-grid { grid-template-columns: 1fr; }
+    .overall-section { flex-direction: column; text-align: center; }
+    .row-item { grid-template-columns: 1fr; gap: 4px; }
+    .elapsed-marks { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>UnIqueS Development</h1>
+  <div class="subtitle">Tam's OKR Dashboard</div>
+  <div><span class="cycle">Cycle: September 2026 &ndash; February 2027</span></div>
+  <div class="date">Cycle open &middot; day 3 of 181 &middot; built 3 September 2026 from the team's OKR document</div>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview')">Objectives</button>
+  <button class="tab-btn" onclick="showTab('timeline')">Fixed dates</button>
+  <button class="tab-btn" onclick="showTab('gaps')">Still open</button>
+  <button class="tab-btn" onclick="showTab('parked')">Parked</button>
+</div>
+
+<!-- ══════════ OBJECTIVES TAB ══════════ -->
+<div id="tab-overview" class="tab-panel active">
+
+  <div class="overall-section">
+    <div class="ring-container">
+      <svg width="110" height="110" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="50"/>
+        <circle class="ring-fill" cx="60" cy="60" r="50"
+          stroke="#e8a44a" fill="none"
+          stroke-dasharray="314.16"
+          stroke-dashoffset="311.02"/>
+      </svg>
+      <div class="ring-label">1%</div>
+    </div>
+    <div class="overall-text">
+      <h2>Baseline at cycle open</h2>
+      <p>September 2026 &ndash; February 2027 &middot; 5 Objectives &middot; 15 Key Results &middot; <strong>nothing scored yet</strong></p>
+      <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>This is a set-up view, not a progress view.</strong> The cycle opened on 1 September and this board was built on day 3. The 1% is arithmetic only &mdash; one person already CCA-F certified out of ten &mdash; not an achievement. Every other Key Result stands at its own starting baseline.<br><br>
+    Scoring follows the same method as the March&ndash;August board: each objective is the average of its Key Results, and the headline is the average of the objectives. KR 5.2 carries no target yet, so it is shown but not scored.
+  </div>
+
+  <div class="elapsed-box">
+    <div class="elapsed-head">
+      <strong>Cycle timeline</strong>
+      <span>Day 3 of 181 &middot; 2% elapsed &middot; closes 28 Feb 2027</span>
+    </div>
+    <div class="elapsed-track">
+      <div class="elapsed-fill" style="width:2%"></div>
+    </div>
+    <div class="elapsed-marks">
+      <div class="elapsed-mark" style="left:7%">15 Sep<br>Anthropic proof</div>
+      <div class="elapsed-mark" style="left:26%">17&ndash;18 Oct<br>Unconference</div>
+      <div class="elapsed-mark" style="left:33%">31 Oct<br>Vysta live</div>
+      <div class="elapsed-mark" style="left:50%">30 Nov<br>PNV signed</div>
+      <div class="elapsed-mark key" style="left:67%">31 Dec<br>Anthropic deadline</div>
+      <div class="elapsed-mark key" style="left:84%">31 Jan<br>Diane's last day</div>
+      <div class="elapsed-mark" style="left:98%">28 Feb<br>Retrospective</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <strong>Tags carried over from the source document.</strong>
+    <span class="ptag v">V</span> Verified &mdash; from the 31 Aug meeting document or the 7 Jul Marketplace brief.
+    <span class="ptag p">P</span> Proposed &mdash; still needs a decision.
+    Only the fixed-dates table in the source carries these tags, so they appear there.
+  </div>
+
+  <!-- Objective Mini Cards -->
+  <div class="obj-mini-row">
+    <div class="obj-mini selected" onclick="toggleObj(1)">
+      <div class="obj-mini-icon">&#129504;</div>
+      <div class="obj-mini-title">Close the Anthropic Partnership</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c1" style="width:3%"></div></div>
+      <div class="obj-mini-pct c1">3%</div>
+      <div class="obj-mini-kr">3 KRs &middot; deadline 31 Dec</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(2)">
+      <div class="obj-mini-icon">&#128176;</div>
+      <div class="obj-mini-title">Turn Relationships into Revenue</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c2" style="width:0%"></div></div>
+      <div class="obj-mini-pct c2">0%</div>
+      <div class="obj-mini-kr">4 KRs &middot; &euro;12k target</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(3)">
+      <div class="obj-mini-icon">&#128279;</div>
+      <div class="obj-mini-title">Partner Ecosystem Catalogue</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c3" style="width:0%"></div></div>
+      <div class="obj-mini-pct c3">0%</div>
+      <div class="obj-mini-kr">2 KRs &middot; nothing built yet</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(4)">
+      <div class="obj-mini-icon">&#10024;</div>
+      <div class="obj-mini-title">UnIqueS Branding</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c4" style="width:0%"></div></div>
+      <div class="obj-mini-pct c4">0%</div>
+      <div class="obj-mini-kr">4 KRs</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(5)">
+      <div class="obj-mini-icon">&#129302;</div>
+      <div class="obj-mini-title">AI-Native Initiatives</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c5" style="width:0%"></div></div>
+      <div class="obj-mini-pct c5">0%</div>
+      <div class="obj-mini-kr">2 KRs &middot; now scored</div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 1 ─────── -->
+  <div id="obj-1" class="obj-detail active">
+    <div class="obj-detail-header">
+      <div class="icon o1">&#129504;</div>
+      <h3>O1 &mdash; Close the Anthropic partnership before 31 December 2026</h3>
+    </div>
+
+    <!-- KR 1.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.1 &mdash; 10 people CCA-F certified under the UnIqueS name<span class="status-tag started">1 of 10</span></div>
+          <div class="kr-summary-meta">Baseline 1 &middot; 10 by 31 Dec 2026 &middot; Tam / Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:10%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">10%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>1</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>10 by 31 Dec 2026 &mdash; <strong>2 committed by Tam and Diane</strong></span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam / Diane</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>31 Dec 2026</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:10%"></div></div>
+        <div class="kr-milestones">
+          <h5>Named in the document</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Tam, Trinh, Kiet Binh, Nhat Nguyen, Diane, Chris, Arthur, Fatou, +1 alumni</div>
+          <h5>Support commitments</h5>
+          <div class="milestone"><div class="milestone-dot open">?</div>Phong &mdash; <strong>TBC</strong></div>
+          <h5>Initiatives</h5>
+          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Sponsorship offer already in place: UnIqueS pays the ~&euro;100 exam fee for alumni and anyone, who become technical partners with a place in the portfolio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 1.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.2 &mdash; 1 public customer story published &mdash; Officience<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; target 1 &middot; Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Diane</span></div>
+          <div class="kr-detail-item"><label>Note</label><span>Diane's internship ends 31 Jan 2027</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 1.3 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.3 &mdash; Deployed joint customers credited by Anthropic<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; target &ge; 2 &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>&ge; 2</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>First fixed date</label><span>15 Sep 2026 &mdash; verify the proof mechanism <span class="ptag p">P</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Support commitments</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Duc &mdash; confirms which Officience / Offinity deployments qualify for KR 1.3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 2 ─────── -->
+  <div id="obj-2" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o2">&#128176;</div>
+      <h3>O2 &mdash; Turn relationships into revenue (UnIqueS &times; Vysta partnership)</h3>
+    </div>
+
+    <!-- KR 2.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.1 &mdash; PNV mission: one-year training contract (students + teachers), signed under the Vysta name<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; 1 signed by 30 Nov 2026 &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1, signed by 30 Nov 2026</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Also covers</label><span>Internship coordination</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="note-box quote">
+          Why under Vysta: "The clients (from Danang) don't know UnIqueS, but they may know Vysta." <span class="ptag v">V</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 2.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.2 &mdash; Revenue: &euro;12k contracted for PNV training<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline &euro;0 &middot; target &euro;12k &middot; Tam / Quynh Minh</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>&euro;12k</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam / Quynh Minh</span></div>
+          <div class="kr-detail-item"><label>Route</label><span>Donation-and-tax-refund route / admin path</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 2.3 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.3 &mdash; At least 1 PAID client or programme outside Officience, other than PNV<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; target 1 &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Named prospect</label><span>xBrain <span class="ptag v">V</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="note-box quote">
+          Geographic edge: NVC in &#272;&agrave; N&#7861;ng, where there is no NVC trainer. Prospect named: xBrain. <span class="ptag v">V</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 2.4 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.4 &mdash; Vysta brand infrastructure live: website + LinkedIn + Facebook<span class="status-tag not-started">0 of 3</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; all 3 live by 31 Oct 2026 &middot; Tam / a Vietnamese intern</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>All 3 live by 31 Oct 2026</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam / a Vietnamese intern</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>31 Oct 2026 <span class="ptag p">P</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Support commitments</h5>
+          <div class="milestone"><div class="milestone-dot open">?</div>Clones the UnIqueS website for Vysta: swap logo and tagline &mdash; <strong>no name filled in</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 3 ─────── -->
+  <div id="obj-3" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o3">&#128279;</div>
+      <h3>O3 &mdash; Partner ecosystem: a collective catalogue</h3>
+    </div>
+    <div class="obj-description">Reference: Marketplace Requirement Brief, 7 Jul 2026.</div>
+
+    <!-- KR 3.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.1 &mdash; Website prototype to share with partners<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Brief only, nothing built &middot; due 17 Oct (Unconference) &middot; Tam + Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>Brief only, nothing built</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1 clickable prototype, shown to &ge; 5 partners, by 17 Oct (Unconference)</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>17 Oct 2026</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 3.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.2 &mdash; 10 partners and their offers on the live website<span class="status-tag gap">owner gap in Feb</span></div>
+          <div class="kr-summary-meta">6 named in the brief, 0 live &middot; 10 live by 28 Feb 2027 &middot; Tam + Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>Providers already named in the brief: UnIqueS, Tr&ograve;n L&agrave;nh, NEED, Percolab, Olivier, PNV, &hellip; <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>10 partners live by 28 Feb 2027</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane &mdash; <strong>Diane leaves 31 Jan</strong></span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>28 Feb 2027 &mdash; cycle close</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Initiatives</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Partner ecosystem map, sorted into three buckets: catalogue / cross-selling / informal</div>
+        </div>
+        <div class="note-box gap">
+          <strong>Due 28 February; the co-owner's last day is 31 January.</strong> The source document lists Tam + Diane and does not name a February owner.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 4 ─────── -->
+  <div id="obj-4" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o4">&#10024;</div>
+      <h3>O4 &mdash; UnIqueS branding</h3>
+    </div>
+    <div class="obj-description">Scope rule: Academic = UEH / UEF / other universities.</div>
+
+    <!-- KR 4.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.1 &mdash; Real product packages on the UnIqueS website, each with a case study and real photos<span class="status-tag not-started">0 of 4</span></div>
+          <div class="kr-summary-meta">Baseline ~0 &middot; target 4 packages &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>~0 &mdash; site judged "a bit general", offerings "a bit vague" <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>4 packages &mdash; e.g. NVC, AI training, Flow Game, second brain</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Each package needs</label><span>A case study and real photos</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 4.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.2 &mdash; Unconference, 17 or 18 Oct 2026<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Target 50&ndash;100 participants &middot; Tam leads &middot; Diane, Duc, Phong, Han support</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>&mdash;</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>50&ndash;100 participants</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam (lead); Diane, Duc, Phong, Han support</span></div>
+          <div class="kr-detail-item"><label>Date</label><span>17 or 18 Oct 2026 <span class="ptag v">V</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+        <div class="note-box">
+          The Unconference is also the deadline for the KR 3.1 prototype, which the source document schedules to be shown there.
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 4.3 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.3 &mdash; Academic partnerships: workshops delivered at universities<span class="status-tag not-started">0 of 3</span></div>
+          <div class="kr-summary-meta">Baseline 0 this cycle &middot; target 3 workshops (UEH, UEF, +1) &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0 this cycle</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>3 workshops &mdash; UEH, UEF, +1</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Scope</label><span>Academic = UEH / UEF / other universities</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 4.4 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.4 &mdash; Thought leadership: the podcast. One channel only.<span class="status-tag gap">owner gap in Feb</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; 1 episode / month = 6 &middot; Diane to end Jan, then ?</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1 episode / month = 6</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Diane (to end Jan), then <strong>?</strong></span></div>
+          <div class="kr-detail-item"><label>Channel</label><span>The podcast &mdash; one channel only</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Related fixed dates</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>October 2026 &mdash; 3 episodes recorded before episode 1 publishes <span class="ptag p">P</span></div>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>2&ndash;6 Nov 2026 &mdash; Sommet de l'Action <span class="ptag v">V</span></div>
+        </div>
+        <div class="note-box gap">
+          <strong>Six monthly episodes means one is due in February, and the owner field for February is a question mark in the source document.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 5 ─────── -->
+  <div id="obj-5" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o5">&#129302;</div>
+      <h3>O5 &mdash; AI-native initiatives</h3>
+    </div>
+    <div class="obj-description">Decided at the August close: this objective becomes scored from September.</div>
+
+    <!-- KR 5.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 5.1 &mdash; "Second brain" moves from demo to real deployment with real users<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Demo only &middot; 1 organisation live with &ge; 5 active users &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c5" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#26a69a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>Demo only (Ngan) <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1 organisation live with &ge; 5 active users</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Sequence</label><span>Impact Hub APAC first; Teal community if capacity</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c5" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 5.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 5.2 &mdash; Real AI adoption / transformation inside Officience<span class="status-tag gap">no baseline, no target</span></div>
+          <div class="kr-summary-meta">Baseline blank &middot; target "?" in the source &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c5" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#26a69a">&mdash;</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span><strong>Blank in the source document</strong></span></div>
+          <div class="kr-detail-item"><label>Target</label><span><strong>"?" &mdash; not yet set</strong></span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Earlier draft wording</label><span>"measured by BEHAVIOUR"</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c5" style="width:0%"></div></div>
+        <div class="note-box gap">
+          <strong>This Key Result cannot be scored as written.</strong> It has neither a baseline nor a target, so there is nothing to measure against at close on 28 February. It is the only Key Result in the set in that position.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ FIXED DATES TAB ══════════ -->
+<div id="tab-timeline" class="tab-panel">
+  <div class="panel">
+    <h3>Fixed dates</h3>
+    <div class="panel-sub">Taken from the fixed-dates table in the team's OKR document, with its own tags kept. The two rows in red are the ones that constrain other Key Results: the Anthropic deadline is external, and Diane's last day removes a co-owner from KR 3.2 and KR 4.4 one month before the cycle closes.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">15 Sep 2026</div>
+        <div class="row-val">Verify Anthropic joint-customer proof mechanism (KR 1.3).</div>
+        <div><span class="ptag p">P</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">17&ndash;18 Oct 2026</div>
+        <div class="row-val">Unconference (KR 4.2); the KR 3.1 prototype is shown here.</div>
+        <div><span class="ptag v">V</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">October 2026</div>
+        <div class="row-val">3 podcast episodes recorded before episode 1 publishes (KR 4.4).</div>
+        <div><span class="ptag p">P</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">31 Oct 2026</div>
+        <div class="row-val">Vysta website + LinkedIn + Facebook live (KR 2.4).</div>
+        <div><span class="ptag p">P</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">2&ndash;6 Nov 2026</div>
+        <div class="row-val">Sommet de l'Action (France, mostly online, English).</div>
+        <div><span class="ptag v">V</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">30 Nov 2026</div>
+        <div class="row-val">PNV contract signed under Vysta (KR 2.1).</div>
+        <div><span class="ptag p">P</span></div>
+      </div>
+      <div class="row-item hard">
+        <div class="row-key">31 Dec 2026</div>
+        <div class="row-val"><strong>Anthropic deadline: 10 certified</strong> (KR 1.1). Currently 1, with 2 committed by Tam and Diane.</div>
+        <div><span class="ptag v">V</span></div>
+      </div>
+      <div class="row-item hard">
+        <div class="row-key">31 Jan 2027</div>
+        <div class="row-val"><strong>Diane's internship ends</strong> &mdash; KR 3.2 and KR 4.4 need a February owner.</div>
+        <div><span class="ptag v">V</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">28 Feb 2027</div>
+        <div class="row-val">OKRs retrospective &mdash; cycle closes.</div>
+        <div><span class="ptag v">V</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STILL OPEN TAB ══════════ -->
+<div id="tab-gaps" class="tab-panel">
+  <div class="panel">
+    <h3>Still open in the source document</h3>
+    <div class="panel-sub">Every item below is a blank, a "?" or a "TBC" written in the team's own OKR document &mdash; not an outside opinion. They are listed here so the board shows what is unresolved instead of hiding it behind a zero.</div>
+
+    <div class="q-item">
+      <h6><span class="q-kr">KR 5.2</span>No baseline and no target</h6>
+      <p>The baseline cell is empty and the target cell reads "?". As written, this Key Result cannot be scored at close on 28 February. It is the only one in the set with neither figure.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 3.2</span>February owner, after Diane leaves</h6>
+      <p>Owner is "Tam + Diane"; the deadline is 28 February; Diane's internship ends 31 January.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 4.4</span>February owner, after Diane leaves</h6>
+      <p>The owner cell reads "Diane (to end Jan) then ?". Six monthly episodes means one falls in February.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 1.1</span>Phong &mdash; TBC</h6>
+      <p>Listed under support commitments as "Phong - TBC", and not among the nine named people. The list currently reads 9 named plus 1 alumni slot to reach 10.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 2.4</span>Who clones the UnIqueS website for Vysta?</h6>
+      <p>The support commitment is written without a name: "clones the UnIqueS website for Vysta: swap logo and tagline."</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 4.2</span>Who is Han?</h6>
+      <p>Listed as a supporter on the Unconference, but not identified anywhere in the document.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 3.2</span>The partner list ends in "&hellip;"</h6>
+      <p>The baseline names UnIqueS, Tr&ograve;n L&agrave;nh, NEED, Percolab, Olivier and PNV, then trails off. Six named against a target of ten, with the remainder unspecified.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PARKED TAB ══════════ -->
+<div id="tab-parked" class="tab-panel">
+  <div class="panel">
+    <h3>Parked this cycle</h3>
+    <div class="panel-sub">Parking on purpose is not the same as letting things drift. Each item below was in the 31 August brainstorm and is consciously out of this cycle's OKRs.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">Cosmic House / Cosmic Tribe (3.5)</div>
+        <div class="row-val">Too abstract to measure this cycle; the group itself said "the goal is not to explain the theory to everyone."</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Teal Opal (3.16)</div>
+        <div class="row-val">The Teal community is still served through KR 5.1 if capacity allows.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Parents' association (3.18)</div>
+        <div class="row-val">Phong's channel; no UnIqueS capacity assigned.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Kids' AI programme and the "fishing game" (3.19)</div>
+        <div class="row-val">Pending Phong's test with parents at the barbecue. If the reaction is good, it enters the catalogue next cycle.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">LinkedIn cadence (3.3)</div>
+        <div class="row-val">Maintenance track, tracked on the dashboard but not scored. Reached 88% last cycle and runs on habit.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Change-management product (3.10)</div>
+        <div class="row-val">See O5 &mdash; dropped for capacity.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">TEDx T&acirc;n &#272;&#7883;nh (3.4)</div>
+        <div class="row-val">Personal OKR sheet.</div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Structural change from the previous cycle</h3>
+    <div class="panel-sub">Counts compared against the March&ndash;August 2026 board, which closed at 73%.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">Size</div>
+        <div class="row-val">5 Objectives and 15 Key Results, up from 3 scored Objectives and 9 Key Results.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Revenue</div>
+        <div class="row-val">New. The previous cycle had no revenue Key Result; O2 now carries four, including a &euro;12k figure.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">AI-native</div>
+        <div class="row-val">Recorded unscored at the August close; a scored objective from September.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Owners</div>
+        <div class="row-val">Every Key Result names an owner. Two of them lose a co-owner on 31 January.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Moved out</div>
+        <div class="row-val">TEDx T&acirc;n &#272;&#7883;nh, to Tam's personal OKR sheet.</div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  UnIqueS Development &middot; OKR cycle September 2026 &ndash; February 2027<br>
+  Built 3 September 2026 from the team's OKR document &middot; figures mirror that document, including its blanks<br>
+  Previous cycle: <a href="UnIqueS_OKR_Dashboard_Aug31.html">March &ndash; August 2026, closed at 73%</a>
+</div>
+
+<script>
+  // ── Tab switching ──
+  function showTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // ── Objective mini-card selection ──
+  function toggleObj(n) {
+    document.querySelectorAll('.obj-mini').forEach(m => m.classList.remove('selected'));
+    document.querySelectorAll('.obj-detail').forEach(d => d.classList.remove('active'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('obj-' + n).classList.add('active');
+  }
+
+  // ── KR card expand/collapse ──
+  function toggleKR(card) {
+    if (event.target.tagName === 'A') return;
+    card.classList.toggle('expanded');
+  }
+</script>
+
+</body>
+</html>
