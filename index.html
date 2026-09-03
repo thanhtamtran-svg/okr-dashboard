@@ -325,15 +325,6 @@
   .row-item.hard { background: #fdecec; border-radius: 6px; padding: 11px 8px; }
   .row-item.hard .row-key { color: #c62828; }
 
-  .q-item { padding: 12px 0; border-bottom: 1px solid #f5f0ea; }
-  .q-item:last-child { border-bottom: none; }
-  .q-item h6 { font-size: 12.5px; font-weight: 600; color: #2d2a26; margin-bottom: 3px; }
-  .q-item p { font-size: 12px; color: #6b6560; line-height: 1.55; }
-  .q-kr {
-    display: inline-block; font-size: 10px; font-weight: 700; color: #c47a2a;
-    background: #fdf6ec; padding: 1px 6px; border-radius: 4px; margin-right: 6px;
-  }
-
   .legend {
     background: white; border-radius: 14px; padding: 16px 20px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px;
@@ -376,7 +367,6 @@
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showTab('overview')">Objectives</button>
   <button class="tab-btn" onclick="showTab('timeline')">Fixed dates</button>
-  <button class="tab-btn" onclick="showTab('gaps')">Still open</button>
   <button class="tab-btn" onclick="showTab('parked')">Parked</button>
 </div>
 
@@ -940,43 +930,6 @@
         <div class="row-val">OKRs retrospective &mdash; cycle closes.</div>
         <div><span class="ptag v">V</span></div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ STILL OPEN TAB ══════════ -->
-<div id="tab-gaps" class="tab-panel">
-  <div class="panel">
-    <h3>Still open</h3>
-    <div class="panel-sub">Seven cells in the OKRs are a blank, a "?" or a "TBC". Every item below is written that way in the team's own document &mdash; none of it is an outside opinion. They are listed here so the board shows what is unresolved instead of hiding it behind a zero.</div>
-
-    <div class="q-item">
-      <h6><span class="q-kr">KR 5.2</span>No baseline and no target</h6>
-      <p>The baseline cell is empty and the target cell reads "?". As written, this Key Result cannot be scored at close on 28 February. It is the only one in the set with neither figure.</p>
-    </div>
-    <div class="q-item">
-      <h6><span class="q-kr">KR 3.2</span>February owner, after Diane leaves</h6>
-      <p>Owner is "Tam + Diane"; the deadline is 28 February; Diane's internship ends 31 January.</p>
-    </div>
-    <div class="q-item">
-      <h6><span class="q-kr">KR 4.4</span>February owner, after Diane leaves</h6>
-      <p>The owner cell reads "Diane (to end Jan) then ?". Six monthly episodes means one falls in February.</p>
-    </div>
-    <div class="q-item">
-      <h6><span class="q-kr">KR 1.1</span>Phong &mdash; TBC</h6>
-      <p>Listed under support commitments as "Phong - TBC", and not among the nine named people. The list currently reads 9 named plus 1 alumni slot to reach 10.</p>
-    </div>
-    <div class="q-item">
-      <h6><span class="q-kr">KR 2.4</span>Who clones the UnIqueS website for Vysta?</h6>
-      <p>The support commitment is written without a name: "clones the UnIqueS website for Vysta: swap logo and tagline."</p>
-    </div>
-    <div class="q-item">
-      <h6><span class="q-kr">KR 4.2</span>Who is Han?</h6>
-      <p>Listed as a supporter on the Unconference, but not identified anywhere in the document.</p>
-    </div>
-    <div class="q-item">
-      <h6><span class="q-kr">KR 3.2</span>The partner list ends in "&hellip;"</h6>
-      <p>The baseline names UnIqueS, Tr&ograve;n L&agrave;nh, NEED, Percolab, Olivier and PNV, then trails off. Six named against a target of ten, with the remainder unspecified.</p>
     </div>
   </div>
 </div>
