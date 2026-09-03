@@ -27,18 +27,32 @@
   }
   .header h1 { font-size: 26px; font-weight: 700; color: #c47a2a; }
   .header .subtitle { font-size: 14px; color: #8a8580; margin-top: 2px; }
-  .header .cycle {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 3px 12px;
-    border: 1px solid #e8a44a;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #c47a2a;
-    background: #fdf6ec;
-  }
   .header .date { font-size: 12px; color: #b0a99f; margin-top: 6px; }
+
+  /* ── Cycle switcher ── */
+  .cycle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: white;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .cycle-switch .cs-label {
+    font-size: 10px; font-weight: 700; color: #b0a99f;
+    text-transform: uppercase; letter-spacing: .6px; padding: 0 8px;
+  }
+  .cycle-switch a, .cycle-switch .cs-cur {
+    font-size: 12px; padding: 7px 14px; border-radius: 8px;
+    text-decoration: none; font-weight: 500; white-space: nowrap;
+  }
+  .cycle-switch a { color: #8a8580; transition: all .2s; }
+  .cycle-switch a:hover { background: #faf8f5; color: #4a4540; }
+  .cycle-switch .cs-cur { background: #c47a2a; color: white; font-weight: 600; }
 
   /* ── Tab Navigation ── */
   .tab-bar {
@@ -417,8 +431,14 @@
 <div class="header">
   <h1>UnIqueS Development</h1>
   <div class="subtitle">Tam's OKR Dashboard</div>
-  <div class="cycle">Cycle: March &ndash; August 2026</div>
   <div class="date">Cycle close: 31 August 2026 &middot; data verified 2 September 2026</div>
+</div>
+
+<!-- Cycle switcher -->
+<div class="cycle-switch">
+  <span class="cs-label">Cycle</span>
+  <span class="cs-cur">Mar &ndash; Aug 2026 &middot; closed at 73%</span>
+  <a href="UnIqueS_OKR_Dashboard_Sep2026-Feb2027.html">Sep 2026 &ndash; Feb 2027 &middot; running</a>
 </div>
 
 <!-- Tab Navigation -->

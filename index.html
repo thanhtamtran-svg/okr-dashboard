@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UnIqueS Development — Tam's OKR Dashboard — Mar–Aug 2026</title>
+<title>UnIqueS Development — Tam's OKR Dashboard — Sep 2026–Feb 2027</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -27,18 +27,43 @@
   }
   .header h1 { font-size: 26px; font-weight: 700; color: #c47a2a; }
   .header .subtitle { font-size: 14px; color: #8a8580; margin-top: 2px; }
-  .header .cycle {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 3px 12px;
-    border: 1px solid #e8a44a;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #c47a2a;
-    background: #fdf6ec;
-  }
   .header .date { font-size: 12px; color: #b0a99f; margin-top: 6px; }
+  .header .status-flag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 3px 12px;
+    border: 1px solid #2e7d32;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #2e7d32;
+    background: #e8f5e9;
+  }
+
+  /* ── Cycle switcher ── */
+  .cycle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: white;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .cycle-switch .cs-label {
+    font-size: 10px; font-weight: 700; color: #b0a99f;
+    text-transform: uppercase; letter-spacing: .6px; padding: 0 8px;
+  }
+  .cycle-switch a, .cycle-switch .cs-cur {
+    font-size: 12px; padding: 7px 14px; border-radius: 8px;
+    text-decoration: none; font-weight: 500; white-space: nowrap;
+  }
+  .cycle-switch a { color: #8a8580; transition: all .2s; }
+  .cycle-switch a:hover { background: #faf8f5; color: #4a4540; }
+  .cycle-switch .cs-cur { background: #c47a2a; color: white; font-weight: 600; }
 
   /* ── Tab Navigation ── */
   .tab-bar {
@@ -74,7 +99,7 @@
     align-items: center;
     justify-content: center;
     gap: 28px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     background: white;
     border-radius: 16px;
     padding: 24px;
@@ -94,19 +119,47 @@
     display: inline-block; font-size: 11px; font-weight: 600;
     padding: 2px 10px; border-radius: 12px; margin-top: 6px;
   }
-  .badge.up { background: #e8f5e9; color: #2e7d32; }
+  .badge.neutral { background: #f5f0ea; color: #6b6560; }
+
+  /* ── Cycle elapsed strip ── */
+  .elapsed-box {
+    background: white; border-radius: 14px; padding: 18px 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 24px;
+  }
+  .elapsed-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 12px; color: #8a8580; margin-bottom: 8px; gap: 12px;
+  }
+  .elapsed-head strong { color: #4a4540; font-size: 13px; }
+  .elapsed-track {
+    position: relative; height: 10px; background: #ebe6df;
+    border-radius: 5px; overflow: hidden;
+  }
+  .elapsed-fill { height: 100%; background: #e8a44a; border-radius: 5px; }
+  .elapsed-marks { position: relative; height: 34px; margin-top: 4px; }
+  .elapsed-mark {
+    position: absolute; transform: translateX(-50%);
+    font-size: 9.5px; color: #b0a99f; text-align: center; line-height: 1.25;
+    width: 74px;
+  }
+  .elapsed-mark::before {
+    content: ''; display: block; width: 1px; height: 6px;
+    background: #d6cfc5; margin: 0 auto 2px;
+  }
+  .elapsed-mark.key { color: #c62828; font-weight: 600; }
+  .elapsed-mark.key::before { background: #c62828; }
 
   /* ── Mini progress cards ── */
   .obj-mini-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
     margin-bottom: 24px;
   }
   .obj-mini {
     background: white;
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     cursor: pointer;
     transition: all 0.2s;
@@ -114,19 +167,22 @@
   }
   .obj-mini:hover { border-color: #e8a44a; transform: translateY(-1px); }
   .obj-mini.selected { border-color: #c47a2a; }
-  .obj-mini-icon { font-size: 20px; margin-bottom: 6px; }
-  .obj-mini-title { font-size: 12px; font-weight: 600; color: #4a4540; line-height: 1.3; margin-bottom: 8px; }
+  .obj-mini-icon { font-size: 19px; margin-bottom: 6px; }
+  .obj-mini-title { font-size: 11.5px; font-weight: 600; color: #4a4540; line-height: 1.3; margin-bottom: 8px; }
   .obj-mini-bar { height: 6px; background: #ebe6df; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
   .obj-mini-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
   .obj-mini-pct { font-size: 18px; font-weight: 700; }
   .obj-mini-pct.c1 { color: #42a5f5; }
   .obj-mini-pct.c2 { color: #ab47bc; }
   .obj-mini-pct.c3 { color: #e8a44a; }
-  .obj-mini-pct.c4 { color: #2e7d32; font-size: 13px; }
+  .obj-mini-pct.c4 { color: #66bb6a; }
+  .obj-mini-pct.c5 { color: #26a69a; }
+  .obj-mini-kr { font-size: 10px; color: #b0a99f; margin-top: 1px; }
   .fill-c1 { background: #42a5f5; }
   .fill-c2 { background: #ab47bc; }
   .fill-c3 { background: #e8a44a; }
   .fill-c4 { background: #66bb6a; }
+  .fill-c5 { background: #26a69a; }
 
   /* ── Objective Detail Panel ── */
   .obj-detail {
@@ -152,10 +208,11 @@
   .obj-detail-header .icon.o2 { background: #f3e5f5; }
   .obj-detail-header .icon.o3 { background: #fff3e0; }
   .obj-detail-header .icon.o4 { background: #e8f5e9; }
+  .obj-detail-header .icon.o5 { background: #e0f2f1; }
   .obj-detail-header h3 { font-size: 16px; font-weight: 600; flex: 1; }
-  .obj-description { font-size: 12px; color: #8a8580; margin-bottom: 16px; padding-left: 48px; font-style: italic; }
+  .obj-description { font-size: 12px; color: #8a8580; margin-bottom: 16px; padding-left: 48px; font-style: italic; line-height: 1.55; }
 
-  /* ── KR Cards (clickable/expandable) ── */
+  /* ── KR Cards ── */
   .kr-card {
     border: 1px solid #f0ece7;
     border-radius: 12px;
@@ -192,11 +249,18 @@
     display: inline-block; font-size: 10px; font-weight: 600;
     padding: 1px 7px; border-radius: 6px; margin-left: 6px; vertical-align: middle;
   }
-  .status-tag.on-track { background: #e8f5e9; color: #2e7d32; }
-  .status-tag.at-risk { background: #fff3e0; color: #e65100; }
-  .status-tag.behind { background: #ffebee; color: #c62828; }
-  .status-tag.overdue { background: #ffcdd2; color: #b71c1c; }
-  .status-tag.strong { background: #e3f2fd; color: #1565c0; }
+  .status-tag.not-started { background: #f5f0ea; color: #8a8580; }
+  .status-tag.started { background: #e3f2fd; color: #1565c0; }
+  .status-tag.gap { background: #fdecec; color: #c62828; }
+
+  /* Provenance tags — only where the source document itself carries one */
+  .ptag {
+    display: inline-block; font-size: 9.5px; font-weight: 700;
+    padding: 1px 5px; border-radius: 4px; margin-left: 5px;
+    vertical-align: middle; letter-spacing: .3px;
+  }
+  .ptag.v { background: #e8f5e9; color: #2e7d32; }
+  .ptag.p { background: #fff3e0; color: #e65100; }
 
   /* KR expanded detail */
   .kr-detail {
@@ -216,11 +280,7 @@
     font-size: 10px; font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.5px; color: #b0a99f; display: block; margin-bottom: 2px;
   }
-  .kr-detail-item span {
-    font-size: 13px; color: #2d2a26;
-  }
-  .kr-detail-item a { color: #c47a2a; text-decoration: none; font-weight: 500; }
-  .kr-detail-item a:hover { text-decoration: underline; }
+  .kr-detail-item span { font-size: 13px; color: #2d2a26; }
 
   .kr-progress-bar {
     height: 8px; background: #ebe6df; border-radius: 4px; overflow: hidden; margin: 10px 0;
@@ -230,11 +290,11 @@
   .kr-milestones { margin-top: 10px; }
   .kr-milestones h5 {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px; color: #b0a99f; margin-bottom: 6px;
+    letter-spacing: 0.5px; color: #b0a99f; margin-bottom: 6px; margin-top: 12px;
   }
   .milestone {
     display: flex; align-items: flex-start; gap: 8px;
-    padding: 4px 0; font-size: 12px; color: #4a4540;
+    padding: 4px 0; font-size: 12px; color: #4a4540; line-height: 1.5;
   }
   .milestone-dot {
     width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%;
@@ -243,193 +303,97 @@
   }
   .milestone-dot.done { background: #e8f5e9; color: #2e7d32; }
   .milestone-dot.pending { background: #f5f0ea; color: #b0a99f; }
+  .milestone-dot.open { background: #fdecec; color: #c62828; }
   .milestone a { color: #c47a2a; text-decoration: none; }
   .milestone a:hover { text-decoration: underline; }
 
-  /* ── Social Media Panel ── */
-  .social-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  .social-card {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-  }
-  .social-card:hover { border-color: #e8a44a; }
-  .social-card.expanded { border-color: #c47a2a; }
-  .social-card-header {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
-  }
-  .social-icon {
-    width: 32px; height: 32px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center; font-size: 16px;
-  }
-  .social-icon.li { background: #e8f0fe; }
-  .social-icon.fb { background: #e3f2fd; }
-  .social-icon.web { background: #fff3e0; }
-  .social-card-name { font-size: 14px; font-weight: 600; }
-  .social-big-num { font-size: 32px; font-weight: 700; color: #2d2a26; }
-  .social-big-label { font-size: 11px; color: #8a8580; margin-bottom: 10px; }
-  .social-stats { display: flex; gap: 16px; }
-  .social-stat { text-align: center; }
-  .social-stat-val { font-size: 14px; font-weight: 600; color: #2d2a26; }
-  .social-stat-label { font-size: 10px; color: #b0a99f; }
-  .social-growth { font-size: 11px; font-weight: 600; color: #2e7d32; margin-top: 8px; }
-  .social-link {
-    display: inline-block; margin-top: 8px;
-    font-size: 11px; color: #c47a2a; text-decoration: none; font-weight: 500;
-  }
-  .social-link:hover { text-decoration: underline; }
-
-  /* Social detail (post list) */
-  .social-detail {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    display: none;
-    animation: fadeIn 0.3s ease;
-  }
-  .social-detail.active { display: block; }
-  .social-detail h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-  .post-list { list-style: none; }
-  .post-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 8px 0; border-bottom: 1px solid #f5f0ea; font-size: 12px;
-  }
-  .post-item:last-child { border-bottom: none; }
-  .post-date { min-width: 56px; color: #b0a99f; font-weight: 500; flex-shrink: 0; }
-  .post-title { flex: 1; color: #4a4540; line-height: 1.4; }
-  .post-type {
-    font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
-    flex-shrink: 0;
-  }
-  .post-type.photo { background: #e3f2fd; color: #1565c0; }
-  .post-type.reel { background: #f3e5f5; color: #7b1fa2; }
-  .post-type.article { background: #fff3e0; color: #e65100; }
-  .post-reach { min-width: 60px; text-align: right; color: #8a8580; flex-shrink: 0; }
-
-  /* ── Timeline Panel ── */
-  .timeline-container {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .timeline-container h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
-  .week-row {
-    display: grid;
-    grid-template-columns: 70px 1fr;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #f5f0ea;
-  }
-  .week-row:last-child { border-bottom: none; }
-  .week-label { font-size: 12px; font-weight: 600; color: #c47a2a; padding-top: 2px; }
-  .week-date { font-size: 10px; color: #b0a99f; }
-  .week-items { display: flex; flex-wrap: wrap; gap: 6px; }
-  .week-chip {
-    font-size: 11px; padding: 3px 10px; border-radius: 6px;
-    background: #f5f0ea; color: #4a4540;
-  }
-  .week-chip.highlight { background: #e8f5e9; color: #2e7d32; font-weight: 500; }
-  .week-chip.event { background: #fff3e0; color: #e65100; font-weight: 500; }
-  .week-chip.content { background: #e3f2fd; color: #1565c0; }
-
-  /* ── Feedforward ── */
-  .next-steps {
-    background: #fff9f0;
-    border: 1px solid #f0dfc4;
-    border-radius: 16px;
-    padding: 24px;
-    margin-top: 20px;
-  }
-  .next-steps h3 { font-size: 15px; font-weight: 600; color: #c47a2a; margin-bottom: 12px; }
-  .next-steps ul { list-style: none; }
-  .next-steps li {
-    font-size: 13px; color: #4a4540; padding: 6px 0 6px 20px;
-    position: relative; line-height: 1.5;
-  }
-  .next-steps li::before {
-    content: '→'; position: absolute; left: 0; color: #e8a44a; font-weight: 600;
-  }
-
-  .footer {
-    text-align: center; margin-top: 24px; font-size: 11px; color: #c0b8ae;
-  }
-  .footer a { color: #c47a2a; text-decoration: none; }
-
-  /* Responsive */
-  @media (max-width: 700px) {
-    .obj-mini-row, .social-grid { grid-template-columns: 1fr; }
-    .kr-detail-grid { grid-template-columns: 1fr; }
-    .overall-section { flex-direction: column; text-align: center; }
-  }
-  /* ── Added Aug 7, 2026 ── */
-  .milestone-dot.dropped { background: #ffebee; color: #c62828; }
-  .milestone-dot.warn { background: #fff3e0; color: #e65100; }
+  /* ── Note boxes ── */
   .note-box {
     background: #fdf6ec; border-left: 3px solid #e8a44a; border-radius: 6px;
     padding: 10px 12px; margin-top: 12px; font-size: 12px; color: #6b6560; line-height: 1.55;
   }
-  .note-box.danger { background: #fdecec; border-left-color: #c62828; }
+  .note-box.gap { background: #fdecec; border-left-color: #c62828; }
+  .note-box.quote { background: #f7f5f2; border-left-color: #b0a99f; font-style: italic; }
   .note-box strong { color: #4a4540; }
-  .emerging {
-    background: white; border-radius: 16px; padding: 24px; margin-top: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid #66bb6a;
+  .note-box a { color: #c47a2a; text-decoration: none; font-weight: 500; }
+  .note-box a:hover { text-decoration: underline; }
+
+  /* ── Panels & row lists ── */
+  .panel {
+    background: white; border-radius: 16px; padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px;
   }
-  .emerging-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
-  .emerging-head .icon {
-    width: 34px; height: 34px; border-radius: 9px; background: #e8f5e9;
-    display: flex; align-items: center; justify-content: center; font-size: 17px;
+  .panel h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .panel .panel-sub { font-size: 12px; color: #8a8580; margin-bottom: 16px; line-height: 1.55; }
+
+  .row-list { border-top: 1px solid #f5f0ea; }
+  .row-item {
+    display: grid; grid-template-columns: 150px 1fr auto;
+    gap: 12px; padding: 11px 0; border-bottom: 1px solid #f5f0ea;
+    font-size: 12.5px; align-items: start;
   }
-  .emerging-head h3 { font-size: 16px; font-weight: 600; color: #2d2a26; }
-  .tag-unscored {
-    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 10px;
-    background: #e8f5e9; color: #2e7d32; text-transform: uppercase; letter-spacing: .4px;
+  .row-item .row-key { font-weight: 600; color: #c47a2a; }
+  .row-item .row-val { color: #4a4540; line-height: 1.5; }
+  .row-item.hard { background: #fdecec; border-radius: 6px; padding: 11px 8px; }
+  .row-item.hard .row-key { color: #c62828; }
+
+  .q-item { padding: 12px 0; border-bottom: 1px solid #f5f0ea; }
+  .q-item:last-child { border-bottom: none; }
+  .q-item h6 { font-size: 12.5px; font-weight: 600; color: #2d2a26; margin-bottom: 3px; }
+  .q-item p { font-size: 12px; color: #6b6560; line-height: 1.55; }
+  .q-kr {
+    display: inline-block; font-size: 10px; font-weight: 700; color: #c47a2a;
+    background: #fdf6ec; padding: 1px 6px; border-radius: 4px; margin-right: 6px;
   }
-  .emerging-sub { font-size: 12.5px; color: #8a8580; margin-bottom: 16px; line-height: 1.6; }
-  .em-item { padding: 12px 0; border-bottom: 1px solid #f0ece7; }
-  .em-item:last-child { border-bottom: none; }
-  .em-item h6 { font-size: 13.5px; font-weight: 600; color: #2d2a26; margin-bottom: 4px; }
-  .em-item p { font-size: 12.5px; color: #6b6560; line-height: 1.6; }
-  .em-next { font-size: 11.5px; color: #8a8580; margin-top: 4px; font-style: italic; }
-  .fb-panel { background: white; border-radius: 16px; padding: 22px; margin-top: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-  .fb-panel h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
-  .fb-panel ul { font-size: 13px; color: #4a4540; list-style: none; padding: 0; }
-  .fb-panel li { padding: 8px 0; border-bottom: 1px solid #f0ece7; line-height: 1.6; }
-  .fb-panel li:last-child { border-bottom: none; }
-  .gap-row { background: #fdf6ec !important; }
-  .week-chip.gap { background: #ffebee; color: #c62828; font-weight: 500; }
+
+  .legend {
+    background: white; border-radius: 14px; padding: 16px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px;
+    font-size: 11.5px; color: #6b6560; line-height: 1.9;
+  }
+  .legend strong { color: #4a4540; }
+
+  .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #c0b8ae; line-height: 1.7; }
+  .footer a { color: #c47a2a; text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 820px) {
+    .obj-mini-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .obj-mini-row { grid-template-columns: 1fr; }
+    .kr-detail-grid { grid-template-columns: 1fr; }
+    .overall-section { flex-direction: column; text-align: center; }
+    .row-item { grid-template-columns: 1fr; gap: 4px; }
+    .elapsed-marks { display: none; }
+  }
 </style>
 </head>
-
 <body>
 
 <div class="header">
   <h1>UnIqueS Development</h1>
   <div class="subtitle">Tam's OKR Dashboard</div>
-  <div class="cycle">Cycle: March &ndash; August 2026</div>
-  <div class="date">Cycle close: 31 August 2026 &middot; data verified 2 September 2026</div>
+  <div class="date">Cycle open &middot; day 3 of 181 &middot; built 3 September 2026 from the team's OKR document</div>
+  <div><span class="status-flag">Agreed &mdash; these are the cycle's official OKRs</span></div>
+</div>
+
+<!-- Cycle switcher -->
+<div class="cycle-switch">
+  <span class="cs-label">Cycle</span>
+  <a href="UnIqueS_OKR_Dashboard_Aug31.html">Mar &ndash; Aug 2026 &middot; closed at 73%</a>
+  <span class="cs-cur">Sep 2026 &ndash; Feb 2027 &middot; running</span>
 </div>
 
 <!-- Tab Navigation -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
-  <button class="tab-btn" onclick="showTab('social')">Social Media</button>
-  <button class="tab-btn" onclick="showTab('activities')">Activities</button>
-  <button class="tab-btn" onclick="showTab('actions')">Feedforward</button>
+  <button class="tab-btn active" onclick="showTab('overview')">Objectives</button>
+  <button class="tab-btn" onclick="showTab('timeline')">Fixed dates</button>
+  <button class="tab-btn" onclick="showTab('gaps')">Still open</button>
+  <button class="tab-btn" onclick="showTab('parked')">Parked</button>
 </div>
 
-<!-- OVERVIEW TAB -->
+<!-- ══════════ OBJECTIVES TAB ══════════ -->
 <div id="tab-overview" class="tab-panel active">
 
   <div class="overall-section">
@@ -439,951 +403,678 @@
         <circle class="ring-fill" cx="60" cy="60" r="50"
           stroke="#e8a44a" fill="none"
           stroke-dasharray="314.16"
-          stroke-dashoffset="84.82"/>
+          stroke-dashoffset="311.02"/>
       </svg>
-      <div class="ring-label">73%</div>
+      <div class="ring-label">1%</div>
     </div>
     <div class="overall-text">
-      <h2>Overall Progress</h2>
-      <p>March &ndash; August 2026 cycle &middot; 9 Key Results across 3 scored Objectives &middot; a fourth recorded, unscored &middot; <strong>cycle closed</strong></p>
-      <span class="badge up">+29% since May 5 &middot; +46% since Mar 31 (was 27%)</span>
-    </div>
-  </div>
-
-  
-
-  <!-- Objective Mini Cards -->
-  <div class="obj-mini-row">
-    <div class="obj-mini selected" onclick="toggleObj(1)">
-      <div class="obj-mini-icon">&#129302;</div>
-      <div class="obj-mini-title">Building AI-Ready Workforce in Officience</div>
-      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c1" style="width:58%"></div></div>
-      <div class="obj-mini-pct c1">58%</div>
-    </div>
-    <div class="obj-mini" onclick="toggleObj(2)">
-      <div class="obj-mini-icon">&#127793;</div>
-      <div class="obj-mini-title">Expand Beyond Officience</div>
-      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c2" style="width:77%"></div></div>
-      <div class="obj-mini-pct c2">77%</div>
-    </div>
-    <div class="obj-mini" onclick="toggleObj(3)">
-      <div class="obj-mini-icon">&#128227;</div>
-      <div class="obj-mini-title">Amplify Through Storytelling</div>
-      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c3" style="width:85%"></div></div>
-      <div class="obj-mini-pct c3">85%</div>
-    </div>
-    <div class="obj-mini" onclick="toggleObj(4)">
-      <div class="obj-mini-icon">&#129504;</div>
-      <div class="obj-mini-title">Becoming an AI-Native Organisation</div>
-      <div class="obj-mini-bar" style="background:transparent;border:1px dashed #d6cfc5;"></div>
-      <div class="obj-mini-pct c4">10 delivered</div>
-    </div>
-  </div>
-
-  <!-- Objective 1 -->
-  <div id="obj-1" class="obj-detail active">
-    <div class="obj-detail-header">
-      <div class="icon o1">&#129302;</div>
-      <h3>1. Build an AI-Ready Workforce in Officience</h3>
-    </div>
-    <div class="obj-description">Empower individuals and organizations to thrive in an AI-driven world by offering practical AI learning experiences.</div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 1.1 &mdash; Deliver 4 AI sessions/month <span class="status-tag behind">missed</span></div>
-          <div class="kr-summary-meta">Closed 31-Aug at 11 of 24 &middot; scope corrected: Officience-only</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:46%"></div></div>
-        <div class="kr-pct" style="color:#42a5f5">46%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:46%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>4 sessions/month &times; 6 months = 24 sessions</span></div>
-          <div class="kr-detail-item"><label>Final</label><span>11 of 24 sessions &middot; actual pace ~1.8/month against a target of 4</span></div>
-          <div class="kr-detail-item"><label>Audience</label><span><strong>Officience learners only</strong> &mdash; this objective is scoped "in Officience" &middot; <a href="https://docs.google.com/spreadsheets/d/10JsXezCxGDSWdAV51GATuNo7WYvIbAhg/edit?usp=sharing" target="_blank">Learners tracker &#8599;</a></span></div>
-          <div class="kr-detail-item"><label>Format</label><span>Workshops, AI Mastery Day, CCAF certification path, external sharing sessions</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>Workshops Delivered (Dec 2025 &ndash; Mar 2026)</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>AI Agent Workshop (Dec 2025) &mdash; 17 Offies attended</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>AI Strategy Workshop (Jan 2026)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Vibecoding Party (Mar 2026) &mdash; 6 Offies attended</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>AI Mastery Day (Mar 2026, 31 Offies) &mdash; 4 sessions: ChatGPT, NotebookLM, Google Flow, Vibecoding tools</div>
-          <h5 style="margin-top: 12px;">New this period (May &ndash; Aug 2026)</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>"H&#7885;c trong th&#7901;i AI / Learning in the AI Era" showcase (~21 May) &mdash; feedback: density right, ending rushed</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>"Knowledge Management in the Age of AI" &mdash; Offy sharing session (Jul), bilingual reference doc + recorded demo</div>
-          
-          <h5 style="margin-top: 12px;">CCAF &mdash; Claude Certified Architect Foundations</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Anthropic Claude Partner application submitted (1 Apr) &mdash; accepted</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Partner intro session (21 Apr) &middot; 17 uniques.vn mailboxes &middot; team on Skilljar</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Claude licensing decided &mdash; <strong>Max plan</strong></div>
-          <div class="milestone"><div class="milestone-dot warn">!</div>Mid-programme check-in (Jun): 4 of 10 will not sit the exam; the rest need 1&ndash;2 more months</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>10 Offies to complete CCAF certification &mdash; 1 certified so far</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Hosting a Q&amp;A panel with anh Duc to share his exam experience</div>
-        </div>
-        
-      </div>
-    </div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 1.2 &mdash; Complete AI mastery path + automate workflows <span class="status-tag overdue">missed</span></div>
-          <div class="kr-summary-meta">Due 21-May &middot; closed at 70% &middot; no movement in August</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:70%"></div></div>
-        <div class="kr-pct" style="color:#42a5f5">70%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:70%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>Master AI tools + automate 50% of social marketing workflow</span></div>
-          <div class="kr-detail-item"><label>Final</label><span>5 CCAF courses + PSM &middot; still 1 of 2 workflows automated &middot; exam not sat</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>Learning &mdash; strong progress</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Mastery Path Learning &mdash; Claude Code</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Claude 101</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>AI Capabilities &amp; Limitations &mdash; "AI works better as a refiner than an originator"</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Accessing Claude with the API</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Prompt Evaluation &mdash; applied in practice when designing the Academy chatbot workflow</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Building with the Claude API &mdash; still in progress at close</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Prompt Engineering Techniques &mdash; next</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Certified Scrum Master (PSM)</strong> &mdash; now runs AI as a "developer" while acting as Product Owner: Product Goal, Product Backlog, Definition of Done, and weekly retrospectives with improvements fed back into the next iteration</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Claude Certified Architect exam &mdash; not sat</div>
-          <h5 style="margin-top: 12px;">Automation &mdash; unchanged since March</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Workflow 1: <a href="https://content-formatter.vercel.app/" target="_blank">Content Formatter</a> shipped</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Workflow 2: never started &mdash; unchanged from March to close</div>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>Zalo + YouTube auto-subtitling &mdash; built and shared, but excluded by decision: a prototype, not a UnIqueS social-marketing workflow</div>
-        </div>
-        <div class="note-box">
-          <strong>This KR measures the wrong thing.</strong> Five CCAF courses were completed, a chatbot was designed with formal prompt evaluation, and a Definition of Done was introduced &mdash; substantial work. But the KR's written target is <em>"automate 50% of social marketing workflow"</em>, and on that measure nothing has moved since March. The score barely rises because the KR does not measure what the period was actually spent on. Worth rewriting for the next cycle rather than re-scoring.<br><br>The PSM certification is deliberately <em>not</em> used to raise this score. It genuinely strengthens the "master AI tools" half &mdash; treating AI as a development partner with a backlog and retrospectives is a real mastery step &mdash; but the automation half remains the binding constraint at 1 of 2 workflows, unchanged since March. Adding points for learning while the measured target stands still would make the number less honest, not more generous.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Objective 2 -->
-  <div id="obj-2" class="obj-detail">
-    <div class="obj-detail-header">
-      <div class="icon o2">&#127793;</div>
-      <h3>2. Expand Beyond Officience</h3>
-    </div>
-    <div class="obj-description">Bring UnIqueS's human-centric, Teal-inspired learning to wider communities and partner organizations.</div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.1 &mdash; Deliver 4 external training programs <span class="status-tag on-track">on track</span></div>
-          <div class="kr-summary-meta">Due 28-Feb-2027 (still open) &middot; 3 of 4 delivered</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:75%"></div></div>
-        <div class="kr-pct" style="color:#ab47bc">75%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:75%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>4 in-house training programs (AI or core C-skills) for external organizations</span></div>
-          <div class="kr-detail-item"><label>Deadline</label><span>28-Feb-2027 &mdash; ~6 months remaining. The only KR that survives this cycle close.</span></div>
-          <div class="kr-detail-item"><label>Live pipeline</label><span>EUH students &middot; Impact Hub APAC demo &middot; Olivier Lef&egrave;vre &middot; Science Fair 2026 (submitted)</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>Delivered</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Flow Game session &mdash; Impact Hub Saigon (21 Apr) &mdash; founding team + guest</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>PNV &mdash; Teachers programme:</strong> "Teaching and Learning in the Age of AI" (4 Jun) + AI workshop for teachers (Aug)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>PNV &mdash; Students programme:</strong> 2 NVC workshops (Aug) &mdash; core C-skills, which this KR explicitly covers</div>
-          <h5 style="margin-top: 12px;">Live pipeline</h5>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>EUH students &mdash; workshop in preparation, not delivered by close</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Impact Hub &mdash; Unis chatbot demo requested for the <strong>APAC</strong> network (Xuan Ngan)</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Science Fair 2026 &mdash; two proposals submitted (one on Knowledge Management); no result yet</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Olivier Lef&egrave;vre &mdash; AI training &amp; consulting collaboration, still in discussion</div>
-          <h5 style="margin-top: 12px;">Closed since May</h5>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>Joyful Care for Kids &mdash; closed</div>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>AI Resilience mini-conference &mdash; closed</div>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>CCIFV &mdash; closed</div>
-        </div>
-        <div class="note-box">
-          <strong>The score went up; the risk went up too.</strong> In May this KR had four pipeline routes. Three have since closed. The percentage doubled because PNV converted, but what sits behind the number is now thinner, and two of the remaining routes (Impact Hub regional, EUH) depend on work that has not been delivered yet. <strong>Tripled over the cycle: 25% &rarr; 75%.</strong> Three of four programmes delivered, and the fourth has four live routes. PNV counts as two distinct programmes &mdash; two audiences, two curricula: NVC for students, AI for teachers.<br><br>Note the composition: three pipeline routes closed during the cycle (Joyful Care, AI Resilience, CCIFV) and were replaced by ones that actually converted. The number rose because delivery happened, not because the pipeline widened.<br><br><strong>And the strategy underneath it moved.</strong> The July meeting with Olivier Lef&egrave;vre reframed the relationship from "AI training for organizations" to Olivier joining UnIqueS's wider <em>ecosystem</em>. In parallel, UnIqueS began contributing VND 2m/month back to Impact Hub Saigon &mdash; a deliberate shift from beneficiary to contributing member. If UnIqueS is becoming an ecosystem contributor rather than a training vendor, then "4 external training programs delivered" measures the strategy it is moving away from. This is the largest open question carried out of this cycle.
-        </div>
-      </div>
-    </div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.2 &mdash; Engage 5 partner networks <span class="status-tag strong">target met</span></div>
-          <div class="kr-summary-meta">Closed 31-Aug &middot; 5 of 5 engaged, plus 5 beyond target</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:100%"></div></div>
-        <div class="kr-pct" style="color:#ab47bc">100%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:100%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>5 partners or alumni networks to co-host or invite UnIqueS sessions</span></div>
-          <div class="kr-detail-item"><label>Definition</label><span>"Engaged" = a serious, substantive exchange has taken place</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>The five</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Impact Hub Saigon &mdash; now the deepest relationship by far:</strong> VND 2m/month contributed back, weekly co-branded Flow Game series launched, Impact Friday coworking + weekly Share &amp; Care, Unis bot demo requested for Impact Hub <strong>APAC</strong></div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Anthropic Claude Partner Network &mdash; <strong>Partner Network Agreement signed</strong>, portal live</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>PNV &mdash; session delivered, follow-on programme requested</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Offi Alumni &mdash; alumni network; partnership explored with Ngoc Han, two alumni workshops attended</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Cosmic House &mdash; "Third Space" community hub in HCMC; formalised in August</div>
-          <h5 style="margin-top: 12px;">Beyond target</h5>
-                    <div class="milestone"><div class="milestone-dot done">&#10003;</div>Dr. Truong Minh &mdash; visit to OffyPlex (10 Jun) to explore collaboration</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Olivier Lef&egrave;vre &mdash; reframed (7 Jul): joining the UnIqueS ecosystem rather than a training partner; surfaced a marketplace project idea</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Vysta &mdash; new partnership (Aug)</strong></div>
-          <h5 style="margin-top: 12px;">Excluded at close</h5>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div><strong>Vibecoding Party</strong> &mdash; a public event co-hosted with Khuy&#7871;n whose benefit accrued directly to Officience, not an external partner network. Recorded under KR 1.1 instead.</div>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div><strong>KEDGE / Diane Mille</strong> &mdash; an internship, not a partner-network engagement. Recorded under the emerging AI-Native objective instead.</div>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>CCIFV &mdash; membership application closed</div>
-        </div>
-        <div class="note-box">
-          <strong>Two exclusions applied at close.</strong> Vibecoding Party and the KEDGE internship were both removed on Tam's ruling: the first because its benefit went directly to Officience rather than out to a partner network, the second because an internship is not a network engagement. Cosmic House and Vysta take their places, so the KR still reads 5 of 5.<br><br>
-          <strong>One consistency question left open.</strong> If Vibecoding is excluded for benefiting Officience directly, the same logic could be asked of <em>Offi Alumni</em> &mdash; though the KR's wording ("5 partners <em>or alumni networks</em>") does explicitly admit it. Worth settling before this KR is written again.<br><br>
-          <strong>And the deeper problem stays.</strong> 100% reflects the bar Tam set: "engaged = a serious exchange." Under a stricter bar &mdash; co-hosted or commissioned paid work &mdash; the count is two: Impact Hub and PNV. Even after two exclusions, eight relationships sit against a target of five, at which point the KR stops distinguishing a good month from a bad one.
-        </div>
-      </div>
-    </div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.3 &mdash; Get Claude Partner Network Certification <span class="status-tag at-risk">at risk</span></div>
-          <div class="kr-summary-meta">Closed 31-Aug &middot; agreement signed &middot; first CCAF pass achieved, but 4 opted out</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:55%"></div></div>
-        <div class="kr-pct" style="color:#ab47bc">55%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:55%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>UnIqueS certified as Anthropic Claude Services Partner (Training &amp; AI Enablement) &middot; 10 Offies CCAF-certified</span></div>
-          <div class="kr-detail-item"><label>Partnership track</label><span>~85% &mdash; agreement signed, portal live, licensing decided</span></div>
-          <div class="kr-detail-item"><label>Certification track</label><span>1 of 10 certified by close &middot; 4 opted out &middot; 5 still able to certify</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>Partnership &mdash; nearly done</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Application submitted (1 Apr) &middot; review passed (13 Apr) &middot; info session (15 Apr)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>UnIqueS &times; Anthropic intro session (21 Apr) &middot; 17 mailboxes &middot; Skilljar registration</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Claude Partner Network Agreement signed</strong> &middot; partner portal introduced (late May)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Claude licensing model decided &mdash; <strong>Max</strong></div>
-          <h5 style="margin-top: 12px;">Learning programme &mdash; running, but thinning</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>CCAF learning group launched: programme docs, timeline, survey, study-group structure</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Check-in system designed &mdash; 2 weekly polls (emotional weather + learning-path progress)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>16 personal learning guides sent &middot; "EN Hub &ndash; CCAF Learning" chat created</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Fatou Sylla onboarded (Jun) &middot; Diane Mille onboarded onto Claude Architects, preparing a Sep application</div>
-          <div class="milestone"><div class="milestone-dot warn">!</div>Mid-programme check-in (Jun): <strong>4 of 10 will not sit the exam</strong>; remainder need 1&ndash;2 months</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>First CCAF certification achieved (Aug)</strong> &mdash; 1 of 10</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Q&amp;A panel with anh Duc planned, to pass on his exam experience to the remaining learners</div>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <!-- Objective 3 -->
-  <div id="obj-3" class="obj-detail">
-    <div class="obj-detail-header">
-      <div class="icon o3">&#128227;</div>
-      <h3>3. Amplify Presence Through Storytelling</h3>
-    </div>
-    <div class="obj-description">Position UnIqueS as the hub where human-centric learning meets AI innovation through consistent, authentic communications.</div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 3.1 &mdash; Publish 1 story/week for 24 weeks <span class="status-tag strong">ceiling reached</span></div>
-          <div class="kr-summary-meta">24-week run complete &middot; 21 of 24 weeks covered &mdash; the maximum still reachable</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:88%"></div></div>
-        <div class="kr-pct" style="color:#e8a44a">88%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:88%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>1 story, insight, or learning reflection per week for 24 consecutive weeks</span></div>
-          <div class="kr-detail-item"><label>Counting method</label><span><strong>Cumulative</strong> &mdash; any week with published content counts</span></div>
-          <div class="kr-detail-item"><label>Channels</label><span><a href="https://www.linkedin.com/company/uniques-vn/" target="_blank">LinkedIn</a> (64 posts), <a href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">Facebook</a>, <a href="https://uniques.vn/insights" target="_blank">Website</a> (6 articles)</span></div>
-          <div class="kr-detail-item"><label>Weeks missed</label><span>Only 3 &mdash; weeks 14&ndash;16 (3&ndash;23 Jun). Nothing else in 24 weeks.</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>Weeks 10&ndash;13 (6 May &ndash; 2 Jun) &mdash; authored by Tam</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 10 (6&ndash;12 May): 3 LinkedIn posts</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 11 (13&ndash;19 May): 3 posts &middot; Human Flows carousel series scheduled</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 12 (20&ndash;26 May): 3 posts &mdash; incl. <strong>396-impression top post</strong> (22 May)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 13 (27 May&ndash;2 Jun): 2 posts</div>
-          <h5 style="margin-top: 12px;">Weeks 14&ndash;17 (3&ndash;30 Jun) &mdash; the gap</h5>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>Weeks 14&ndash;16 (3&ndash;23 Jun): no content published on any channel</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 17 (24&ndash;30 Jun): website article "The Cognitive Debt Crisis" (30 Jun) &mdash; no social posts</div>
-          <h5 style="margin-top: 12px;">Weeks 18&ndash;23 (1 Jul &ndash; 7 Aug) &mdash; the "Learning in the AI Era" series, authored by Thanh Th&#7843;o</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 18 (1&ndash;7 Jul): EP.01&ndash;03 Vietnamese</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 19 (8&ndash;14 Jul): EP.04&ndash;05 Vietnamese</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 20 (15&ndash;21 Jul): EP.06&ndash;07 Vietnamese + EP.08 video</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 21 (22&ndash;28 Jul): EP.01&ndash;02 English</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 22 (29 Jul&ndash;4 Aug): EP.03&ndash;05 English</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Week 23 (5&ndash;11 Aug): EP.06&ndash;07 English + repost + 2 more (10, 11 Aug)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Week 24 (12&ndash;18 Aug): 3 posts (12, 14, 18 Aug)</strong> &mdash; the final week of the run, closed</div>
-        </div>
-        <div class="note-box">
-          <strong>21 of 24 &mdash; and 21 was the ceiling.</strong> Once weeks 14&ndash;16 were lost in June, nothing could recover them. Every single week from 1 July to the end of the run was covered. This KR was executed as well as it could be after the June gap.<br><br>
-          <strong>Note on the counting method.</strong> The written target says <em>24 <u>consecutive</u> weeks</em>. Counted strictly, the June break resets the streak and this would score far lower. The cumulative method is used by decision, because it reflects the work actually done; the break is recorded rather than smoothed over.<br><br>
-          <strong>What the pattern shows.</strong> Output stopped for five weeks while Tam was building UnIqueS Brain, the Academy and the CCAF programme &mdash; and resumed only once content was handed to <strong>V&#361; Th&#7883; Thanh Th&#7843;o</strong>, who authored most of what followed. Consistency was not restored by trying harder; it was restored by delegating.<br><br>
-          <strong>But the last post was 20 August.</strong> Twelve days of silence by the time this close was compiled &mdash; the third such pause in the cycle. Delegation fixed the throughput problem; it has not yet fixed the stop-start rhythm.
-        </div>
-      </div>
-    </div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 3.2 &mdash; Launch landing page + training catalog <span class="status-tag strong">complete</span></div>
-          <div class="kr-summary-meta">Due: 31-Mar (met) &middot; site rebuilt, content + catalog updated &middot; target delivered</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:100%"></div></div>
-        <div class="kr-pct" style="color:#e8a44a">100%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:100%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>Functional landing page with AI + C-skills catalog</span></div>
-          <div class="kr-detail-item"><label>URL</label><span><a href="https://uniques.vn" target="_blank">uniques.vn</a> &middot; bilingual (VI + EN)</span></div>
-          <div class="kr-detail-item"><label>Status</label><span>Rebuilt to a tighter standard &middot; content and catalog updated &middot; KR target met</span></div>
-          <div class="kr-detail-item"><label>CTA</label><span>"&#272;&#7863;t L&#7883;ch G&#7885;i" (Book a Call) &mdash; active</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>Done</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Website rebuilt</strong> &mdash; cleaner structure, content rewritten, catalog updated</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Home page &middot; 4 service categories &middot; Events &middot; Contact &middot; Booking CTA</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><a href="https://uniques.vn/insights" target="_blank">Insights page</a> &mdash; <strong>6 articles</strong> (+1: "The Cognitive Debt Crisis", 30 Jun)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Training catalog &mdash; brochure in two formats: 6-page short, 12-page detailed</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>uniques.vn mail server &mdash; 17 mailboxes active</div>
-          <h5 style="margin-top: 12px;">Polish still open (outside KR scope)</h5>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Replace stock photography with real UnIqueS images</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Small refinements &middot; 12-page brochure still to be shortened</div>
-        </div>
-        <div class="note-box">
-          <strong>Why this scores 100% with polish outstanding.</strong> The KR target is <em>"a functional landing page with an AI + C-skills catalog"</em>. That is delivered: the site is rebuilt, the content is rewritten, and the catalog exists in two brochure formats. Replacing stock photography and refining detail are quality improvements beyond the stated target, so they are recorded as open work rather than held against the score.<br><br><strong>Tam's own read: 7.5/10.</strong> Her key insight from the rebuild is that the main opportunity is not another redesign but making the site more <em>specific, evidential and search-oriented</em> &mdash; so a visitor can quickly answer "What can I buy?", "Why trust UnIqueS?", "Why choose this over another provider?". That is a content and positioning problem, not a design one, and it belongs in the next cycle rather than this KR.<br><br><strong>Verification note.</strong> The 6-article count on the Insights page was checked directly against the live site on 7 Aug. The rebuild and its completeness are Tam's own assessment and were not independently audited.<br><br>
-          <strong>academy.uniques.vn is deliberately not counted here.</strong> The Academy is a separate learning platform, not part of the landing page or catalog. It is recorded under the emerging AI-Native objective so it is neither lost nor double-counted.
-        </div>
-      </div>
-    </div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 3.3 &mdash; Internal activity sharing (Diaries) <span class="status-tag strong">met</span></div>
-          <div class="kr-summary-meta">Coverage complete: 1 Mar &ndash; 31 Aug, no period left unreported</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:100%"></div></div>
-        <div class="kr-pct" style="color:#e8a44a">100%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:100%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target (revised)</label><span>Regular activity-sharing posts on Diaries for alignment &mdash; measured by <strong>period covered</strong>, not post count. Cadence moves from weekly to monthly.</span></div>
-          <div class="kr-detail-item"><label>Final</label><span><strong>100% coverage</strong> &mdash; every week from 1 Mar to 31 Aug reported. 15 posts (14 published; August summary scheduled).</span></div>
-          <div class="kr-detail-item"><label>On the original basis</label><span>15 of 24 weekly posts = 63%. The KR was rescored on coverage at close, and the definition revised.</span></div>
-        </div>
-        <div class="kr-milestones">
-          <h5>March &ndash; early May (8 posts)</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>W1&ndash;W4 (1&ndash;28 Mar) &middot; 30 Mar&ndash;5 Apr &middot; 6&ndash;12 Apr &middot; 13&ndash;19 Apr &middot; 20 Apr&ndash;3 May</div>
-          <h5 style="margin-top: 12px;">May &ndash; August (6 posts)</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Weekly Sharing: 4&ndash;10 May &mdash; posted 11 May (retro + H2 planning + CCAF kickoff)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Weekly Summary: 11&ndash;17 May &mdash; posted 18 May (brochure, learning group mood)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Weekly Activity Summary: 18&ndash;24 May &mdash; posted 26 May (showcase, PNV, Diane)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Activity Summary: 25 May&ndash;7 Jun &mdash; posted 8 Jun (<em>2 weeks in one post</em>)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Weekly Activity Summary: 8&ndash;26 Jun &mdash; posted 30 Jun (<em>3 weeks in one post</em>)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Activity Sharing in July: 26 Jun &ndash; 7 Aug (<em>6 weeks in one post</em>) &mdash; strategy, AI-native products, PSM</div>
-          <div class="milestone"><div class="milestone-dot warn">!</div>August summary &mdash; written, scheduled to publish this week</div>
-          <h5 style="margin-top: 12px;">Also posted (not weekly summaries)</h5>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>"Who is your best friend now?" (28 May) &middot; "B&#7841;n c&oacute; &#273;ang vibe coding?" (18 Jun)</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>"Knowledge Management in the Age of AI" &mdash; UnIqueS brain bot write-up + bilingual reference doc</div>
-          
-        </div>
-        
-      </div>
-    </div>
-
-    <div class="kr-card" onclick="toggleKR(this)">
-      <div class="kr-summary">
-        <div class="kr-expand-icon">&#9654;</div>
-        <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 3.4 &mdash; Host 4 public workshops (1/quarter) <span class="status-tag on-track">doubled</span></div>
-          <div class="kr-summary-meta">Closed at 2 of 4 &middot; Flow Game &times; Impact Hub ran, now a monthly series</div>
-        </div>
-        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:50%"></div></div>
-        <div class="kr-pct" style="color:#e8a44a">50%</div>
-      </div>
-      <div class="kr-detail">
-        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:50%"></div></div>
-        <div class="kr-detail-grid">
-          <div class="kr-detail-item"><label>Target</label><span>4 public workshops, 1 every 3 months</span></div>
-          <div class="kr-detail-item"><label>Final</label><span>2 delivered &middot; Q3 filled by the first Flow Game community session</span></div>
-        </div>
-        <div class="kr-milestones">
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>Q1: no public workshop delivered</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Q2: AI Mastery Workshop &mdash; Offi Alumni (5 May)</div>
-          <div class="milestone"><div class="milestone-dot dropped">&#10007;</div>Q2: Joyful Care for Kids &mdash; closed</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div><strong>Q3: Flow Game &times; Impact Hub &mdash; first community session delivered (Aug)</strong>, open to the public, co-branded</div>
-          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Cadence changed from weekly to <strong>monthly</strong> &mdash; one community Flow Game per month</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>EUH student workshop &mdash; still in preparation at close</div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Q4: TBD</div>
-        </div>
-        <div class="note-box">
-          <strong>The one KR that doubled in the final three weeks.</strong> At the July checkpoint this stood at 25% and was flagged as the only remaining point that was days away rather than months. The first Flow Game community session ran in August and took it to 50%.<br><br><strong>The cadence change is the more durable result.</strong> Weekly proved too demanding and became monthly &mdash; which still comfortably exceeds this KR's requirement of one workshop per quarter, and is far more likely to survive a busy month. Dropping from weekly to monthly reads like a retreat on paper; against the actual target it is the difference between a commitment that breaks and one that holds.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Objective 4 - AI-Native, no targets set this cycle -->
-  <div id="obj-4" class="obj-detail">
-    <div class="obj-detail-header">
-      <div class="icon o4">&#129504;</div>
-      <h3>4. Become an AI-Native Organisation <span class="tag-unscored" style="margin-left:8px;">no targets set &mdash; unscored this cycle</span></h3>
-    </div>
-    <div class="obj-description">Turn what UnIqueS learns about AI into working tools the team actually uses &mdash; knowledge, tutoring and delivery running on systems rather than on individual effort.</div>
-    <div class="emerging-sub">
-      Born out of the 6-month retrospective and the H2 planning session with Cao Phong on <strong>8 May 2026</strong>. Because it emerged mid-cycle, no targets were set &mdash; so there is nothing to score against, and it is excluded from the 73% headline rather than given an invented figure. <strong>From September it becomes a scored objective.</strong><br><br>Everything below was delivered between May and August. Most of Tam's largest work of the cycle lives here rather than in the nine KRs. Her own framing of the period: <em>"a shift from learning to product &mdash; the Claude Architect material moved off the page and into working tools."</em>
-    </div>
-
-    <div class="em-item">
-      <h6>&#129504; UnIqueS Brain &mdash; shared knowledge base</h6>
-      <p>Built as an Obsidian + Git wiki for the core team: a single place where what the team knows lives, instead of scattering across chats and drives.</p>
-      <div class="em-next">Next: Map of Content, a dashboard, and mirroring GitLab &rarr; GitHub so it can be used in Claude.ai and shared with the team.</div>
-    </div>
-
-    <div class="em-item">
-      <h6>&#129302; Unis &mdash; the UnIqueS brain bot</h6>
-      <p>A working RAG-based assistant, built to test how the Claude Architect course material holds up in practice: design trade-offs between cost, corpus size, effectiveness, and model limits. One month of research into "second brain" applied to organisational knowledge management. Presented in a sharing session with a bilingual reference document and a recorded demo.</p>
-      <div class="em-next">Next: run the bot in Google Chat and Slack &middot; demo to PNV and propose a pilot &middot; demo requested for Impact Hub <strong>APAC</strong> (Xuan Ngan).</div>
-    </div>
-
-    <div class="em-item">
-      <h6>&#127891; UnIqueS Academy &mdash; academy.uniques.vn (shipped)</h6>
-      <p>A learning platform built to support the CCAF journey, grounded in learning science and positioning the chatbot as a tutor rather than an answer machine. Nine principles including Productive Struggle First, Retrieval Practice, and Socratic mode. First module: Building with the Claude API. Prompt Evaluation was applied while designing the workflow, and a Definition of Done was created to hold the quality bar.</p>
-      <div class="em-next">Next: modules beyond Module 1, after the Prompting session.</div>
-    </div>
-
-    <div class="em-item">
-      <h6>&#128736; New SDLC &mdash; how AI changes each phase</h6>
-      <p>Tam's way of instructing Claude Code shifted toward Scrum and software-development frameworks &mdash; more control over what AI suggests and over the consequences of its output. <strong>Research complete and documented in July.</strong> Reinforced by earning the PSM certificate: Tam now works as Product Owner to an AI "developer", with a Product Goal, a Product Backlog, a Definition of Done, and weekly retrospectives whose improvements feed the next iteration. Related public thinking: the "vibe coding vs agentic engineering" piece, arguing that without tests and evals it is vibe coding no matter how good the prompt.</p>
-      <div class="em-next">Next: apply each phase to development with Claude &middot; share the knowledge in August.</div>
-    </div>
-
-    <div class="em-item">
-      <h6>&#127760; RO LLM Wiki &mdash; knowledge graph complete</h6>
-      <p>Built to preserve and reorganise the knowledge of the global Reinventing Organizations (Teal) community. The knowledge graph was <strong>completed in July</strong>.</p>
-      <div class="em-next">Next: share with the RO community in August.</div>
-    </div>
-
-    <div class="em-item">
-      <h6>&#128142; Unis the Phoenix &mdash; mascot chosen</h6>
-      <p>The Phoenix, named Unis, adopted as the UnIqueS mascot &mdash; symbolising rebirth and a deliberate soft-skills counterweight to the technology side of the work.</p>
-    </div>
-
-    <div class="em-item">
-      <h6>&#127978; Ecosystem strategy &mdash; the reframe</h6>
-      <p>Two decisions in July moved UnIqueS from "AI training vendor" toward "ecosystem contributor". First, the Olivier Lef&egrave;vre meeting (7 Jul) reframed the relationship from buying/selling AI training to Olivier joining the wider UnIqueS ecosystem. Second, UnIqueS began contributing <strong>VND 2m/month</strong> back to Impact Hub Saigon &mdash; symbolic rather than material, and explicitly about showing up as a contributing member rather than only a beneficiary.</p>
-      <div class="em-next">Surfaced a new marketplace project idea, possibly built with Diane or others practising what they learn on the CCAF journey. Parking lot: a 20th-anniversary unconference, and a monthly podcast with French-based coaches and facilitators.</div>
-    </div>
-
-    <div class="em-item">
-      <h6>&#128300; Science Fair 2026 &mdash; two proposals submitted</h6>
-      <p>Two bilingual (VN/EN) submissions prepared in August, one of them on Knowledge Management &mdash; putting the UnIqueS Brain and Unis bot work in front of an external audience. Submitted; no result at cycle close.</p>
-    </div>
-
-    <div class="em-item">
-      <h6>&#127968; Cosmic House &mdash; "Third Space" community hub</h6>
-      <p>A hybrid live/work community hub in Ho Chi Minh City blending personal development, trust and community. Project kicked off and running weekly, and <strong>formalised as a partnership in August</strong>. Tam is applying the co-managed meeting framework practised in the Art of Hosting organising team, and plans to test the generative decision-making process on it.</p>
-    </div>
-
-    <div class="em-item">
-      <h6>&#129309; AI-native partnership &amp; people</h6>
-      <p>Diane Mille (KEDGE Business School) confirmed for a 5-month internship starting ~20 Aug, scoped around the "AI native" objective &mdash; scope defined with her and onboarded onto Claude Architects to prepare a September application. Weekly catch-ups with Cao Phong restarted, surfacing a community-hub concept: caring &amp; sharing around the future of work, with a caf&eacute; and AI demos below and workshop rooms above. Nothing fixed &mdash; still early, still open.</p>
-    </div>
-  </div>
-
-</div>
-
-<div id="tab-social" class="tab-panel">
-
-  <div class="social-grid">
-    <div class="social-card" onclick="toggleSocial('linkedin')">
-      <div class="social-card-header">
-        <div class="social-icon li">&#128279;</div>
-        <div class="social-card-name">LinkedIn</div>
-      </div>
-      <div class="social-big-num">49</div>
-      <div class="social-big-label">followers</div>
-      <div class="social-stats">
-        <div class="social-stat"><div class="social-stat-val">64</div><div class="social-stat-label">posts</div></div>
-        <div class="social-stat"><div class="social-stat-val">8,221*</div><div class="social-stat-label">impressions</div></div>
-        <div class="social-stat"><div class="social-stat-val">+69%</div><div class="social-stat-label">followers +</div></div>
-      </div>
-      <div class="social-growth">+33 posts since 5 May &middot; but August reach fell 34.8% &middot; last post 20 Aug</div>
-      <a class="social-link" href="https://www.linkedin.com/company/uniques-vn/" target="_blank">View page &rarr;</a>
-    </div>
-
-    <div class="social-card" onclick="toggleSocial('facebook')">
-      <div class="social-card-header">
-        <div class="social-icon fb">&#128218;</div>
-        <div class="social-card-name">Facebook</div>
-      </div>
-      <div class="social-big-num">30</div>
-      <div class="social-big-label">followers</div>
-      <div class="social-stats">
-        <div class="social-stat"><div class="social-stat-val">n/a</div><div class="social-stat-label">posts</div></div>
-        <div class="social-stat"><div class="social-stat-val">n/a</div><div class="social-stat-label">reach</div></div>
-        <div class="social-stat"><div class="social-stat-val">+233%</div><div class="social-stat-label">followers +</div></div>
-      </div>
-      <div class="social-growth" style="color:#2e7d32">Fastest-growing channel &middot; +58% in August alone &middot; post count not verified</div>
-      <a class="social-link" href="https://www.facebook.com/profile.php?id=61584593924814" target="_blank">View page &rarr;</a>
-    </div>
-
-    <div class="social-card" onclick="toggleSocial('website')">
-      <div class="social-card-header">
-        <div class="social-icon web">&#127760;</div>
-        <div class="social-card-name">Website</div>
-      </div>
-      <div class="social-big-num">6</div>
-      <div class="social-big-label">articles published</div>
-      <div class="social-stats">
-        <div class="social-stat"><div class="social-stat-val">4</div><div class="social-stat-label">services</div></div>
-        <div class="social-stat"><div class="social-stat-val">2</div><div class="social-stat-label">languages</div></div>
-        <div class="social-stat"><div class="social-stat-val">0</div><div class="social-stat-label">new since Jun</div></div>
-      </div>
-      <div class="social-growth" style="color:#e65100">Site rebuilt &middot; but no article in July or August</div>
-      <a class="social-link" href="https://uniques.vn/insights" target="_blank">View insights &rarr;</a>
+      <h2>Baseline at cycle open</h2>
+      <p>September 2026 &ndash; February 2027 &middot; 5 Objectives &middot; 15 Key Results &middot; <strong>nothing scored yet</strong></p>
+      <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span>
     </div>
   </div>
 
   <div class="note-box">
-    <strong>Source and date.</strong> All figures read directly from the live sources on <strong>2 September 2026</strong>, covering the cycle to 31 August. LinkedIn from Page admin analytics; Facebook follower count from the page; website articles counted on the Insights page.<br><br>
-    <strong>* The impressions figure does not reconcile, and is shown with that caveat rather than presented as clean.</strong> LinkedIn now reports <strong>8,221</strong> impressions for Sep 2025 &ndash; Aug 2026. On 7 August the same trailing-12-month metric read <strong>5,345</strong>, and August itself added only <strong>653</strong> (2&ndash;31 Aug). 5,345 + 653 &asymp; 6,000, not 8,221 &mdash; a gap of roughly <strong>2,200</strong> in a period that was already historical. The most likely explanation is that LinkedIn restated earlier months upward, but that could not be verified. Treat 8,221 as the platform's current reading, not as a measured gain.<br><br>
-    <strong>The Facebook post count still could not be retrieved</strong> and is left blank rather than estimated.
+    <strong>This is a set-up view, not a progress view.</strong> The cycle opened on 1 September and this board was built on day 3. The 1% is arithmetic only &mdash; one person already CCA-F certified out of ten &mdash; not an achievement. Every other Key Result stands at its own starting baseline.<br><br>
+    Scoring follows the same method as the March&ndash;August board: each objective is the average of its Key Results, and the headline is the average of the objectives. KR 5.2 carries no target yet, so it is shown but not scored.
   </div>
 
-  <div class="social-detail" id="social-linkedin">
-    <h4 style="font-size:14px;font-weight:600;margin-bottom:4px;">&#128279; LinkedIn &mdash; posts since 5 May 2026</h4>
-    <p style="font-size:12px;color:#8a8580;margin-bottom:12px;">Newest first. Impressions as reported by Page analytics.</p>
-    <ul class="post-list">
-      <li class="post-item"><span class="post-date">Aug 20</span><span class="post-title">VI&#7878;C H&#7884;C DI&#7876;N RA "GI&#7918;A" CH&#218;NG TA, V&#192; AI L&#192; M&#7896;T C&#7896;NG S&#7920; T&#431; DUY</span><span class="post-type photo">Image</span><span class="post-reach">52 imp</span></li>
-      <li class="post-item"><span class="post-date">Aug 18</span><span class="post-title">Learning in the AI Era &mdash; series continues</span><span class="post-type photo">Image</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">Aug 14</span><span class="post-title">Learning in the AI Era &mdash; series continues</span><span class="post-type photo">Image</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">Aug 12</span><span class="post-title">Learning in the AI Era &mdash; series continues</span><span class="post-type photo">Image</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">Aug 11</span><span class="post-title">Posted by Tam Tran Thanh</span><span class="post-type photo">Image</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">Aug 10</span><span class="post-title">Learning in the AI Era &mdash; series continues</span><span class="post-type photo">Image</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">Aug 7</span><span class="post-title">Learning in the AI Era EP.07 &mdash; Open the "black box" of AI's answers (EN)</span><span class="post-type photo">Image</span><span class="post-reach">1 imp</span></li>
-      <li class="post-item"><span class="post-date">Aug 6</span><span class="post-title">Join us for conversations that matter!</span><span class="post-type">Repost</span><span class="post-reach">6 imp</span></li>
-      <li class="post-item"><span class="post-date">Aug 5</span><span class="post-title">EP.06 &mdash; The most important five minutes before you write a prompt (EN)</span><span class="post-type photo">Image</span><span class="post-reach">25 imp</span></li>
-      <li class="post-item"><span class="post-date">Aug 3</span><span class="post-title">EP.05 &mdash; Don't outsource your entire thought process to AI (EN)</span><span class="post-type photo">Image</span><span class="post-reach">29 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 31</span><span class="post-title">EP.04 &mdash; Inside a brain that relies on ChatGPT (EN)</span><span class="post-type photo">Image</span><span class="post-reach">25 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 29</span><span class="post-title">EP.03 &mdash; Your brain remembers what it creates (EN)</span><span class="post-type photo">Image</span><span class="post-reach">30 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 27</span><span class="post-title">EP.02 &mdash; When work feels too easy, it might be a trap (EN)</span><span class="post-type photo">Image</span><span class="post-reach">50 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 24</span><span class="post-title">EP.01 &mdash; Are you getting better, or is AI just getting better? (EN)</span><span class="post-type photo">Image</span><span class="post-reach">40 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 21</span><span class="post-title">EP.08 &mdash; K&#7871;t qu&#7843; r&#7891;i s&#7869; c&#361;, ch&#7881; c&oacute; c&aacute;ch l&agrave;m l&agrave; &#7903; l&#7841;i (VI)</span><span class="post-type reel">Video</span><span class="post-reach">85 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 18</span><span class="post-title">EP.07 &mdash; M&#7903; "h&#7897;p &#273;en" c&#7911;a c&acirc;u tr&#7843; l&#7901;i AI (VI)</span><span class="post-type photo">Image</span><span class="post-reach"><strong>286 imp</strong></span></li>
-      <li class="post-item"><span class="post-date">Jul 16</span><span class="post-title">EP.06 &mdash; 5 ph&uacute;t quan tr&#7885;ng nh&#7845;t tr&#432;&#7899;c khi b&#7855;t &#273;&#7847;u prompt (VI)</span><span class="post-type photo">Image</span><span class="post-reach">44 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 14</span><span class="post-title">EP.05 &mdash; &#272;&#7915;ng giao c&#7843; d&ograve;ng t&#432; duy cho AI (VI)</span><span class="post-type photo">Image</span><span class="post-reach">62 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 9</span><span class="post-title">EP.04 &mdash; Nh&igrave;n v&agrave;o b&ecirc;n trong m&#7897;t b&#7897; n&atilde;o d&ugrave;ng ChatGPT (VI)</span><span class="post-type photo">Image</span><span class="post-reach">99 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 7</span><span class="post-title">EP.03 &mdash; N&atilde;o ch&#7881; nh&#7899; nh&#7919;ng g&igrave; n&oacute; t&#7921; t&#7841;o ra (VI)</span><span class="post-type photo">Image</span><span class="post-reach">83 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 4</span><span class="post-title">EP.02 &mdash; &#272;i l&agrave;m d&#7877; d&agrave;ng c&oacute; th&#7875; l&agrave; m&#7897;t c&aacute;i b&#7851;y (VI)</span><span class="post-type photo">Image</span><span class="post-reach">100 imp</span></li>
-      <li class="post-item"><span class="post-date">Jul 2</span><span class="post-title">EP.01 &mdash; B&#7841;n &#273;ang gi&#7887;i l&ecirc;n hay ch&#7881; l&agrave; AI &#273;ang gi&#7887;i l&ecirc;n? (VI)</span><span class="post-type photo">Image</span><span class="post-reach">89 imp</span></li>
-      <li class="post-item" style="background:#fdecec;border-radius:6px;"><span class="post-date" style="color:#c62828;">GAP</span><span class="post-title" style="color:#c62828;"><strong>30 May &ndash; 1 Jul: no posts published (5 weeks)</strong></span><span class="post-type"></span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">May 29</span><span class="post-title">&#272;i&#7873;u nhi&#7873;u l&atilde;nh &#273;&#7841;o s&#7869; ph&#7843;i h&#7885;c l&#7841;i</span><span class="post-type photo">Image</span><span class="post-reach">115 imp</span></li>
-      <li class="post-item"><span class="post-date">May 27</span><span class="post-title">T&#7915; "qu&#7843;n l&yacute; con ng&#432;&#7901;i" sang "k&#7871;t n&#7889;i tr&iacute; tu&#7879; t&#7853;p th&#7875;"</span><span class="post-type article">Document</span><span class="post-reach">74 imp</span></li>
-      <li class="post-item"><span class="post-date">May 25</span><span class="post-title">T&#7893; ch&#7913;c t&#432;&#417;ng lai s&#7869; kh&ocirc;ng c&ograve;n l&agrave; kim t&#7921; th&aacute;p</span><span class="post-type photo">Image</span><span class="post-reach">124 imp</span></li>
-      <li class="post-item" style="background:#e8f5e9;border-radius:6px;"><span class="post-date">May 22</span><span class="post-title"><strong>&#272;i&#7873;u nhi&#7873;u l&atilde;nh &#273;&#7841;o &#273;ang &#273;&aacute;nh gi&aacute; th&#7845;p</strong> &mdash; best-performing post to date</span><span class="post-type photo">Image</span><span class="post-reach"><strong>396 imp</strong></span></li>
-      <li class="post-item"><span class="post-date">May 7&ndash;20</span><span class="post-title"><em>7 further posts in this window &mdash; titles and impressions not captured</em></span><span class="post-type"></span><span class="post-reach">&mdash;</span></li>
-    </ul>
-    <div class="note-box">
-      <strong>Authorship shifted.</strong> Every post from 6&ndash;29 May was written by Tam. Of the 25 posts since 1 July, 23 were authored by <strong>V&#361; Th&#7883; Thanh Th&#7843;o</strong> &mdash; the "H&#7885;c trong th&#7901;i AI / Learning in the AI Era" series, run first in Vietnamese and then in English. The five-week silence sits exactly between those two modes.<br><br><strong>And then it stopped again.</strong> The final post of the cycle was 20 August. Nothing published between 21 August and 2 September &mdash; twelve days. Three pauses in six months: five weeks (30 May &ndash; 1 Jul), a thinning through late August, and this one.
+  <div class="elapsed-box">
+    <div class="elapsed-head">
+      <strong>Cycle timeline</strong>
+      <span>Day 3 of 181 &middot; 2% elapsed &middot; closes 28 Feb 2027</span>
+    </div>
+    <div class="elapsed-track">
+      <div class="elapsed-fill" style="width:2%"></div>
+    </div>
+    <div class="elapsed-marks">
+      <div class="elapsed-mark" style="left:7%">15 Sep<br>Anthropic proof</div>
+      <div class="elapsed-mark" style="left:26%">17&ndash;18 Oct<br>Unconference</div>
+      <div class="elapsed-mark" style="left:33%">31 Oct<br>Vysta live</div>
+      <div class="elapsed-mark" style="left:50%">30 Nov<br>PNV signed</div>
+      <div class="elapsed-mark key" style="left:67%">31 Dec<br>Anthropic deadline</div>
+      <div class="elapsed-mark key" style="left:84%">31 Jan<br>Diane's last day</div>
+      <div class="elapsed-mark" style="left:98%">28 Feb<br>Retrospective</div>
     </div>
   </div>
 
-  <div class="social-detail" id="social-facebook">
-    <h4 style="font-size:14px;font-weight:600;margin-bottom:4px;">&#128218; Facebook</h4>
-    <p style="font-size:12px;color:#8a8580;margin-bottom:12px;">Page followers grew from 9 to 19 between 5 May and 7 Aug.</p>
-    <div class="note-box danger">
-      <strong>Post count not verified.</strong> The Facebook feed loads lazily and shows relative timestamps ("4 hours ago"), and the Business Suite published-posts view returned "content isn't available". Two retrieval routes were attempted and abandoned rather than guessing a figure. The 14-post count from the 5 May snapshot is therefore the last verified number; the true count today is higher but unknown. To fill this in: open Meta Business Suite manually and read the published-posts list.
+  <div class="legend">
+    <strong>Tags carried over from the source document.</strong>
+    <span class="ptag v">V</span> Verified &mdash; from the 31 Aug meeting document or the 7 Jul Marketplace brief.
+    <span class="ptag p">P</span> Proposed &mdash; still needs a decision.
+    Only the fixed-dates table in the source carries these tags, so they appear there.
+  </div>
+
+  <!-- Objective Mini Cards -->
+  <div class="obj-mini-row">
+    <div class="obj-mini selected" onclick="toggleObj(1)">
+      <div class="obj-mini-icon">&#129504;</div>
+      <div class="obj-mini-title">Close the Anthropic Partnership</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c1" style="width:3%"></div></div>
+      <div class="obj-mini-pct c1">3%</div>
+      <div class="obj-mini-kr">3 KRs &middot; deadline 31 Dec</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(2)">
+      <div class="obj-mini-icon">&#128176;</div>
+      <div class="obj-mini-title">Turn Relationships into Revenue</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c2" style="width:0%"></div></div>
+      <div class="obj-mini-pct c2">0%</div>
+      <div class="obj-mini-kr">4 KRs &middot; &euro;12k target</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(3)">
+      <div class="obj-mini-icon">&#128279;</div>
+      <div class="obj-mini-title">Partner Ecosystem Catalogue</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c3" style="width:0%"></div></div>
+      <div class="obj-mini-pct c3">0%</div>
+      <div class="obj-mini-kr">2 KRs &middot; nothing built yet</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(4)">
+      <div class="obj-mini-icon">&#10024;</div>
+      <div class="obj-mini-title">UnIqueS Branding</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c4" style="width:0%"></div></div>
+      <div class="obj-mini-pct c4">0%</div>
+      <div class="obj-mini-kr">4 KRs</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(5)">
+      <div class="obj-mini-icon">&#129302;</div>
+      <div class="obj-mini-title">AI-Native Initiatives</div>
+      <div class="obj-mini-bar"><div class="obj-mini-fill fill-c5" style="width:0%"></div></div>
+      <div class="obj-mini-pct c5">0%</div>
+      <div class="obj-mini-kr">2 KRs &middot; now scored</div>
     </div>
   </div>
 
-  <div class="social-detail" id="social-website">
-    <h4 style="font-size:14px;font-weight:600;margin-bottom:4px;">&#127760; uniques.vn &mdash; Insights</h4>
-    <p style="font-size:12px;color:#8a8580;margin-bottom:12px;">All 6 published articles, read from the live site on 7 Aug 2026.</p>
-    <ul class="post-list">
-      <li class="post-item"><span class="post-date">30 Jun 26</span><span class="post-title">The Cognitive Debt Crisis: Why AI Speed is Making Your Brain Go Soft (and How to Stop It)</span><span class="post-type article">Essay</span><span class="post-reach">new</span></li>
-      <li class="post-item"><span class="post-date">13 Apr 26</span><span class="post-title">The End of the Expert Leader: Why AI Transformation is a Systemic Evolution, Not a Tool Upgrade</span><span class="post-type article">Article</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">7 Apr 26</span><span class="post-title">Theory U: Absencing vs Presencing &mdash; Two Paths When Disruption Hits</span><span class="post-type article">Article</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">13 Jan 26</span><span class="post-title">The Future of Organizations in the AI Era</span><span class="post-type article">Article</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">20 Dec 25</span><span class="post-title">Build Your First Business-Ready AI Agent Workshop</span><span class="post-type article">Article</span><span class="post-reach">&mdash;</span></li>
-      <li class="post-item"><span class="post-date">7 Jan 25</span><span class="post-title">Welcome to UnIqueS: Transforming Learning in the AI Era</span><span class="post-type article">Article</span><span class="post-reach">&mdash;</span></li>
-    </ul>
-    <div class="note-box">
-      <strong>No article published in July or August.</strong> The last was 30 June. The website is by a wide margin the slowest-moving channel for publishing &mdash; though the site itself was rebuilt during the cycle, with content and catalog updated, completing KR 3.2. The rebuild fixed the shop window; the shelves have not been restocked since.
+  <!-- ─────── OBJECTIVE 1 ─────── -->
+  <div id="obj-1" class="obj-detail active">
+    <div class="obj-detail-header">
+      <div class="icon o1">&#129504;</div>
+      <h3>O1 &mdash; Close the Anthropic partnership before 31 December 2026</h3>
+    </div>
+
+    <!-- KR 1.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.1 &mdash; 10 people CCA-F certified under the UnIqueS name<span class="status-tag started">1 of 10</span></div>
+          <div class="kr-summary-meta">Baseline 1 &middot; 10 by 31 Dec 2026 &middot; Tam / Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:10%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">10%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>1</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>10 by 31 Dec 2026 &mdash; <strong>2 committed by Tam and Diane</strong></span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam / Diane</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>31 Dec 2026</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:10%"></div></div>
+        <div class="kr-milestones">
+          <h5>Named in the document</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Tam, Trinh, Kiet Binh, Nhat Nguyen, Diane, Chris, Arthur, Fatou, +1 alumni</div>
+          <h5>Support commitments</h5>
+          <div class="milestone"><div class="milestone-dot open">?</div>Phong &mdash; <strong>TBC</strong></div>
+          <h5>Initiatives</h5>
+          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Sponsorship offer already in place: UnIqueS pays the ~&euro;100 exam fee for alumni and anyone, who become technical partners with a place in the portfolio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 1.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.2 &mdash; 1 public customer story published &mdash; Officience<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; target 1 &middot; Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Diane</span></div>
+          <div class="kr-detail-item"><label>Note</label><span>Diane's internship ends 31 Jan 2027</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 1.3 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 1.3 &mdash; Deployed joint customers credited by Anthropic<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; target &ge; 2 &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#42a5f5">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>&ge; 2</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>First fixed date</label><span>15 Sep 2026 &mdash; verify the proof mechanism <span class="ptag p">P</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Support commitments</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Duc &mdash; confirms which Officience / Offinity deployments qualify for KR 1.3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 2 ─────── -->
+  <div id="obj-2" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o2">&#128176;</div>
+      <h3>O2 &mdash; Turn relationships into revenue (UnIqueS &times; Vysta partnership)</h3>
+    </div>
+
+    <!-- KR 2.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.1 &mdash; PNV mission: one-year training contract (students + teachers), signed under the Vysta name<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; 1 signed by 30 Nov 2026 &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1, signed by 30 Nov 2026</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Also covers</label><span>Internship coordination</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="note-box quote">
+          Why under Vysta: "The clients (from Danang) don't know UnIqueS, but they may know Vysta." <span class="ptag v">V</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 2.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.2 &mdash; Revenue: &euro;12k contracted for PNV training<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline &euro;0 &middot; target &euro;12k &middot; Tam / Quynh Minh</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>&euro;12k</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam / Quynh Minh</span></div>
+          <div class="kr-detail-item"><label>Route</label><span>Donation-and-tax-refund route / admin path</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 2.3 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.3 &mdash; At least 1 PAID client or programme outside Officience, other than PNV<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; target 1 &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Named prospect</label><span>xBrain <span class="ptag v">V</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="note-box quote">
+          Geographic edge: NVC in &#272;&agrave; N&#7861;ng, where there is no NVC trainer. Prospect named: xBrain. <span class="ptag v">V</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 2.4 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 2.4 &mdash; Vysta brand infrastructure live: website + LinkedIn + Facebook<span class="status-tag not-started">0 of 3</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; all 3 live by 31 Oct 2026 &middot; Tam / a Vietnamese intern</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#ab47bc">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>All 3 live by 31 Oct 2026</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam / a Vietnamese intern</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>31 Oct 2026 <span class="ptag p">P</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Support commitments</h5>
+          <div class="milestone"><div class="milestone-dot open">?</div>Clones the UnIqueS website for Vysta: swap logo and tagline &mdash; <strong>no name filled in</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 3 ─────── -->
+  <div id="obj-3" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o3">&#128279;</div>
+      <h3>O3 &mdash; Partner ecosystem: a collective catalogue</h3>
+    </div>
+    <div class="obj-description">Reference: Marketplace Requirement Brief, 7 Jul 2026.</div>
+
+    <!-- KR 3.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.1 &mdash; Website prototype to share with partners<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Brief only, nothing built &middot; due 17 Oct (Unconference) &middot; Tam + Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>Brief only, nothing built</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1 clickable prototype, shown to &ge; 5 partners, by 17 Oct (Unconference)</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>17 Oct 2026</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 3.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 3.2 &mdash; 10 partners and their offers on the live website<span class="status-tag gap">owner gap in Feb</span></div>
+          <div class="kr-summary-meta">6 named in the brief, 0 live &middot; 10 live by 28 Feb 2027 &middot; Tam + Diane</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#e8a44a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>Providers already named in the brief: UnIqueS, Tr&ograve;n L&agrave;nh, NEED, Percolab, Olivier, PNV, &hellip; <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>10 partners live by 28 Feb 2027</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane &mdash; <strong>Diane leaves 31 Jan</strong></span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>28 Feb 2027 &mdash; cycle close</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Initiatives</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>Partner ecosystem map, sorted into three buckets: catalogue / cross-selling / informal</div>
+        </div>
+        <div class="note-box gap">
+          <strong>Due 28 February; the co-owner's last day is 31 January.</strong> The source document lists Tam + Diane and does not name a February owner.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 4 ─────── -->
+  <div id="obj-4" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o4">&#10024;</div>
+      <h3>O4 &mdash; UnIqueS branding</h3>
+    </div>
+    <div class="obj-description">Scope rule: Academic = UEH / UEF / other universities.</div>
+
+    <!-- KR 4.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.1 &mdash; Real product packages on the UnIqueS website, each with a case study and real photos<span class="status-tag not-started">0 of 4</span></div>
+          <div class="kr-summary-meta">Baseline ~0 &middot; target 4 packages &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>~0 &mdash; site judged "a bit general", offerings "a bit vague" <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>4 packages &mdash; e.g. NVC, AI training, Flow Game, second brain</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Each package needs</label><span>A case study and real photos</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 4.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.2 &mdash; Unconference, 17 or 18 Oct 2026<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Target 50&ndash;100 participants &middot; Tam leads &middot; Diane, Duc, Phong, Han support</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>&mdash;</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>50&ndash;100 participants</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam (lead); Diane, Duc, Phong, Han support</span></div>
+          <div class="kr-detail-item"><label>Date</label><span>17 or 18 Oct 2026 <span class="ptag v">V</span></span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+        <div class="note-box">
+          The Unconference is also the deadline for the KR 3.1 prototype, which the source document schedules to be shown there.
+        </div>
+      </div>
+    </div>
+
+    <!-- KR 4.3 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.3 &mdash; Academic partnerships: workshops delivered at universities<span class="status-tag not-started">0 of 3</span></div>
+          <div class="kr-summary-meta">Baseline 0 this cycle &middot; target 3 workshops (UEH, UEF, +1) &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0 this cycle</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>3 workshops &mdash; UEH, UEF, +1</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Scope</label><span>Academic = UEH / UEF / other universities</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 4.4 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 4.4 &mdash; Thought leadership: the podcast. One channel only.<span class="status-tag gap">owner gap in Feb</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; 1 episode / month = 6 &middot; Diane to end Jan, then ?</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#66bb6a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1 episode / month = 6</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Diane (to end Jan), then <strong>?</strong></span></div>
+          <div class="kr-detail-item"><label>Channel</label><span>The podcast &mdash; one channel only</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+        <div class="kr-milestones">
+          <h5>Related fixed dates</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>October 2026 &mdash; 3 episodes recorded before episode 1 publishes <span class="ptag p">P</span></div>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>2&ndash;6 Nov 2026 &mdash; Sommet de l'Action <span class="ptag v">V</span></div>
+        </div>
+        <div class="note-box gap">
+          <strong>Six monthly episodes means one is due in February, and the owner field for February is a question mark in the source document.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── OBJECTIVE 5 ─────── -->
+  <div id="obj-5" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o5">&#129302;</div>
+      <h3>O5 &mdash; AI-native initiatives</h3>
+    </div>
+    <div class="obj-description">Decided at the August close: this objective becomes scored from September.</div>
+
+    <!-- KR 5.1 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 5.1 &mdash; "Second brain" moves from demo to real deployment with real users<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-meta">Demo only &middot; 1 organisation live with &ge; 5 active users &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c5" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#26a69a">0%</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span>Demo only (Ngan) <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>1 organisation live with &ge; 5 active users</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Sequence</label><span>Impact Hub APAC first; Teal community if capacity</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c5" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- KR 5.2 -->
+    <div class="kr-card" onclick="toggleKR(this)">
+      <div class="kr-summary">
+        <div class="kr-expand-icon">&#9654;</div>
+        <div class="kr-summary-text">
+          <div class="kr-summary-title">KR 5.2 &mdash; Real AI adoption / transformation inside Officience<span class="status-tag gap">no baseline, no target</span></div>
+          <div class="kr-summary-meta">Baseline blank &middot; target "?" in the source &middot; Tam</div>
+        </div>
+        <div class="kr-minibar"><div class="kr-minibar-fill fill-c5" style="width:0%"></div></div>
+        <div class="kr-pct" style="color:#26a69a">&mdash;</div>
+      </div>
+      <div class="kr-detail">
+        <div class="kr-detail-grid">
+          <div class="kr-detail-item"><label>Baseline</label><span><strong>Blank in the source document</strong></span></div>
+          <div class="kr-detail-item"><label>Target</label><span><strong>"?" &mdash; not yet set</strong></span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
+          <div class="kr-detail-item"><label>Earlier draft wording</label><span>"measured by BEHAVIOUR"</span></div>
+        </div>
+        <div class="kr-progress-bar"><div class="kr-progress-fill fill-c5" style="width:0%"></div></div>
+        <div class="note-box gap">
+          <strong>This Key Result cannot be scored as written.</strong> It has neither a baseline nor a target, so there is nothing to measure against at close on 28 February. It is the only Key Result in the set in that position.
+        </div>
+      </div>
     </div>
   </div>
 
 </div>
-<div id="tab-activities" class="tab-panel">
-  <div class="timeline-container">
-    <h3>Activities — 2026</h3>
 
-    <div class="week-row" style="opacity:0.75">
-      <div><div class="week-label">Dec 2025</div><div class="week-date">Pre-launch</div></div>
-      <div class="week-items">
-        <span class="week-chip event">"Build Your First AI Agent" workshop</span>
-        <span class="week-chip content">Website article: AI Agent Workshop</span>
+<!-- ══════════ FIXED DATES TAB ══════════ -->
+<div id="tab-timeline" class="tab-panel">
+  <div class="panel">
+    <h3>Fixed dates</h3>
+    <div class="panel-sub">Taken from the fixed-dates table in the team's OKR document, with its own tags kept. The two rows in red are the ones that constrain other Key Results: the Anthropic deadline is external, and Diane's last day removes a co-owner from KR 3.2 and KR 4.4 one month before the cycle closes.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">15 Sep 2026</div>
+        <div class="row-val">Verify Anthropic joint-customer proof mechanism (KR 1.3).</div>
+        <div><span class="ptag p">P</span></div>
       </div>
-    </div>
-
-    <div class="week-row" style="opacity:0.75">
-      <div><div class="week-label">Jan 2026</div><div class="week-date">Pre-launch</div></div>
-      <div class="week-items">
-        <span class="week-chip event">AI workshop session (video recording)</span>
-        <span class="week-chip content">Website: "Welcome to UnIqueS" article</span>
-        <span class="week-chip content">Website: "Future of Orgs" article</span>
+      <div class="row-item">
+        <div class="row-key">17&ndash;18 Oct 2026</div>
+        <div class="row-val">Unconference (KR 4.2); the KR 3.1 prototype is shown here.</div>
+        <div><span class="ptag v">V</span></div>
       </div>
-    </div>
-
-    <div class="week-row" style="opacity:0.75">
-      <div><div class="week-label">Feb 2026</div><div class="week-date">Pre-launch</div></div>
-      <div class="week-items">
-        <span class="week-chip event">"Organizing Work in the Age of AI" workshop</span>
-        <span class="week-chip content">FB post: workshop summary (21 reach)</span>
+      <div class="row-item">
+        <div class="row-key">October 2026</div>
+        <div class="row-val">3 podcast episodes recorded before episode 1 publishes (KR 4.4).</div>
+        <div><span class="ptag p">P</span></div>
       </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 1</div><div class="week-date">Mar 1–7</div></div>
-      <div class="week-items">
-        <span class="week-chip content">Vibecoding event promo (LI+FB)</span>
-        <span class="week-chip content">Workshop promotion posts</span>
-        <span class="week-chip highlight">Diaries: Activity Sharing W1</span>
+      <div class="row-item">
+        <div class="row-key">31 Oct 2026</div>
+        <div class="row-val">Vysta website + LinkedIn + Facebook live (KR 2.4).</div>
+        <div><span class="ptag p">P</span></div>
       </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 2</div><div class="week-date">Mar 8–14</div></div>
-      <div class="week-items">
-        <span class="week-chip content">"Bạn có ý tưởng" post (FB)</span>
-        <span class="week-chip content">UnIqueS branding post (LI)</span>
-        <span class="week-chip highlight">Diaries: Activity Sharing W2</span>
+      <div class="row-item">
+        <div class="row-key">2&ndash;6 Nov 2026</div>
+        <div class="row-val">Sommet de l'Action (France, mostly online, English).</div>
+        <div><span class="ptag v">V</span></div>
       </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 3</div><div class="week-date">Mar 15–21</div></div>
-      <div class="week-items">
-        <span class="week-chip event">Vibecoding Party (~70 pax)</span>
-        <span class="week-chip content">Vibecoding recap reel (LI+FB)</span>
-        <span class="week-chip highlight">Diaries: Activity Sharing W3</span>
-        <span class="week-chip">Training Location Database started</span>
-        <span class="week-chip">Business emails set up</span>
+      <div class="row-item">
+        <div class="row-key">30 Nov 2026</div>
+        <div class="row-val">PNV contract signed under Vysta (KR 2.1).</div>
+        <div><span class="ptag p">P</span></div>
       </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 4</div><div class="week-date">Mar 22–28</div></div>
-      <div class="week-items">
-        <span class="week-chip content">"Future of Organizations" (LI+FB, bilingual)</span>
-        <span class="week-chip content">"Responding to Change" carousel (LI+FB)</span>
-        <span class="week-chip highlight">Diaries: Activity Sharing W4</span>
-        <span class="week-chip event">AI Mastery Day — 5 sessions, 31 Offies</span>
-        <span class="week-chip">Content Formatter shipped</span>
-        <span class="week-chip highlight">Joined Toastmasters International</span>
+      <div class="row-item hard">
+        <div class="row-key">31 Dec 2026</div>
+        <div class="row-val"><strong>Anthropic deadline: 10 certified</strong> (KR 1.1). Currently 1, with 2 committed by Tam and Diane.</div>
+        <div><span class="ptag v">V</span></div>
       </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 5</div><div class="week-date">Mar 29–Apr 4</div></div>
-      <div class="week-items">
-        <span class="week-chip content">"Disruption hits. You always have a choice" (LI)</span>
-        <span class="week-chip content">Responding to change carousel (LI+FB)</span>
-        <span class="week-chip">April planning: AI Safety, Mental Models, Claude Code</span>
-        <span class="week-chip">Kids+Parents program planning with anh Phong</span>
+      <div class="row-item hard">
+        <div class="row-key">31 Jan 2027</div>
+        <div class="row-val"><strong>Diane's internship ends</strong> &mdash; KR 3.2 and KR 4.4 need a February owner.</div>
+        <div><span class="ptag v">V</span></div>
       </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 6</div><div class="week-date">Apr 7–11</div></div>
-      <div class="week-items">
-        <span class="week-chip content">Theory U series launch: "Absencing vs Presencing" (LI)</span>
-        <span class="week-chip content">"Co-creation doesn't start with brainstorming" (LI)</span>
-        <span class="week-chip content">"Same disruption, two different outcomes" (LI)</span>
-        <span class="week-chip content">"The most significant variable in leadership" (LI)</span>
-        <span class="week-chip content" style="background:#e8f5e9; color:#2e7d32;">Website: "Theory U: Absencing vs Presencing" article</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 7</div><div class="week-date">Apr 13–18</div></div>
-      <div class="week-items">
-        <span class="week-chip content" style="background:#e8f5e9; color:#2e7d32;">Website: "AI Systemic Evolution" article</span>
-        <span class="week-chip content">Anthropic Claude Partner announcement (LI, bilingual)</span>
-        <span class="week-chip content" style="color:#2e7d32; font-weight:600">"Believed 20% faster, actually 19% slower" — 268 imp (LI, bilingual)</span>
-        <span class="week-chip content">"Một trong những người đồng sáng lập cũng là phụ huynh" (LI)</span>
-        <span class="week-chip content">Offi Alumni AI Mastery promo (LI)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 8</div><div class="week-date">Apr 21–25</div></div>
-      <div class="week-items">
-        <span class="week-chip event">Flow Game session — Impact Hub Saigon (104 imp)</span>
-        <span class="week-chip content">Offi Alumni AI Mastery Session promo (LI, 75 imp)</span>
-        <span class="week-chip content">Offi Alumni event — with Duc HA DUONG (LI)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 9</div><div class="week-date">Apr 28–May 5</div></div>
-      <div class="week-items">
-        <span class="week-chip content">"Đừng sợ AI thay thế công việc" thought leadership (LI+FB)</span>
-        <span class="week-chip content">"Bài học" adaptive leadership series — 5 parts (LI+FB)</span>
-        <span class="week-chip content">Facebook cross-posting resumed: 7 posts in 8 days</span>
-              </div>
-    </div>
-    <div class="week-row">
-      <div><div class="week-label">Week 10</div><div class="week-date">May 6&ndash;12</div></div>
-      <div class="week-items">
-        <span class="week-chip event">6-month UnIqueS retrospective &mdash; circle style</span>
-        <span class="week-chip event">H2 planning with Cao Phong (8 May) &rarr; AI-native objective born</span>
-        <span class="week-chip event">CCAF learning group kicked off</span>
-        <span class="week-chip">Forum 2026 theme brainstorm &mdash; met c&ocirc; T&ocirc;n N&#7919; Th&#7883; Ninh</span>
-        <span class="week-chip">Science of Feedback reference compiled (NVC-grounded)</span>
-        <span class="week-chip content">3 LinkedIn posts</span>
-        <span class="week-chip highlight">Diaries: 4&ndash;10 May</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 11</div><div class="week-date">May 13&ndash;19</div></div>
-      <div class="week-items">
-        <span class="week-chip event">"Recruitment in AI World" &mdash; Offi Alumni (16 May)</span>
-        <span class="week-chip">CCAF: AI Capabilities &amp; Limitations completed</span>
-        <span class="week-chip">EN Hub chat created &middot; 16 learning guides sent</span>
-        <span class="week-chip">Brochure v1: 6-page + 12-page</span>
-        <span class="week-chip content">Human Flows carousel series scheduled (6 posts)</span>
-        <span class="week-chip content">3 LinkedIn posts</span>
-        <span class="week-chip highlight">Diaries: 11&ndash;17 May</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 12</div><div class="week-date">May 20&ndash;26</div></div>
-      <div class="week-items">
-        <span class="week-chip event">"H&#7885;c trong th&#7901;i AI" showcase delivered (~21 May)</span>
-        <span class="week-chip event">PNV agreed &mdash; first session set for 4 Jun</span>
-        <span class="week-chip event">Diane Mille (KEDGE) accepted the internship</span>
-        <span class="week-chip">Offi Alumni &times; UnIqueS partnership brainstorm</span>
-        <span class="week-chip">CCAF: Accessing Claude with the API completed</span>
-        <span class="week-chip">Zalo + YouTube subtitling prototype shipped to team</span>
-        <span class="week-chip content">3 LinkedIn posts &mdash; incl. 396-imp top post (22 May)</span>
-        <span class="week-chip highlight">Diaries: 18&ndash;24 May</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 13</div><div class="week-date">May 27&ndash;Jun 2</div></div>
-      <div class="week-items">
-        <span class="week-chip event">Claude Partner Network Agreement signed &middot; partner portal live</span>
-        <span class="week-chip content">2 LinkedIn posts</span>
-        <span class="week-chip">Theory U Book Club &mdash; 1st Case Clinic</span>
-      </div>
-    </div>
-
-    <div class="week-row gap-row">
-      <div><div class="week-label">Weeks 14&ndash;17</div><div class="week-date">Jun 3&ndash;30</div></div>
-      <div class="week-items">
-        <span class="week-chip gap">&#9888; No LinkedIn or Facebook posts for 4 weeks</span>
-        <span class="week-chip event">PNV teachers &mdash; "Teaching and Learning in the Age of AI" (4 Jun)</span>
-        <span class="week-chip event">UnIqueS Academy shipped &mdash; academy.uniques.vn</span>
-        <span class="week-chip event">UnIqueS Brain built &mdash; Obsidian + Git wiki</span>
-        <span class="week-chip event">Dr. Truong Minh visits OffyPlex (10 Jun)</span>
-        <span class="week-chip">CCAF: Fatou Sylla onboarded &middot; mid-programme check-in &mdash; 4 opt out of exam</span>
-        <span class="week-chip">Rizlum sharing attended &middot; Peter Senge "Learning Practice" (SoL Global)</span>
-        <span class="week-chip">Offy Alumni: Cybersecurity (12 Jun) &middot; Partners &amp; Location (19 Jun)</span>
-        <span class="week-chip">RPA project review with Orange Sourcing &mdash; 10k&euro; H2-2026 proposal</span>
-        <span class="week-chip">Theory U Book Club &mdash; Module 2, Co-Sensing</span>
-        <span class="week-chip content">Website article: "The Cognitive Debt Crisis" (30 Jun)</span>
-        <span class="week-chip highlight">Diaries: 25 May&ndash;7 Jun (8 Jun) &middot; 8&ndash;26 Jun (30 Jun)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 18</div><div class="week-date">Jul 1&ndash;7</div></div>
-      <div class="week-items">
-        <span class="week-chip event">Strategy coffee at IHS with Duc &amp; Cao Phong (3 Jul)</span>
-        <span class="week-chip event">Decision: contribute VND 2m/month back to Impact Hub</span>
-        <span class="week-chip event">Mascot chosen &mdash; Unis the Phoenix</span>
-        <span class="week-chip event">Olivier Lef&egrave;vre meeting (7 Jul) &rarr; ecosystem reframe + marketplace idea</span>
-        <span class="week-chip content">Series restarts &mdash; "H&#7885;c trong th&#7901;i AI" EP.01, 02, 03 (VI)</span>
-        <span class="week-chip">Content authorship handed to Thanh Th&#7843;o</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 19</div><div class="week-date">Jul 8&ndash;14</div></div>
-      <div class="week-items">
-        <span class="week-chip">AI Builder Week (8&ndash;12 Jul)</span>
-        <span class="week-chip content">EP.04 (9 Jul, 99 imp) &middot; EP.05 (14 Jul, 62 imp)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 20</div><div class="week-date">Jul 15&ndash;21</div></div>
-      <div class="week-items">
-        <span class="week-chip event">Offy sharing session &mdash; "Knowledge Management in the Age of AI" + Unis bot demo</span>
-        <span class="week-chip content">EP.06 (16 Jul) &middot; EP.07 (18 Jul, 286 imp) &middot; EP.08 video (21 Jul)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 21</div><div class="week-date">Jul 22&ndash;28</div></div>
-      <div class="week-items">
-        <span class="week-chip event">RO LLM Wiki &mdash; knowledge graph completed</span>
-        <span class="week-chip event">New SDLC research completed and documented</span>
-        <span class="week-chip content">English run begins &mdash; EP.01 (24 Jul) &middot; EP.02 (27 Jul)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 22</div><div class="week-date">Jul 29&ndash;Aug 4</div></div>
-      <div class="week-items">
-        <span class="week-chip event">&#127942; PSM certified &mdash; AI as "developer", Tam as Product Owner</span>
-        <span class="week-chip event">Website rebuild closed out &mdash; KR 3.2 complete (self-rated 7.5/10)</span>
-        <span class="week-chip event">RPA with Orange Sourcing &mdash; 10k&euro; H2-2026 <strong>approved</strong></span>
-        <span class="week-chip event">Cosmic House project kicked off &mdash; running weekly</span>
-        <span class="week-chip content">EP.03 (29 Jul) &middot; EP.04 (31 Jul) &middot; EP.05 (3 Aug)</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 23</div><div class="week-date">Aug 5&ndash;11</div></div>
-      <div class="week-items">
-        <span class="week-chip content">EP.06 (5 Aug) &middot; EP.07 (7 Aug) &middot; repost (6 Aug) &middot; 2 more (10, 11 Aug)</span>
-        <span class="week-chip event">Unis bot demo requested for Impact Hub APAC</span>
-        <span class="week-chip highlight">Diaries: "Activity sharing in July" &mdash; 26 Jun&ndash;7 Aug</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Week 24</div><div class="week-date">Aug 12&ndash;18</div></div>
-      <div class="week-items">
-        <span class="week-chip content">3 posts (12, 14, 18 Aug) &mdash; final week of the 24-week run, covered</span>
-        <span class="week-chip event">2 NVC workshops for PNV students delivered</span>
-        <span class="week-chip event">1 AI workshop for PNV teachers delivered</span>
-      </div>
-    </div>
-
-    <div class="week-row">
-      <div><div class="week-label">Aug 19&ndash;31</div><div class="week-date">Cycle close</div></div>
-      <div class="week-items">
-        <span class="week-chip event">&#127918; Flow Game &times; Impact Hub &mdash; <strong>first community session delivered</strong></span>
-        <span class="week-chip event">Cadence set to monthly, not weekly</span>
-        <span class="week-chip event">Diane Mille (KEDGE) internship started ~20 Aug</span>
-        <span class="week-chip event">Cosmic House partnership formalised</span>
-        <span class="week-chip event">Vysta &mdash; new partnership</span>
-        <span class="week-chip event">First CCAF certifications achieved</span>
-        <span class="week-chip event">Science Fair 2026 &mdash; 2 proposals submitted</span>
-        <span class="week-chip content">Last post of the cycle: 20 Aug</span>
-        <span class="week-chip gap">&#9888; No posts 21 Aug &ndash; 2 Sep</span>
+      <div class="row-item">
+        <div class="row-key">28 Feb 2027</div>
+        <div class="row-val">OKRs retrospective &mdash; cycle closes.</div>
+        <div><span class="ptag v">V</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<div id="tab-actions" class="tab-panel">
+<!-- ══════════ STILL OPEN TAB ══════════ -->
+<div id="tab-gaps" class="tab-panel">
+  <div class="panel">
+    <h3>Still open in the agreed OKRs</h3>
+    <div class="panel-sub">The OKRs are agreed, but seven cells in them are still a blank, a "?" or a "TBC". Every item below is written that way in the team's own document &mdash; none of it is an outside opinion. They are listed here so the board shows what is unresolved instead of hiding it behind a zero.</div>
 
-  <div class="fb-panel">
-    <h3 style="color:#c47a2a;">The cycle in numbers</h3>
-    <ul>
-      <li><strong>27% (31 Mar) &rarr; 44% (5 May) &rarr; 65% (7 Aug) &rarr; 73% (31 Aug).</strong> Forty-six points over six months &mdash; three of which come from rescoring KR 3.3 on coverage rather than post count at close.</li>
-      <li><strong>Objective 1 &mdash; AI-Ready Workforce in Officience: 58%.</strong> The only objective that fell at close, after its scope was corrected.</li>
-      <li><strong>Objective 2 &mdash; Expand Beyond Officience: 77%.</strong> Doubled from 38%. The strongest objective of the cycle.</li>
-      <li><strong>Objective 3 &mdash; Amplify Through Storytelling: 85%.</strong> Up from 43%. The highest-scoring objective at close.</li>
-      <li><strong>Three KRs hit 100%</strong> (2.2 partners, 3.2 landing page, 3.3 activity sharing). <strong>Two were missed</strong> (1.1, 1.2). <strong>One survives the close</strong> &mdash; KR 2.1 runs to 28 Feb 2027.</li>
-    </ul>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 5.2</span>No baseline and no target</h6>
+      <p>The baseline cell is empty and the target cell reads "?". As written, this Key Result cannot be scored at close on 28 February. It is the only one in the set with neither figure.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 3.2</span>February owner, after Diane leaves</h6>
+      <p>Owner is "Tam + Diane"; the deadline is 28 February; Diane's internship ends 31 January.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 4.4</span>February owner, after Diane leaves</h6>
+      <p>The owner cell reads "Diane (to end Jan) then ?". Six monthly episodes means one falls in February.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 1.1</span>Phong &mdash; TBC</h6>
+      <p>Listed under support commitments as "Phong - TBC", and not among the nine named people. The list currently reads 9 named plus 1 alumni slot to reach 10.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 2.4</span>Who clones the UnIqueS website for Vysta?</h6>
+      <p>The support commitment is written without a name: "clones the UnIqueS website for Vysta: swap logo and tagline."</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 4.2</span>Who is Han?</h6>
+      <p>Listed as a supporter on the Unconference, but not identified anywhere in the document.</p>
+    </div>
+    <div class="q-item">
+      <h6><span class="q-kr">KR 3.2</span>The partner list ends in "&hellip;"</h6>
+      <p>The baseline names UnIqueS, Tr&ograve;n L&agrave;nh, NEED, Percolab, Olivier and PNV, then trails off. Six named against a target of ten, with the remainder unspecified.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PARKED TAB ══════════ -->
+<div id="tab-parked" class="tab-panel">
+  <div class="panel">
+    <h3>Parked this cycle</h3>
+    <div class="panel-sub">Parking on purpose is not the same as letting things drift. Each item below was in the 31 August brainstorm and is consciously out of this cycle's OKRs.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">Cosmic House / Cosmic Tribe (3.5)</div>
+        <div class="row-val">Too abstract to measure this cycle; the group itself said "the goal is not to explain the theory to everyone."</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Teal Opal (3.16)</div>
+        <div class="row-val">The Teal community is still served through KR 5.1 if capacity allows.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Parents' association (3.18)</div>
+        <div class="row-val">Phong's channel; no UnIqueS capacity assigned.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Kids' AI programme and the "fishing game" (3.19)</div>
+        <div class="row-val">Pending Phong's test with parents at the barbecue. If the reaction is good, it enters the catalogue next cycle.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">LinkedIn cadence (3.3)</div>
+        <div class="row-val">Maintenance track, tracked on the dashboard but not scored. Reached 88% last cycle and runs on habit.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Change-management product (3.10)</div>
+        <div class="row-val">See O5 &mdash; dropped for capacity.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">TEDx T&acirc;n &#272;&#7883;nh (3.4)</div>
+        <div class="row-val">Personal OKR sheet.</div>
+        <div></div>
+      </div>
+    </div>
   </div>
 
-  <div class="fb-panel">
-    <h3 style="color:#2e7d32;">What the six months produced</h3>
-    <ul>
-      <li><strong>A signed Anthropic partnership, end to end.</strong> Application (1 Apr) &rarr; review passed &rarr; team onboarded &rarr; Partner Network Agreement signed (late May) &rarr; licensing settled on Max &rarr; first CCAF certification (Aug). From nothing to a contracted partner with a certified practitioner in five months.</li>
-      <li><strong>External delivery tripled.</strong> One programme in May became three: Impact Hub Saigon, PNV-Teachers (AI), PNV-Students (NVC). Three other pipeline routes closed along the way and were replaced by ones that converted.</li>
-      <li><strong>Reach roughly doubled on every channel.</strong> LinkedIn 29 &rarr; 49 followers and 31 &rarr; 64 posts; Facebook 9 &rarr; 30 followers. Best post of the cycle: 22 May, 396 impressions.</li>
-      <li><strong>The website was rebuilt and the catalog delivered</strong> &mdash; structure, content, and a two-format brochure. KR 3.2 closed at 100%.</li>
-      <li><strong>Public workshops went from zero to two</strong>, and the second one &mdash; Flow Game &times; Impact Hub &mdash; became a recurring monthly community offering rather than a one-off.</li>
-      <li><strong>And outside the scored set entirely:</strong> UnIqueS Brain, the Unis chatbot, UnIqueS Academy, the RO LLM Wiki knowledge graph, the New SDLC research, and a PSM certification applied directly to how Tam works with AI. Most of the cycle's largest work sits here.</li>
-    </ul>
+  <div class="panel">
+    <h3>Structural change from the previous cycle</h3>
+    <div class="panel-sub">Counts compared against the March&ndash;August 2026 board, which closed at 73%.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">Size</div>
+        <div class="row-val">5 Objectives and 15 Key Results, up from 3 scored Objectives and 9 Key Results.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Revenue</div>
+        <div class="row-val">New. The previous cycle had no revenue Key Result; O2 now carries four, including a &euro;12k figure.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">AI-native</div>
+        <div class="row-val">Recorded unscored at the August close; a scored objective from September.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Owners</div>
+        <div class="row-val">Every Key Result names an owner. Two of them lose a co-owner on 31 January.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">Moved out</div>
+        <div class="row-val">TEDx T&acirc;n &#272;&#7883;nh, to Tam's personal OKR sheet.</div>
+        <div></div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="fb-panel">
-    <h3 style="color:#c62828;">What was missed, and by how much</h3>
-    <ul>
-      <li><strong>KR 1.1 &mdash; 11 of 24 sessions (46%).</strong> Under half the target. Actual pace ~1.8 sessions/month against a target of 4.</li>
-      <li><strong>KR 1.2 &mdash; missed its 21 May deadline and closed at 70%.</strong> Workflow 2 was never started; the automation half of this KR did not move once between March and the end of the cycle.</li>
-            <li><strong>KR 2.3 &mdash; 1 of 10 certified against a target of 10.</strong> Four of the cohort opted out of the exam in June, so the ceiling is now 6. The target was held rather than lowered, so the shortfall stays visible.</li>
-      <li><strong>KR 3.1 stopped at 88%, not 100%</strong> &mdash; and 88% was the ceiling. Three weeks lost in June (3&ndash;23 Jun) could never be recovered; every week after 1 July was covered.</li>
-    </ul>
-  </div>
-
-  <div class="fb-panel">
-    <h3 style="color:#42a5f5;">Five things the data showed</h3>
-    <ul>
-      <li><strong>1. The work moved outward, and the OKRs stayed pointed inward.</strong> Objective 1 measures Officience and closed at 58%; Objective 2 measures everything beyond it and closed at 77%. In August specifically, four sessions were delivered &mdash; three to PNV, one to the Impact Hub community &mdash; and <em>none to Officience</em>. Correcting KR 1.1's scope at close actually lowered its score, which is the clearest evidence of the shift: teaching capacity did not shrink, it relocated.</li>
-      <li><strong>2. Delegation restored output. It did not restore rhythm.</strong> Content collapsed for five weeks in June while Tam was building, and resumed only when authorship passed to V&#361; Th&#7883; Thanh Th&#7843;o, who wrote 23 of the last 25 posts. That worked &mdash; weeks 18 to 24 were all covered. But the cycle still ended with a twelve-day silence after 20 August, the third pause in six months. The throughput problem was solved; the stop-start pattern was not.</li>
-      <li><strong>3. Learning converted into product, not into certificates &mdash; and the KR measuring it could not see that.</strong> Five CCAF courses became the Academy, the Brain, and the Unis bot. KR 1.2's written target is "automate 50% of social marketing workflow", so it scored 70% for a period of unusually productive learning. The KR measured the wrong axis all cycle.</li>
-      <li><strong>4. Reciprocity became the partnership model.</strong> VND 2m/month contributed back to Impact Hub, Olivier Lef&egrave;vre reframed from training buyer to ecosystem participant, Flow Game co-branded rather than sold. None of these score a point under a KR set built around "training programs delivered" &mdash; and they produced the strongest relationship UnIqueS has.</li>
-      <li><strong>5. KR 2.2 kept scoring while ceasing to inform.</strong> It reached 100% and, even after two items were excluded at close, still holds eight relationships against a target of five &mdash; at which point it stopped distinguishing a good month from a bad one.</li>
-      <li><strong>6. Activity sharing held its purpose while missing its unit.</strong> Post coverage widened from 1 week to 6 weeks per post, yet no period in the whole cycle went unreported. The weekly <em>count</em> was not met; the alignment the KR existed for was. That gap between unit and purpose is why the KR was rescored on coverage at close and its cadence formally moved to monthly.</li>
-    </ul>
-  </div>
-
-  <div class="fb-panel">
-    <h3 style="color:#7b1fa2;">Carried into September</h3>
-    <ul>
-      <li><strong>KR 2.1 remains open</strong> at 3 of 4 until 28 Feb 2027 &mdash; the only KR that outlives this cycle.</li>
-      <li><strong>Objective 4 (AI-Native) becomes a scored objective from September.</strong> It ran unscored for six months because it emerged mid-flight without targets.</li>
-      <li><strong>Live at close:</strong> the EUH student workshop in preparation &middot; the Unis bot demo requested for Impact Hub APAC &middot; two Science Fair 2026 proposals awaiting a result &middot; five CCAF learners still able to certify, plus a Q&amp;A panel with anh Duc to support them &middot; the monthly Flow Game series &middot; Diane Mille's five-month KEDGE internship, started ~20 August.</li>
-      <li><strong>One post still owed:</strong> the August Diaries summary &mdash; written and scheduled, publishing in the first week of September.</li>
-    </ul>
-  </div>
-
-  <div class="fb-panel">
-    <h3 style="color:#8a8580;">How this close was scored</h3>
-    <ul>
-      <li><strong>Method:</strong> each objective is the mean of its KRs; the headline is the mean of the three objectives &mdash; the same method used in the March, May and August snapshots, so the 27 &rarr; 44 &rarr; 65 &rarr; 70 series is comparable throughout.</li>
-      <li><strong>KR 1.1 scope corrected at close.</strong> PNV sessions and the Impact Hub community Flow Game were moved out of Objective 1, which is scoped "in Officience". This lowered KR 1.1 from 50% to 46% and raised KR 2.1 and 3.4. The correction was made deliberately, knowing it reduced the headline.</li>
-      <li><strong>KR 3.3 was rescored at close from 63% to 100%, and its definition revised.</strong> The original target counted 24 weekly posts, on which basis the result is 15 of 24. Tam's ruling is that the KR's purpose &mdash; keeping the team aligned through regular sharing &mdash; was met continuously, with no period from 1 March to 31 August left unreported, and that the cadence going forward is monthly rather than weekly. Both bases are shown on the KR itself. <strong>This is the one figure in the close that moved because the measure changed rather than because work was added</strong>, and it accounts for roughly three of the headline's forty-six points &mdash; worth knowing when comparing against the March and May snapshots, which were scored on post count.</li>
-      <li><strong>KR 3.3's 15th post was still unpublished</strong> at the time of this close &mdash; written and scheduled, but not live.</li>
-      <li><strong>KR 2.3's target was held at 10, not lowered to 6</strong>, so that the loss of four cohort members stays visible in the score rather than being defined away.</li>
-      <li><strong>Two items were excluded from KR 2.2 at close</strong> on Tam's ruling: the Vibecoding Party (benefit went directly to Officience, so it belongs under KR 1.1) and the KEDGE / Diane Mille internship (an internship is not a partner-network engagement). Cosmic House and Vysta took their places; the KR still reads 5 of 5.</li>
-      <li><strong>The LinkedIn impressions figure does not reconcile</strong> and is marked with an asterisk on the Social Media tab rather than presented as a clean number.</li>
-      <li><strong>The Facebook post count could not be retrieved</strong> after two attempts and is left blank rather than estimated.</li>
-    </ul>
-  </div>
-
-  <div class="footer">
-    UnIqueS OKR Dashboard &middot; <strong>final close, cycle Mar&ndash;Aug 2026</strong> &middot; compiled 2 September 2026<br>
-    LinkedIn, Facebook and website figures verified against live sources on 2 Sep 2026. Session counts, programme classifications, partnership status and CCAF certification numbers are Tam's own assessment. Objective 4 is recorded but unscored for this cycle.
-  </div>
-
+<div class="footer">
+  UnIqueS Development &middot; OKR cycle September 2026 &ndash; February 2027<br>
+  Built 3 September 2026 from the team's OKR document &middot; figures mirror that document, including its blanks<br>
+  Previous cycle: <a href="UnIqueS_OKR_Dashboard_Aug31.html">March &ndash; August 2026, closed at 73%</a>
 </div>
 
 <script>
@@ -1405,26 +1096,8 @@
 
   // ── KR card expand/collapse ──
   function toggleKR(card) {
-    // Don't toggle if clicking a link inside
     if (event.target.tagName === 'A') return;
     card.classList.toggle('expanded');
-  }
-
-  // ── Social media detail toggle ──
-  function toggleSocial(platform) {
-    const detail = document.getElementById('social-' + platform);
-    const card = event.currentTarget;
-    const wasActive = detail.classList.contains('active');
-
-    // Close all
-    document.querySelectorAll('.social-detail').forEach(d => d.classList.remove('active'));
-    document.querySelectorAll('.social-card').forEach(c => c.classList.remove('expanded'));
-
-    // Toggle
-    if (!wasActive) {
-      detail.classList.add('active');
-      card.classList.add('expanded');
-    }
   }
 </script>
 

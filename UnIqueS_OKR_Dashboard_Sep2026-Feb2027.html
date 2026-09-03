@@ -27,18 +27,43 @@
   }
   .header h1 { font-size: 26px; font-weight: 700; color: #c47a2a; }
   .header .subtitle { font-size: 14px; color: #8a8580; margin-top: 2px; }
-  .header .cycle {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 3px 12px;
-    border: 1px solid #e8a44a;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #c47a2a;
-    background: #fdf6ec;
-  }
   .header .date { font-size: 12px; color: #b0a99f; margin-top: 6px; }
+  .header .status-flag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 3px 12px;
+    border: 1px solid #2e7d32;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #2e7d32;
+    background: #e8f5e9;
+  }
+
+  /* ── Cycle switcher ── */
+  .cycle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: white;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .cycle-switch .cs-label {
+    font-size: 10px; font-weight: 700; color: #b0a99f;
+    text-transform: uppercase; letter-spacing: .6px; padding: 0 8px;
+  }
+  .cycle-switch a, .cycle-switch .cs-cur {
+    font-size: 12px; padding: 7px 14px; border-radius: 8px;
+    text-decoration: none; font-weight: 500; white-space: nowrap;
+  }
+  .cycle-switch a { color: #8a8580; transition: all .2s; }
+  .cycle-switch a:hover { background: #faf8f5; color: #4a4540; }
+  .cycle-switch .cs-cur { background: #c47a2a; color: white; font-weight: 600; }
 
   /* ── Tab Navigation ── */
   .tab-bar {
@@ -349,8 +374,15 @@
 <div class="header">
   <h1>UnIqueS Development</h1>
   <div class="subtitle">Tam's OKR Dashboard</div>
-  <div><span class="cycle">Cycle: September 2026 &ndash; February 2027</span></div>
   <div class="date">Cycle open &middot; day 3 of 181 &middot; built 3 September 2026 from the team's OKR document</div>
+  <div><span class="status-flag">Agreed &mdash; these are the cycle's official OKRs</span></div>
+</div>
+
+<!-- Cycle switcher -->
+<div class="cycle-switch">
+  <span class="cs-label">Cycle</span>
+  <a href="UnIqueS_OKR_Dashboard_Aug31.html">Mar &ndash; Aug 2026 &middot; closed at 73%</a>
+  <span class="cs-cur">Sep 2026 &ndash; Feb 2027 &middot; running</span>
 </div>
 
 <!-- Tab Navigation -->
@@ -928,8 +960,8 @@
 <!-- ══════════ STILL OPEN TAB ══════════ -->
 <div id="tab-gaps" class="tab-panel">
   <div class="panel">
-    <h3>Still open in the source document</h3>
-    <div class="panel-sub">Every item below is a blank, a "?" or a "TBC" written in the team's own OKR document &mdash; not an outside opinion. They are listed here so the board shows what is unresolved instead of hiding it behind a zero.</div>
+    <h3>Still open in the agreed OKRs</h3>
+    <div class="panel-sub">The OKRs are agreed, but seven cells in them are still a blank, a "?" or a "TBC". Every item below is written that way in the team's own document &mdash; none of it is an outside opinion. They are listed here so the board shows what is unresolved instead of hiding it behind a zero.</div>
 
     <div class="q-item">
       <h6><span class="q-kr">KR 5.2</span>No baseline and no target</h6>
