@@ -88,8 +88,8 @@
   /* ── Mini progress cards ── */
   .obj-mini-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
     margin-bottom: 24px;
   }
   .obj-mini {
@@ -111,9 +111,11 @@
   .obj-mini-pct.c1 { color: #42a5f5; }
   .obj-mini-pct.c2 { color: #ab47bc; }
   .obj-mini-pct.c3 { color: #e8a44a; }
+  .obj-mini-pct.c4 { color: #2e7d32; font-size: 13px; }
   .fill-c1 { background: #42a5f5; }
   .fill-c2 { background: #ab47bc; }
   .fill-c3 { background: #e8a44a; }
+  .fill-c4 { background: #66bb6a; }
 
   /* ── Objective Detail Panel ── */
   .obj-detail {
@@ -138,6 +140,7 @@
   .obj-detail-header .icon.o1 { background: #e3f2fd; }
   .obj-detail-header .icon.o2 { background: #f3e5f5; }
   .obj-detail-header .icon.o3 { background: #fff3e0; }
+  .obj-detail-header .icon.o4 { background: #e8f5e9; }
   .obj-detail-header h3 { font-size: 16px; font-weight: 600; flex: 1; }
   .obj-description { font-size: 12px; color: #8a8580; margin-bottom: 16px; padding-left: 48px; font-style: italic; }
 
@@ -430,7 +433,7 @@
     </div>
     <div class="overall-text">
       <h2>Overall Progress</h2>
-      <p>9 Key Results across 3 Objectives &middot; <strong>cycle closed</strong></p>
+      <p>9 Key Results across 3 scored Objectives &middot; a fourth recorded, unscored &middot; <strong>cycle closed</strong></p>
       <span class="badge up">+29% since May 5 &middot; +46% since Mar 31 (was 27%)</span>
     </div>
   </div>
@@ -456,6 +459,12 @@
       <div class="obj-mini-title">Amplify Through Storytelling</div>
       <div class="obj-mini-bar"><div class="obj-mini-fill fill-c3" style="width:85%"></div></div>
       <div class="obj-mini-pct c3">85%</div>
+    </div>
+    <div class="obj-mini" onclick="toggleObj(4)">
+      <div class="obj-mini-icon">&#129504;</div>
+      <div class="obj-mini-title">Becoming an AI-Native Organisation</div>
+      <div class="obj-mini-bar" style="background:transparent;border:1px dashed #d6cfc5;"></div>
+      <div class="obj-mini-pct c4">10 delivered</div>
     </div>
   </div>
 
@@ -827,15 +836,15 @@
     </div>
   </div>
 
-  <!-- Objective 4 - emerging, unscored -->
-  <div class="emerging">
-    <div class="emerging-head">
-      <div class="icon">&#129504;</div>
-      <h3>Emerging &mdash; Becoming an AI-Native Organisation</h3>
-      <span class="tag-unscored">unscored this cycle</span>
+  <!-- Objective 4 - AI-Native, no targets set this cycle -->
+  <div id="obj-4" class="obj-detail">
+    <div class="obj-detail-header">
+      <div class="icon o4">&#129504;</div>
+      <h3>4. Become an AI-Native Organisation <span class="tag-unscored" style="margin-left:8px;">no targets set &mdash; unscored this cycle</span></h3>
     </div>
+    <div class="obj-description">Turn what UnIqueS learns about AI into working tools the team actually uses &mdash; knowledge, tutoring and delivery running on systems rather than on individual effort.</div>
     <div class="emerging-sub">
-      Born out of the 6-month retrospective and the H2 planning session with Cao Phong on <strong>8 May 2026</strong>. No targets were set in advance, so there is nothing to measure against &mdash; this section records delivered results only, and is deliberately excluded from the 73% headline so it neither inflates nor deflates the scored cycle. Most of Tam's largest work between May and August lives here rather than in the nine KRs above. Tam's own framing of the period: <em>"a shift from learning to product &mdash; the Claude Architect material moved off the page and into working tools."</em><br><br><strong>From September this becomes a scored objective.</strong> It ran this cycle without targets because it emerged mid-flight; that was the right call for six months of exploration and would be the wrong call for the next six. The results below are what it has to show for the period.
+      Born out of the 6-month retrospective and the H2 planning session with Cao Phong on <strong>8 May 2026</strong>. Because it emerged mid-cycle, no targets were set &mdash; so there is nothing to score against, and it is excluded from the 73% headline rather than given an invented figure. <strong>From September it becomes a scored objective.</strong><br><br>Everything below was delivered between May and August. Most of Tam's largest work of the cycle lives here rather than in the nine KRs. Her own framing of the period: <em>"a shift from learning to product &mdash; the Claude Architect material moved off the page and into working tools."</em>
     </div>
 
     <div class="em-item">
