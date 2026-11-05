@@ -110,13 +110,13 @@
   }
   /* Unis, the UnIqueS mascot: waves once on load, cheers on finished KRs */
   .unis {
-    position: relative; flex-shrink: 0; width: 122px; height: 110px;
+    position: relative; flex-shrink: 0; width: 176px; height: 158px; margin-left: auto;
     border: none; background: none; padding: 0; cursor: pointer; border-radius: 12px;
   }
   .unis:focus-visible { outline: 2px solid #e8a44a; outline-offset: 2px; }
   .unis img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .unis-bubble {
-    position: absolute; top: -8px; right: 70%;
+    position: absolute; top: -4px; right: 74%;
     background: #fff7ec; border: 1px solid #f0d9b8; color: #6b4a1c;
     font-size: 12.5px; font-weight: 600; padding: 4px 11px; border-radius: 12px;
     white-space: nowrap; pointer-events: none;
@@ -125,8 +125,9 @@
   .unis.talk .unis-bubble { opacity: 1; transform: none; }
   .kr-cheer { height: 42px; width: auto; flex-shrink: 0; margin-right: -4px; }
   .kr-card.kr-complete { border-color: #9ccc65; }
-  @media (max-width: 700px) { .unis { width: 98px; height: 88px; } .unis-bubble { right: 60%; } }
+  @media (max-width: 700px) { .overall-section .overall-text { flex: none; } .unis { width: 120px; height: 108px; margin-left: 0; } .unis-bubble { right: 66%; } }
   @media (prefers-reduced-motion: reduce) { .unis-bubble { transition: none; } }
+  .overall-text { flex: 0 1 560px; min-width: 0; }
   .overall-text h2 { font-size: 18px; font-weight: 600; }
   .overall-text p { font-size: 14px; color: #6b6560; margin-top: 2px; }
   .badge {
@@ -459,7 +460,7 @@
     </div>
     <div class="overall-text">
       <h2>Check-in &middot; 5 November 2026</h2>
-      <p>36% of the cycle has passed &middot; scored on <strong>steps done, weighted by importance</strong>. No Key Result has reached its final outcome yet.</p>
+      <p>36% of the cycle has passed &middot; scored on <strong>steps done, weighted by importance</strong>.<br>No Key Result has reached its final outcome yet.</p>
       <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span><br>
       <button class="info-btn" popovertarget="pop-score"><i class="i">i</i>How scores are calculated</button>
     </div>
