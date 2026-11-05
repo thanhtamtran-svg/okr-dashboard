@@ -110,23 +110,48 @@
   }
   /* Unis, the UnIqueS mascot: waves once on load, cheers on finished KRs */
   .unis {
-    position: relative; flex-shrink: 0; width: 122px; height: 110px; margin-left: auto; margin-right: 8px;
+    position: relative; flex-shrink: 0; width: 122px; height: 110px; margin-left: -8px; margin-right: 8px;
     border: none; background: none; padding: 0; cursor: pointer; border-radius: 12px;
   }
   .unis:focus-visible { outline: 2px solid #e8a44a; outline-offset: 2px; }
   .unis img { display: block; width: 100%; height: 100%; object-fit: contain; }
-  .unis-bubble {
-    position: absolute; top: -8px; right: 70%;
-    background: #fff7ec; border: 1px solid #f0d9b8; color: #6b4a1c;
-    font-size: 12.5px; font-weight: 600; padding: 4px 11px; border-radius: 12px;
-    white-space: nowrap; pointer-events: none;
-    opacity: 0; transform: translateY(4px); transition: opacity .3s, transform .3s;
+  /* The summary is drawn as Unis's speech bubble, its tail pointing at Unis */
+  .overall-section .overall-text {
+    position: relative; background: #fff7ec; border: 1px solid #f0d9b8;
+    border-radius: 16px; padding: 14px 20px;
   }
-  .unis.talk .unis-bubble { opacity: 1; transform: none; }
+  .overall-text::before, .overall-text::after {
+    content: ""; position: absolute; top: 50%; border: solid transparent; border-right: 0;
+  }
+  .overall-text::before { right: -12px; margin-top: -11px; border-width: 11px 0 11px 12px; border-left-color: #f0d9b8; }
+  .overall-text::after  { right: -10px; margin-top: -10px; border-width: 10px 0 10px 11px; border-left-color: #fff7ec; }
+  .overall-text .say-hi { display: none; }
+  /* The introduction uses the same bubble, layout and type as the check-in */
+  .overall-text.hi .say-hi {
+    display: block; position: absolute; inset: 0; padding: inherit; text-align: inherit;
+    font-size: 14px; line-height: 1.5; color: #6b6560; animation: hi-in .4s ease-out;
+  }
+  .say-hi b { display: block; font-size: 24px; font-weight: 700; color: #8f5617; line-height: 1.25; margin-bottom: 4px; }
+  .say-hi .w { opacity: .28; transition: opacity .3s ease; }
+  .say-hi .w.on { opacity: 1; }
+  @keyframes hi-in { from { opacity: 0; } }
+  /* Presenting: Unis's introduction first, then the check-in; in both, the
+     text starts faint and lights up in turn. */
+  .overall-section .overall-text { transition: background-color .4s, border-color .4s; }
+  .overall-text::before, .overall-text::after { transition: opacity .4s; }
+  .overall-text > * { transition: opacity .5s ease; }
+  .overall-text.presenting > * { opacity: .28; }
+  .overall-text.presenting > .shown { opacity: 1; }
+  .overall-text.hi > :not(.say-hi) { opacity: 0; }
   .kr-cheer { height: 42px; width: auto; flex-shrink: 0; margin-right: -4px; }
   .kr-card.kr-complete { border-color: #9ccc65; }
-  @media (max-width: 700px) { .overall-section .overall-text { flex: none; } .unis { width: 98px; height: 88px; margin: 0; } .unis-bubble { right: 60%; } }
-  @media (prefers-reduced-motion: reduce) { .unis-bubble { transition: none; } }
+  @media (max-width: 700px) {
+    .overall-section .overall-text { flex: none; padding: 14px 16px; }
+    .overall-text::before, .overall-text::after { top: auto; right: auto; left: 50%; border-right: solid transparent; border-bottom: 0; }
+    .overall-text::before { bottom: -12px; margin: 0 0 0 -11px; border-width: 12px 11px 0 11px; border-color: #f0d9b8 transparent transparent; }
+    .overall-text::after  { bottom: -10px; margin: 0 0 0 -10px; border-width: 11px 10px 0 10px; border-color: #fff7ec transparent transparent; }
+    .unis { width: 98px; height: 88px; margin: -12px 0 0; }
+  }
   .overall-text { flex: 0 1 560px; min-width: 0; }
   .overall-text h2 { font-size: 18px; font-weight: 600; }
   .overall-text p { font-size: 14px; color: #6b6560; margin-top: 2px; }
@@ -459,6 +484,7 @@
       <div class="ring-label">1%</div>
     </div>
     <div class="overall-text">
+      <div class="say-hi" aria-hidden="true"><b>Hi, I'm Unis!</b>Think of me as a <strong>Phoenix</strong> rising from knowledge: born from the UnIqueS team's lived experience, and shared vision at the intersection of <strong>AI and human flourishing</strong>.</div>
       <h2>Check-in &middot; 5 November 2026</h2>
       <p>36% of the cycle has passed &middot; scored on <strong>steps done, weighted by importance</strong>.<br>No Key Result has reached its final outcome yet.</p>
       <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span><br>
@@ -466,7 +492,6 @@
     </div>
     <button class="unis" type="button" aria-label="Unis, the UnIqueS mascot. Press to wave again.">
       <img src="unis-still.png" alt="" width="222" height="200">
-      <span class="unis-bubble" aria-hidden="true">Hi, I'm Unis!</span>
     </button>
   </div>
 
@@ -1387,19 +1412,77 @@
     if (!reduce && window.fetch) fetch(WAVE).then(r => r.ok ? r.blob() : null).then(b => { waveBlob = b; }).catch(() => {});
     const play = img => {
       if (reduce) return;
+      if (img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
       img.src = waveBlob ? URL.createObjectURL(waveBlob) : (img.dataset.played ? WAVE + '?t=' + Date.now() : WAVE);
       img.dataset.played = '1';
     };
     const btn = document.querySelector('.unis');
     if (btn) {
       const img = btn.querySelector('img');
-      const say = () => {
-        btn.classList.add('talk');
-        clearTimeout(btn._t);
-        btn._t = setTimeout(() => btn.classList.remove('talk'), 3500);
+      const text = document.querySelector('.overall-text');
+      // Unis introduces itself (words appear at reading pace), then "presents"
+      // the summary: every line faint, each line lighting up in turn.
+      // The introduction plays on the first visit only; pressing Unis replays it.
+      let timers = [];
+      const lines = text ? [...text.children].filter(el => el.tagName !== 'BR' && !el.classList.contains('say-hi')) : [];
+      const hi = text && text.querySelector('.say-hi');
+      const words = [];
+      if (hi) {
+        const walk = node => [...node.childNodes].forEach(n => {
+          if (n.nodeType === 3) {
+            const frag = document.createDocumentFragment();
+            n.textContent.split(/(\s+)/).forEach(part => {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              const w = document.createElement('span'); w.className = 'w'; w.textContent = part;
+              words.push(w); frag.appendChild(w);
+            });
+            n.replaceWith(frag);
+          } else if (n.tagName !== 'B') walk(n);
+        });
+        walk(hi);
+      }
+      const WORD = 160, START = 400, HOLD = 500, LINE = 450, WAVE_MS = 3400;   // ms
+      const reset = () => {
+        text.classList.remove('hi', 'presenting');
+        lines.forEach(l => l.classList.remove('shown'));
+        words.forEach(w => w.classList.remove('on'));
       };
-      play(img); say();
-      btn.addEventListener('click', () => { play(img); say(); });
+      const present = () => {
+        timers.forEach(clearTimeout); timers = [];
+        play(img);
+        if (reduce || !text) return;
+        reset();
+        text.classList.add('hi');
+        // Keep one bubble size for the introduction and the check-in.
+        text.style.minHeight = '';
+        const need = hi.scrollHeight + 2;
+        if (need > text.offsetHeight) text.style.minHeight = need + 'px';
+        // Group the words into the rows they wrap onto; each row lights up as a
+        // whole, and stays lit for about as long as it takes to read it.
+        const rows = [];
+        words.forEach(w => {
+          const top = Math.round(w.getBoundingClientRect().top);
+          const last = rows[rows.length - 1];
+          if (last && Math.abs(last.top - top) < 6) last.words.push(w); else rows.push({ top, words: [w] });
+        });
+        let at = START;
+        rows.forEach(r => {
+          timers.push(setTimeout(() => r.words.forEach(w => w.classList.add('on')), at));
+          at += r.words.length * WORD;
+        });
+        const talk = at + HOLD;
+        timers.push(setTimeout(() => { text.classList.remove('hi'); text.classList.add('presenting'); }, talk));
+        lines.forEach((l, i) => timers.push(setTimeout(() => l.classList.add('shown'), talk + 300 + i * LINE)));
+        const allShown = talk + 300 + (lines.length - 1) * LINE;
+        // Unis keeps waving until the last check-in line is shown.
+        for (let t = WAVE_MS; t < allShown; t += WAVE_MS) timers.push(setTimeout(() => play(img), t));
+        timers.push(setTimeout(reset, allShown + 800));
+      };
+      let seen = false;
+      try { seen = localStorage.getItem('unis-intro-seen') === '1'; localStorage.setItem('unis-intro-seen', '1'); } catch (e) {}
+      if (seen) play(img); else present();
+      btn.addEventListener('click', present);
     }
     // A Key Result at 100%: Unis appears on its card and waves once.
     window.celebrateKR = card => {
