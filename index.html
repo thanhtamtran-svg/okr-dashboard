@@ -100,14 +100,15 @@
     padding: 24px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
-  .ring-container { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
-  .ring-container svg { transform: rotate(-90deg); }
+  .ring-container { position: relative; width: 150px; height: 150px; flex-shrink: 0; }
+  .ring-container svg { transform: rotate(-90deg); width: 100%; height: 100%; }
   .ring-bg { fill: none; stroke: #ebe6df; stroke-width: 10; }
   .ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease; }
   .ring-label {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 26px; font-weight: 700; color: #c47a2a;
+    font-size: 36px; font-weight: 700; color: #c47a2a;
   }
+  @media (max-width: 700px) { .ring-container { width: 130px; height: 130px; } .ring-label { font-size: 32px; } }
   /* Unis, the UnIqueS mascot: waves once on load, cheers on finished KRs */
   .unis {
     position: relative; flex-shrink: 0; width: 122px; height: 110px; margin-left: -8px; margin-right: 8px;
@@ -128,10 +129,12 @@
   .overall-text .say-hi { display: none; }
   /* The introduction uses the same bubble, layout and type as the check-in */
   .overall-text.hi .say-hi {
-    display: block; position: absolute; inset: 0; padding: inherit; text-align: inherit;
+    display: block;
     font-size: 14px; line-height: 1.5; color: #6b6560; animation: hi-in .4s ease-out;
   }
   .say-hi b { display: block; font-size: 24px; font-weight: 700; color: #8f5617; line-height: 1.25; margin-bottom: 4px; }
+  .say-hi .hi-p { display: block; }
+  .say-hi .hi-p + .hi-p { margin-top: 6px; }
   .say-hi .w { opacity: .28; transition: opacity .3s ease; }
   .say-hi .w.on { opacity: 1; }
   @keyframes hi-in { from { opacity: 0; } }
@@ -142,7 +145,16 @@
   .overall-text > * { transition: opacity .5s ease; }
   .overall-text.presenting > * { opacity: .28; }
   .overall-text.presenting > .shown { opacity: 1; }
-  .overall-text.hi > :not(.say-hi) { opacity: 0; }
+  .overall-text.hi > :not(.say-hi) { display: none; }
+  .overall-text.playing { cursor: pointer; }
+  @media (min-width: 701px) {
+    .overall-section .overall-text { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: center; }
+    .overall-text > * { grid-column: 1 / -1; }
+    .overall-text > h2 { grid-column: 1; grid-row: 1; }
+    .overall-text > .info-btn { grid-column: 2; grid-row: 1; margin-top: 0; }
+    .overall-text > br { display: none; }
+    .overall-text > .badge { justify-self: start; }
+  }
   .kr-cheer { height: 42px; width: auto; flex-shrink: 0; margin-right: -4px; }
   .kr-card.kr-complete { border-color: #9ccc65; }
   @media (max-width: 700px) {
@@ -484,7 +496,7 @@
       <div class="ring-label">1%</div>
     </div>
     <div class="overall-text">
-      <div class="say-hi" aria-hidden="true"><b>Hi, I'm Unis!</b>Think of me as a <strong>Phoenix</strong> rising from knowledge: born from the UnIqueS team's lived experience, and shared vision at the intersection of <strong>AI and human flourishing</strong>.</div>
+      <div class="say-hi" aria-hidden="true"><b>I'm Unis</b>Your guide through the collective intelligence of UnIqueS &mdash; a <strong>Phoenix</strong> rising from the team's lived experience and shared vision, at the intersection of <strong>AI and human flourishing</strong>.</div>
       <h2>Check-in &middot; 5 November 2026</h2>
       <p>36% of the cycle has passed &middot; scored on <strong>steps done, weighted by importance</strong>.<br>No Key Result has reached its final outcome yet.</p>
       <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span><br>
@@ -1444,7 +1456,9 @@
       }
       const WORD = 160, START = 400, HOLD = 500, LINE = 450, WAVE_MS = 3400;   // ms
       const reset = () => {
-        text.classList.remove('hi', 'presenting');
+        text.classList.remove('hi', 'presenting', 'playing');
+        text.style.minHeight = '';
+        text.removeAttribute('title');
         lines.forEach(l => l.classList.remove('shown'));
         words.forEach(w => w.classList.remove('on'));
       };
@@ -1453,11 +1467,11 @@
         play(img);
         if (reduce || !text) return;
         reset();
+        // Hold the bubble at the check-in's size so the frame never changes.
+        text.style.minHeight = text.offsetHeight + 'px';
         text.classList.add('hi');
-        // Keep one bubble size for the introduction and the check-in.
-        text.style.minHeight = '';
-        const need = hi.scrollHeight + 2;
-        if (need > text.offsetHeight) text.style.minHeight = need + 'px';
+        text.classList.add('playing');
+        text.title = 'Click to skip';
         // Group the words into the rows they wrap onto; each row lights up as a
         // whole, and stays lit for about as long as it takes to read it.
         const rows = [];
@@ -1472,7 +1486,7 @@
           at += r.words.length * WORD;
         });
         const talk = at + HOLD;
-        timers.push(setTimeout(() => { text.classList.remove('hi'); text.classList.add('presenting'); }, talk));
+        timers.push(setTimeout(() => { text.classList.remove('hi'); text.classList.add('presenting'); text.style.minHeight = ''; }, talk));
         lines.forEach((l, i) => timers.push(setTimeout(() => l.classList.add('shown'), talk + 300 + i * LINE)));
         const allShown = talk + 300 + (lines.length - 1) * LINE;
         // Unis keeps waving until the last check-in line is shown.
@@ -1483,6 +1497,12 @@
       try { seen = localStorage.getItem('unis-intro-seen') === '1'; localStorage.setItem('unis-intro-seen', '1'); } catch (e) {}
       if (seen) play(img); else present();
       btn.addEventListener('click', present);
+      // Tapping the bubble while Unis is presenting skips straight to the check-in.
+      text && text.addEventListener('click', () => {
+        if (!text.classList.contains('playing')) return;
+        timers.forEach(clearTimeout); timers = [];
+        reset();
+      });
     }
     // A Key Result at 100%: Unis appears on its card and waves once.
     window.celebrateKR = card => {
