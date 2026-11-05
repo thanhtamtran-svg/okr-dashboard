@@ -108,6 +108,25 @@
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     font-size: 26px; font-weight: 700; color: #c47a2a;
   }
+  /* Unis, the UnIqueS mascot: waves once on load, cheers on finished KRs */
+  .unis {
+    position: relative; flex-shrink: 0; width: 122px; height: 110px;
+    border: none; background: none; padding: 0; cursor: pointer; border-radius: 12px;
+  }
+  .unis:focus-visible { outline: 2px solid #e8a44a; outline-offset: 2px; }
+  .unis img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .unis-bubble {
+    position: absolute; top: -8px; right: 70%;
+    background: #fff7ec; border: 1px solid #f0d9b8; color: #6b4a1c;
+    font-size: 12.5px; font-weight: 600; padding: 4px 11px; border-radius: 12px;
+    white-space: nowrap; pointer-events: none;
+    opacity: 0; transform: translateY(4px); transition: opacity .3s, transform .3s;
+  }
+  .unis.talk .unis-bubble { opacity: 1; transform: none; }
+  .kr-cheer { height: 42px; width: auto; flex-shrink: 0; margin-right: -4px; }
+  .kr-card.kr-complete { border-color: #9ccc65; }
+  @media (max-width: 700px) { .unis { width: 98px; height: 88px; } .unis-bubble { right: 60%; } }
+  @media (prefers-reduced-motion: reduce) { .unis-bubble { transition: none; } }
   .overall-text h2 { font-size: 18px; font-weight: 600; }
   .overall-text p { font-size: 14px; color: #6b6560; margin-top: 2px; }
   .badge {
@@ -444,6 +463,10 @@
       <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span><br>
       <button class="info-btn" popovertarget="pop-score"><i class="i">i</i>How scores are calculated</button>
     </div>
+    <button class="unis" type="button" aria-label="Unis, the UnIqueS mascot. Press to wave again.">
+      <img src="unis-still.png" alt="" width="222" height="200">
+      <span class="unis-bubble" aria-hidden="true">Hi, I'm Unis!</span>
+    </button>
   </div>
 
   <div class="panel">
@@ -1352,6 +1375,47 @@
     const overall = avg(all);
     document.querySelector('.ring-label').textContent = overall + '%';
     document.querySelector('.ring-fill').setAttribute('stroke-dashoffset', (314.16 * (1 - overall / 100)).toFixed(2));
+  })();
+
+  // Unis: plays the wave once (the file itself stops on its last frame).
+  // Visitors who ask their device for reduced motion only see the still picture.
+  (function unis() {
+    const STILL = 'unis-still.png', WAVE = 'unis-wave.webp';
+    const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let waveBlob = null;
+    if (!reduce && window.fetch) fetch(WAVE).then(r => r.ok ? r.blob() : null).then(b => { waveBlob = b; }).catch(() => {});
+    const play = img => {
+      if (reduce) return;
+      img.src = waveBlob ? URL.createObjectURL(waveBlob) : (img.dataset.played ? WAVE + '?t=' + Date.now() : WAVE);
+      img.dataset.played = '1';
+    };
+    const btn = document.querySelector('.unis');
+    if (btn) {
+      const img = btn.querySelector('img');
+      const say = () => {
+        btn.classList.add('talk');
+        clearTimeout(btn._t);
+        btn._t = setTimeout(() => btn.classList.remove('talk'), 3500);
+      };
+      play(img); say();
+      btn.addEventListener('click', () => { play(img); say(); });
+    }
+    // A Key Result at 100%: Unis appears on its card and waves once.
+    window.celebrateKR = card => {
+      if (card.querySelector('.kr-cheer')) return;
+      card.classList.add('kr-complete');
+      const im = document.createElement('img');
+      im.className = 'kr-cheer';
+      im.src = STILL;
+      im.alt = 'Unis celebrates: this Key Result is done';
+      im.title = 'Done!';
+      const pct = card.querySelector('.kr-pct');
+      pct.parentNode.insertBefore(im, pct);
+      play(im);
+    };
+    document.querySelectorAll('.kr-card').forEach(c => {
+      if (c.querySelector('.kr-pct').textContent.trim() === '100%') celebrateKR(c);
+    });
   })();
 </script>
 
