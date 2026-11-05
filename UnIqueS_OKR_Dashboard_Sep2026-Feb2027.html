@@ -347,6 +347,35 @@
   }
   .legend strong { color: #4a4540; }
 
+  /* Info buttons + pop-ups */
+  .info-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: 1px solid #e6dfd6; border-radius: 999px;
+    padding: 4px 11px; margin-top: 8px; cursor: pointer;
+    font: inherit; font-size: 12px; color: #8a8580;
+  }
+  .info-btn:hover, .info-btn:focus-visible { color: #c47a2a; border-color: #e8a44a; outline: none; }
+  .info-btn .i {
+    width: 16px; height: 16px; border-radius: 50%; background: #f3ede6; color: #c47a2a;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; font-style: normal;
+  }
+  .info-pop {
+    border: none; border-radius: 14px; padding: 20px 22px 18px;
+    width: min(520px, calc(100% - 32px)); margin: auto;
+    background: white; color: #6b6560; font-size: 13px; line-height: 1.8;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  }
+  .info-pop::backdrop { background: rgba(40,30,20,0.25); }
+  .info-pop h4 { font-size: 14px; color: #4a4540; margin: 0 28px 8px 0; }
+  .info-pop p { margin: 0 0 8px; }
+  .info-pop .close {
+    position: absolute; top: 10px; right: 12px; width: 30px; height: 30px;
+    border: none; background: none; border-radius: 50%; cursor: pointer;
+    font-size: 20px; line-height: 1; color: #8a8580;
+  }
+  .info-pop .close:hover { background: #f3ede6; color: #4a4540; }
+
   .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #c0b8ae; line-height: 1.7; }
   .footer a { color: #c47a2a; text-decoration: none; }
 
@@ -402,7 +431,8 @@
     <div class="overall-text">
       <h2>Check-in &middot; 5 November 2026</h2>
       <p>36% of the cycle has passed &middot; scored on <strong>steps done, weighted by importance</strong>. No Key Result has reached its final outcome yet.</p>
-      <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span>
+      <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span><br>
+      <button class="info-btn" popovertarget="pop-score"><i class="i">i</i>How scores are calculated</button>
     </div>
   </div>
 
@@ -457,20 +487,6 @@
     </div>
   </div>
 
-  <div class="legend">
-    <strong>How scores are calculated.</strong> Each Key Result is split into steps, taken from the Delivery Plan and adjusted to what the Diaries report. Each step has an importance weight:
-    <span class="step-w w3">3</span> the outcome itself, or the step that unlocks it &middot;
-    <span class="step-w">2</span> a main step &middot;
-    <span class="step-w">1</span> a supporting step.
-    A done step counts in full, a step in progress counts half. The score is the weighted share of steps done, so a Key Result reaches 100% only when every step, including the outcome, is done. Weights and statuses are Claude's reading of the Diaries posts, checked by Tam. Open a Key Result to see its steps.
-  </div>
-
-  <div class="legend">
-    <strong>Tags carried over from the source document.</strong>
-    <span class="ptag v">V</span> Verified &mdash; from the 31 Aug meeting document or the 7 Jul Marketplace brief.
-    <span class="ptag p">P</span> Proposed &mdash; still needs a decision.
-    Only the fixed-dates table in the source carries these tags, so they appear there.
-  </div>
 
   <!-- Objective Mini Cards -->
   <div class="obj-mini-row">
@@ -917,7 +933,6 @@
         <div class="kr-milestones">
           <h5>Related fixed dates</h5>
           <div class="milestone"><div class="milestone-dot pending">&middot;</div>October 2026 &mdash; 3 episodes recorded before episode 1 publishes <span class="ptag p">P</span></div>
-          <div class="milestone"><div class="milestone-dot pending">&middot;</div>2&ndash;6 Nov 2026 &mdash; Sommet de l'Action <span class="ptag v">V</span></div>
           <h5>Guests in view</h5>
           <div class="milestone"><div class="milestone-dot pending">&middot;</div>H&eacute;l&egrave;ne Micheau, Marie-Violaine Bouchet, Alexis Kovalenko, Lan Levy</div>
         </div>
@@ -998,6 +1013,7 @@
 <div id="tab-timeline" class="tab-panel">
   <div class="panel">
     <h3>Fixed dates</h3>
+    <button class="info-btn" popovertarget="pop-tags" style="margin:0 0 10px"><i class="i">i</i>What the V and P tags mean</button>
     <div class="panel-sub">Taken from the fixed-dates table in the team's OKR document, with its own tags kept. The two rows in red are the ones that constrain other Key Results: the certification deadline also gates the customer story (KR 1.2), and Diane's last day removes a co-owner from KR 3.2 and KR 4.4 six weeks before the cycle closes. Dates changed on 5 Nov are marked as confirmed by Tam.</div>
     <div class="row-list">
       <div class="row-item">
@@ -1011,11 +1027,6 @@
         <div><span class="ptag p">P</span></div>
       </div>
             <div class="row-item">
-        <div class="row-key">2&ndash;6 Nov 2026</div>
-        <div class="row-val">Sommet de l'Action (France, mostly online, English).</div>
-        <div><span class="ptag v">V</span></div>
-      </div>
-      <div class="row-item">
         <div class="row-key">11&ndash;17 Nov 2026</div>
         <div class="row-val">Phnom Penh research mission with PN Cambodia, led by Tam with Duc and Phuong (PN / PNV / Vysta scope of work, KR 2.1). Added from the Diaries, 3 Nov.</div>
         <div></div>
@@ -1334,5 +1345,24 @@
   })();
 </script>
 
+
+<div id="pop-score" class="info-pop" popover>
+  <button class="close" popovertarget="pop-score" popovertargetaction="hide" aria-label="Close">&times;</button>
+  <h4>How scores are calculated</h4>
+  <p>Each Key Result is split into steps, taken from the Delivery Plan and adjusted to what the team reports. Each step has an importance weight:</p>
+  <p><span class="step-w w3">3</span> the outcome itself, or the step that unlocks it<br>
+     <span class="step-w">2</span> a main step<br>
+     <span class="step-w">1</span> a supporting step</p>
+  <p>A done step counts in full, a step in progress counts half. The score is the weighted share of steps done, so a Key Result reaches 100% only when every step, including the outcome, is done.</p>
+  <p>Weights and statuses are Claude's reading of Offinity Diaries and the UnIqueS brain documents, checked by Tam. Open a Key Result to see its steps and the source of each one.</p>
+</div>
+
+<div id="pop-tags" class="info-pop" popover>
+  <button class="close" popovertarget="pop-tags" popovertargetaction="hide" aria-label="Close">&times;</button>
+  <h4>Tags carried over from the source document</h4>
+  <p><span class="ptag v">V</span> Verified &mdash; from the 31 Aug meeting document or the 7 Jul Marketplace brief.</p>
+  <p><span class="ptag p">P</span> Proposed &mdash; still needs a decision.</p>
+  <p>Only the fixed-dates table in the source carries these tags, so they appear there.</p>
+</div>
 </body>
 </html>
