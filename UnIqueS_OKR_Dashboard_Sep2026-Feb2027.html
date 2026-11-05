@@ -240,6 +240,21 @@
   .status-tag.not-started { background: #f5f0ea; color: #8a8580; }
   .status-tag.started { background: #e3f2fd; color: #1565c0; }
   .status-tag.gap { background: #fdecec; color: #c62828; }
+  .status-tag.ontrack { background: #e8f5e9; color: #2e7d32; }
+  .status-tag.risk { background: #fff3e0; color: #e65100; }
+  .note-box.diaries { background: #eef6fb; border-left-color: #42a5f5; }
+  .steps-box { margin-top: 12px; }
+  .steps-box h5 {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #b0a99f; margin-bottom: 6px;
+  }
+  .step-row { display: flex; align-items: flex-start; gap: 8px; padding: 3px 0; font-size: 12px; color: #4a4540; line-height: 1.5; }
+  .step-row .milestone-dot.doing { background: #fff3e0; color: #e65100; }
+  .step-w { flex-shrink: 0; font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: #f5f0ea; color: #8a8580; margin-top: 2px; }
+  .step-w.w3 { background: #fdf0e0; color: #c47a2a; }
+  .step-row .step-txt { flex: 1; }
+  .step-row .step-ev { display: block; font-size: 10.5px; color: #8a8580; }
+  .note-box.diaries .src { display: block; font-size: 10.5px; color: #8a8580; margin-top: 4px; }
 
   /* Provenance tags — only where the source document itself carries one */
   .ptag {
@@ -353,7 +368,7 @@
 <div class="header">
   <h1>UnIqueS Development</h1>
   <div class="subtitle">Tam's OKR Dashboard</div>
-  <div class="date">Cycle open &middot; day 3 of 181 &middot; built 3 September 2026 from the team's OKR document</div>
+  <div class="date">Check-in 5 November 2026 &middot; day 66 of 181 &middot; updated from Offinity Diaries (1 Sep &ndash; 3 Nov), UnIqueS brain documents, Drive and email (to 4 Nov)</div>
 </div>
 
 <!-- Cycle switcher -->
@@ -385,29 +400,69 @@
       <div class="ring-label">1%</div>
     </div>
     <div class="overall-text">
-      <h2>Baseline at cycle open</h2>
-      <p>September 2026 &ndash; February 2027 &middot; 5 Objectives &middot; 15 Key Results &middot; <strong>nothing scored yet</strong></p>
+      <h2>Check-in &middot; 5 November 2026</h2>
+      <p>36% of the cycle has passed &middot; scored on <strong>steps done, weighted by importance</strong>. No Key Result has reached its final outcome yet.</p>
       <span class="badge neutral">Previous cycle closed at 73% &middot; this cycle starts from its own baselines</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>What the Diaries say, 1 Sep &ndash; 3 Nov</h3>
+    <div class="panel-sub">Read from posts by Tam, Diane and Duc on Offinity Diaries. Status tags are Claude's reading of those posts, not a team decision.</div>
+    <div class="row-list">
+      <div class="row-item">
+        <div class="row-key">Moving</div>
+        <div class="row-val">Customer story interviews and data done (KR 1.2). A sponsorship route for the &euro;12k found through Officience France (KR 2.1, 2.2). Unconference prepared, landing page live, moved to 28 Nov (KR 4.2). Podcast plan finished (KR 4.4).</div>
+        <div><span class="status-tag ontrack">moving</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">PN / PNV grows</div>
+        <div class="row-val">Passerelles Num&eacute;riques plans a 2&ndash;3-year AI project in Vietnam, Cambodia and the Philippines. Its work counts under KR 2.1 (scope of work delivered) and its funding under KR 2.2 (sponsorship and tax-refund contract). Tam leads a research mission in Phnom Penh, 11&ndash;17 Nov.</div>
+        <div><span class="status-tag ontrack">moving</span></div>
+      </div>
+      <div class="row-item hard">
+        <div class="row-key">At risk</div>
+        <div class="row-val">Certifications still at 1 of 10, with 6 weeks to the new 15 Dec deadline (KR 1.1). Diane wrote on 30 Sep that the customer story cannot be published until 10 people are certified, so KR 1.2 depends on it too.</div>
+        <div><span class="status-tag gap">at risk</span></div>
+      </div>
+      <div class="row-item hard">
+        <div class="row-key">Past due, no news</div>
+        <div class="row-val">The Anthropic proof check was due 15 Sep (KR 1.3); no post reports it. The Vysta deadline (KR 2.4) was moved to 31 Dec by Tam on 5 Nov.</div>
+        <div><span class="status-tag gap">overdue</span></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">No news</div>
+        <div class="row-val">KR 3.2 partners live, KR 4.1 website packages, KR 4.3 university workshops, KR 5.1 second brain for an outside organisation, KR 5.2 AI adoption. Work may exist that was not posted.</div>
+        <div><span class="status-tag not-started">silent</span></div>
+      </div>
     </div>
   </div>
 
   <div class="elapsed-box">
     <div class="elapsed-head">
       <strong>Cycle timeline</strong>
-      <span>Day 3 of 181 &middot; 2% elapsed &middot; closes 28 Feb 2027</span>
+      <span>Day 66 of 181 &middot; 36% elapsed &middot; closes 28 Feb 2027</span>
     </div>
     <div class="elapsed-track">
-      <div class="elapsed-fill" style="width:2%"></div>
+      <div class="elapsed-fill" style="width:36%"></div>
     </div>
     <div class="elapsed-marks">
       <div class="elapsed-mark" style="left:7%">15 Sep<br>Anthropic proof</div>
-      <div class="elapsed-mark" style="left:26%">17&ndash;18 Oct<br>Unconference</div>
-      <div class="elapsed-mark" style="left:33%">31 Oct<br>Vysta live</div>
-      <div class="elapsed-mark" style="left:50%">30 Nov<br>PNV signed</div>
-      <div class="elapsed-mark key" style="left:67%">31 Dec<br>Anthropic deadline</div>
-      <div class="elapsed-mark key" style="left:84%">31 Jan<br>Diane's last day</div>
+      <div class="elapsed-mark" style="left:41%">11&ndash;17 Nov<br>Cambodia</div>
+      <div class="elapsed-mark" style="left:49%">28 Nov<br>Unconference</div>
+      <div class="elapsed-mark key" style="left:58%">15 Dec<br>10 certified</div>
+      <div class="elapsed-mark" style="left:67%">31 Dec<br>Anthropic &middot; Vysta site</div>
+      <div class="elapsed-mark key" style="left:76%">15 Jan<br>Diane's last day</div>
       <div class="elapsed-mark" style="left:98%">28 Feb<br>Retrospective</div>
     </div>
+  </div>
+
+  <div class="legend">
+    <strong>How scores are calculated.</strong> Each Key Result is split into steps, taken from the Delivery Plan and adjusted to what the Diaries report. Each step has an importance weight:
+    <span class="step-w w3">3</span> the outcome itself, or the step that unlocks it &middot;
+    <span class="step-w">2</span> a main step &middot;
+    <span class="step-w">1</span> a supporting step.
+    A done step counts in full, a step in progress counts half. The score is the weighted share of steps done, so a Key Result reaches 100% only when every step, including the outcome, is done. Weights and statuses are Claude's reading of the Diaries posts, checked by Tam. Open a Key Result to see its steps.
   </div>
 
   <div class="legend">
@@ -424,7 +479,7 @@
       <div class="obj-mini-title">Close the Anthropic Partnership</div>
       <div class="obj-mini-bar"><div class="obj-mini-fill fill-c1" style="width:3%"></div></div>
       <div class="obj-mini-pct c1">3%</div>
-      <div class="obj-mini-kr">3 KRs &middot; deadline 31 Dec</div>
+      <div class="obj-mini-kr">3 KRs &middot; certifications by 15 Dec</div>
     </div>
     <div class="obj-mini" onclick="toggleObj(2)">
       <div class="obj-mini-icon">&#128176;</div>
@@ -438,7 +493,7 @@
       <div class="obj-mini-title">Partner Ecosystem Catalogue</div>
       <div class="obj-mini-bar"><div class="obj-mini-fill fill-c3" style="width:0%"></div></div>
       <div class="obj-mini-pct c3">0%</div>
-      <div class="obj-mini-kr">2 KRs &middot; nothing built yet</div>
+      <div class="obj-mini-kr">2 KRs &middot; prototype built</div>
     </div>
     <div class="obj-mini" onclick="toggleObj(4)">
       <div class="obj-mini-icon">&#10024;</div>
@@ -468,8 +523,8 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 1.1 &mdash; 10 people CCA-F certified under the UnIqueS name<span class="status-tag started">1 of 10</span></div>
-          <div class="kr-summary-meta">Baseline 1 &middot; 10 by 31 Dec 2026 &middot; Tam / Diane</div>
+          <div class="kr-summary-title">KR 1.1 &mdash; 10 people CCA-F certified under the UnIqueS name<span class="status-tag gap">1 of 10 &middot; at risk</span></div>
+          <div class="kr-summary-meta">Baseline 1 &middot; 10 by 15 Dec 2026 &middot; Tam / Diane</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:10%"></div></div>
         <div class="kr-pct" style="color:#42a5f5">10%</div>
@@ -477,9 +532,9 @@
       <div class="kr-detail">
         <div class="kr-detail-grid">
           <div class="kr-detail-item"><label>Baseline</label><span>1</span></div>
-          <div class="kr-detail-item"><label>Target</label><span>10 by 31 Dec 2026 &mdash; <strong>2 committed by Tam and Diane</strong></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>10 by 15 Dec 2026 &mdash; <strong>2 committed by Tam and Diane</strong></span></div>
           <div class="kr-detail-item"><label>Owner</label><span>Tam / Diane</span></div>
-          <div class="kr-detail-item"><label>Deadline</label><span>31 Dec 2026</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>15 Dec 2026 &mdash; extended, confirmed by Tam on 5 Nov</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:10%"></div></div>
         <div class="kr-milestones">
@@ -489,6 +544,11 @@
           <div class="milestone"><div class="milestone-dot open">?</div>Phong &mdash; <strong>TBC</strong></div>
           <h5>Initiatives</h5>
           <div class="milestone"><div class="milestone-dot done">&#10003;</div>Sponsorship offer already in place: UnIqueS pays the ~&euro;100 exam fee for alumni and anyone, who become technical partners with a place in the portfolio</div>
+          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Arthur Mossa enrolled (27 Aug); Duc offers to pay the exam for anyone</div>
+        </div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> no new certification reported since the cycle opened. On 28 Sep Duc wrote he did not know whether 10 candidates would be reached. The certification deadline has since been extended to 15 Dec.
+          <span class="src">Duc &middot; 1 Sep, 28 Sep &middot; Diane &middot; 9 Oct</span>
         </div>
       </div>
     </div>
@@ -498,7 +558,7 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 1.2 &mdash; 1 public customer story published &mdash; Officience<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-title">KR 1.2 &mdash; 1 public customer story published &mdash; Officience<span class="status-tag started">drafting &middot; blocked by KR 1.1</span></div>
           <div class="kr-summary-meta">Baseline 0 &middot; target 1 &middot; Diane</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:0%"></div></div>
@@ -509,9 +569,13 @@
           <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
           <div class="kr-detail-item"><label>Target</label><span>1</span></div>
           <div class="kr-detail-item"><label>Owner</label><span>Diane</span></div>
-          <div class="kr-detail-item"><label>Note</label><span>Diane's internship ends 31 Jan 2027</span></div>
+          <div class="kr-detail-item"><label>Note</label><span>Diane's internship ends 15 Jan 2027</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c1" style="width:0%"></div></div>
+        <div class="note-box gap">
+          <strong>Dependency:</strong> on 30 Sep Diane wrote that the story cannot be published until UnIqueS has 10 certified people. This KR can only close if KR 1.1 does.
+          <span class="src" style="display:block;font-size:10.5px;color:#8a8580;margin-top:4px">Diane &middot; 11 Sep, 30 Sep, 9 Oct</span>
+        </div>
       </div>
     </div>
 
@@ -520,7 +584,7 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 1.3 &mdash; Deployed joint customers credited by Anthropic<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-title">KR 1.3 &mdash; Deployed joint customers credited by Anthropic<span class="status-tag gap">15 Sep check overdue</span></div>
           <div class="kr-summary-meta">Baseline 0 &middot; target &ge; 2 &middot; Tam</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c1" style="width:0%"></div></div>
@@ -538,6 +602,10 @@
           <h5>Support commitments</h5>
           <div class="milestone"><div class="milestone-dot pending">&middot;</div>Duc &mdash; confirms which Officience / Offinity deployments qualify for KR 1.3</div>
         </div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> no post reports the 15 Sep proof check. On 11 Sep Diane noted the team does not know who its Partner Manager at Anthropic is.
+          <span class="src">Diane &middot; 11 Sep</span>
+        </div>
       </div>
     </div>
   </div>
@@ -554,8 +622,8 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.1 &mdash; PNV mission: one-year training contract (students + teachers), signed under the Vysta name<span class="status-tag not-started">not started</span></div>
-          <div class="kr-summary-meta">Baseline 0 &middot; 1 signed by 30 Nov 2026 &middot; Tam</div>
+          <div class="kr-summary-title">KR 2.1 &mdash; PN / PNV / Vysta: scope of work agreed and delivered<span class="status-tag started">in progress</span></div>
+          <div class="kr-summary-meta">Scope of work delivered by 28 Feb 2027 &middot; Tam &middot; changed by Tam on 5 Nov; the contract now sits in KR 2.2</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
         <div class="kr-pct" style="color:#ab47bc">0%</div>
@@ -563,13 +631,21 @@
       <div class="kr-detail">
         <div class="kr-detail-grid">
           <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
-          <div class="kr-detail-item"><label>Target</label><span>1, signed by 30 Nov 2026</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>The agreed scope of work for PN, PNV and Vysta delivered by 28 Feb 2027</span></div>
           <div class="kr-detail-item"><label>Owner</label><span>Tam</span></div>
-          <div class="kr-detail-item"><label>Also covers</label><span>Internship coordination</span></div>
+          <div class="kr-detail-item"><label>Changed</label><span>5 Nov, by Tam: was &ldquo;one-year contract signed by 30 Nov&rdquo;; the contract moved to KR 2.2</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
         <div class="note-box quote">
           Why under Vysta: "The clients (from Danang) don't know UnIqueS, but they may know Vysta." <span class="ptag v">V</span>
+        </div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> PNV gave good feedback on the August sessions and now asks UnIqueS to train the teachers as well as the students. Funding route found: corporate sponsorship through Officience France, about &euro;12k a year on a planned two-year contract, worked on with Quynh Minh. The contract itself is now tracked in KR 2.2.
+          <span class="src">Tam &middot; 3 Sep, 29 Sep, 20 Oct &middot; Diane &middot; 30 Sep &middot; Duc &middot; 8 Sep</span>
+        </div>
+        <div class="note-box diaries">
+          <strong>Wider PN project:</strong> Passerelles Num&eacute;riques plans a 2&ndash;3-year AI project for its centres in Vietnam, Cambodia and the Philippines and asked UnIqueS for a proposal. Tam confirmed on 5 Nov that this is part of the PN / PNV work, funded from the same sponsorship and tax-refund source. Done so far: needs-assessment plan, alumni interviews. Next: Phnom Penh mission 11&ndash;17 Nov with Duc and Phuong.
+          <span class="src">Tam &middot; 29 Sep, 20 Oct, 3 Nov &middot; Duc &middot; 26 Oct</span>
         </div>
       </div>
     </div>
@@ -579,7 +655,7 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.2 &mdash; Revenue: &euro;12k contracted for PNV training<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-title">KR 2.2 &mdash; Revenue: &euro;12k sponsorship contract for the PN / PNV work<span class="status-tag started">&euro;0 &middot; route found</span></div>
           <div class="kr-summary-meta">Baseline &euro;0 &middot; target &euro;12k &middot; Tam / Quynh Minh</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
@@ -593,6 +669,14 @@
           <div class="kr-detail-item"><label>Route</label><span>Donation-and-tax-refund route / admin path</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> the route is now named: corporate sponsorship (m&eacute;c&eacute;nat) through Officience France, about &euro;12,000 a year, planned over two years. Nothing contracted yet.
+          <span class="src">Tam &middot; 20 Oct</span>
+        </div>
+        <div class="note-box">
+          <strong>Counted as UnIqueS revenue.</strong> The &euro;12k is the tax refund that comes back to Officience France on a &euro;20k sponsorship. Tam decided on 5 Nov that money landing at Officience or at UnIqueS counts the same. The paperwork must be finished by 31 Dec 2026.
+          <span class="src">Tam &middot; 5 Nov &middot; UnIqueS brain, 16 and 19 Oct</span>
+        </div>
       </div>
     </div>
 
@@ -601,7 +685,7 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.3 &mdash; At least 1 PAID client or programme outside Officience, other than PNV<span class="status-tag not-started">not started</span></div>
+          <div class="kr-summary-title">KR 2.3 &mdash; At least 1 PAID client or programme outside Officience, other than PNV<span class="status-tag not-started">no lead reported</span></div>
           <div class="kr-summary-meta">Baseline 0 &middot; target 1 &middot; Tam</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
@@ -618,6 +702,10 @@
         <div class="note-box quote">
           Geographic edge: NVC in &#272;&agrave; N&#7861;ng, where there is no NVC trainer. Prospect named: xBrain. <span class="ptag v">V</span>
         </div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> no paid client outside Officience and PN / PNV reported, and no news on xBrain. The PN global project counts under KR 2.1 and 2.2, not here.
+          <span class="src">Tam's decision, 5 Nov</span>
+        </div>
       </div>
     </div>
 
@@ -626,8 +714,8 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 2.4 &mdash; Vysta brand infrastructure live: website + LinkedIn + Facebook<span class="status-tag not-started">0 of 3</span></div>
-          <div class="kr-summary-meta">Baseline 0 &middot; all 3 live by 31 Oct 2026 &middot; Tam / a Vietnamese intern</div>
+          <div class="kr-summary-title">KR 2.4 &mdash; Vysta brand infrastructure: website finished + LinkedIn + Facebook<span class="status-tag started">in progress &middot; due 31 Dec</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; all 3 ready by 31 Dec 2026 &middot; Tam / Tran</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c2" style="width:0%"></div></div>
         <div class="kr-pct" style="color:#ab47bc">0%</div>
@@ -635,14 +723,22 @@
       <div class="kr-detail">
         <div class="kr-detail-grid">
           <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
-          <div class="kr-detail-item"><label>Target</label><span>All 3 live by 31 Oct 2026</span></div>
-          <div class="kr-detail-item"><label>Owner</label><span>Tam / a Vietnamese intern</span></div>
-          <div class="kr-detail-item"><label>Deadline</label><span>31 Oct 2026 <span class="ptag p">P</span></span></div>
+          <div class="kr-detail-item"><label>Target</label><span>Website finished on Tam&rsquo;s side by 31 Dec 2026; going live in early 2027 depends on Vysta</span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam, with Tran (External Relations)</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>31 Dec 2026 &mdash; moved from 31 Oct by Tam on 5 Nov</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c2" style="width:0%"></div></div>
         <div class="kr-milestones">
           <h5>Support commitments</h5>
-          <div class="milestone"><div class="milestone-dot open">?</div>Clones the UnIqueS website for Vysta: swap logo and tagline &mdash; <strong>no name filled in</strong></div>
+          <div class="milestone"><div class="milestone-dot done">&#10003;</div>Clones the UnIqueS website for Vysta &mdash; <strong>Tam with Tran</strong> (email, 21 Oct)</div>
+        </div>
+        <div class="note-box diaries">
+          <strong>From Drive and email:</strong> kick-off meeting on 30 Oct; Vysta filled the discovery questionnaire by 2 Nov. Facebook page exists; LinkedIn exists but is inactive. The domain name waits for PN Global. The intern is postponed until Vysta has activities.
+          <span class="src">Email &middot; 21 and 27 Oct &middot; Drive &middot; 30 Oct, 2 Nov</span>
+        </div>
+        <div class="note-box">
+          <strong>How it is counted:</strong> the KR is done when Tam&rsquo;s side of the website is finished. Going live is planned for early 2027 and depends on Vysta.
+          <span class="src">Tam &middot; 5 Nov</span>
         </div>
       </div>
     </div>
@@ -661,8 +757,8 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 3.1 &mdash; Website prototype to share with partners<span class="status-tag not-started">not started</span></div>
-          <div class="kr-summary-meta">Brief only, nothing built &middot; due 17 Oct (Unconference) &middot; Tam + Diane</div>
+          <div class="kr-summary-title">KR 3.1 &mdash; Website prototype to share with partners<span class="status-tag ontrack">built &middot; not yet shown</span></div>
+          <div class="kr-summary-meta">Prototype built and clickable &middot; shown to 0 partners &middot; was due 17 Oct (Unconference) &middot; Tam + Diane</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:0%"></div></div>
         <div class="kr-pct" style="color:#e8a44a">0%</div>
@@ -672,9 +768,16 @@
           <div class="kr-detail-item"><label>Baseline</label><span>Brief only, nothing built</span></div>
           <div class="kr-detail-item"><label>Target</label><span>1 clickable prototype, shown to &ge; 5 partners, by 17 Oct (Unconference)</span></div>
           <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane</span></div>
-          <div class="kr-detail-item"><label>Deadline</label><span>17 Oct 2026</span></div>
+          <div class="kr-detail-item"><label>Deadline</label><span>17 Oct 2026 &mdash; tied to the Unconference, which moved to 28 Nov</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:0%"></div></div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> Diane is working on the catalogue presentation page and waiting on feedback before taking it to potential partners.
+          <span class="src">Diane &middot; 30 Sep</span>
+        </div>
+        <div class="note-box">
+          <strong>Open question:</strong> does this deadline follow the Unconference to 28 Nov?
+        </div>
       </div>
     </div>
 
@@ -683,7 +786,7 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 3.2 &mdash; 10 partners and their offers on the live website<span class="status-tag gap">owner gap in Feb</span></div>
+          <div class="kr-summary-title">KR 3.2 &mdash; 10 partners and their offers on the live website<span class="status-tag gap">owner gap from mid-Jan</span></div>
           <div class="kr-summary-meta">6 named in the brief, 0 live &middot; 10 live by 28 Feb 2027 &middot; Tam + Diane</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c3" style="width:0%"></div></div>
@@ -693,7 +796,7 @@
         <div class="kr-detail-grid">
           <div class="kr-detail-item"><label>Baseline</label><span>Providers already named in the brief: UnIqueS, Tr&ograve;n L&agrave;nh, NEED, Percolab, Olivier, PNV, &hellip; <span class="ptag v">V</span></span></div>
           <div class="kr-detail-item"><label>Target</label><span>10 partners live by 28 Feb 2027</span></div>
-          <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane &mdash; <strong>Diane leaves 31 Jan</strong></span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Tam + Diane &mdash; <strong>Diane leaves 15 Jan</strong></span></div>
           <div class="kr-detail-item"><label>Deadline</label><span>28 Feb 2027 &mdash; cycle close</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c3" style="width:0%"></div></div>
@@ -702,7 +805,7 @@
           <div class="milestone"><div class="milestone-dot pending">&middot;</div>Partner ecosystem map, sorted into three buckets: catalogue / cross-selling / informal</div>
         </div>
         <div class="note-box gap">
-          <strong>Due 28 February; the co-owner's last day is 31 January.</strong> The source document lists Tam + Diane and does not name a February owner.
+          <strong>Due 28 February; the co-owner's last day is 15 January.</strong> The source document lists Tam + Diane and does not name an owner for the last six weeks.
         </div>
       </div>
     </div>
@@ -743,8 +846,8 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 4.2 &mdash; Unconference, 17 or 18 Oct 2026<span class="status-tag not-started">not started</span></div>
-          <div class="kr-summary-meta">Target 50&ndash;100 participants &middot; Tam leads &middot; Diane, Duc, Phong, Han support</div>
+          <div class="kr-summary-title">KR 4.2 &mdash; Unconference, now 28 Nov 2026<span class="status-tag ontrack">prepared &middot; moved to 28 Nov</span></div>
+          <div class="kr-summary-meta">Target 30 participants &middot; Tam leads &middot; Diane, Duc, Phong, Han support</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
         <div class="kr-pct" style="color:#66bb6a">0%</div>
@@ -752,11 +855,18 @@
       <div class="kr-detail">
         <div class="kr-detail-grid">
           <div class="kr-detail-item"><label>Baseline</label><span>&mdash;</span></div>
-          <div class="kr-detail-item"><label>Target</label><span>50&ndash;100 participants</span></div>
+          <div class="kr-detail-item"><label>Target</label><span>30 participants &mdash; set by Tam on 5 Nov (was 50&ndash;100)</span></div>
           <div class="kr-detail-item"><label>Owner</label><span>Tam (lead); Diane, Duc, Phong, Han support</span></div>
-          <div class="kr-detail-item"><label>Date</label><span>17 or 18 Oct 2026 <span class="ptag v">V</span></span></div>
+          <div class="kr-detail-item"><label>Date</label><span>28 Nov 2026 at Offy &mdash; moved from 17 Oct</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> moved to 28 Nov because few invited guests were free on 17 Oct, and to match Duc's Cambodia trip. Diane reported 28 guests confirmed on 30 Sep; Duc questioned that figure in a comment.
+          <span class="src">Diane &middot; 11 Sep, 30 Sep, 9 Oct &middot; Tam &middot; 20 Oct</span>
+        </div>
+        <div class="note-box">
+          <strong>Size settled:</strong> 30 participants, confirmed by Tam on 5 Nov. The documents had given 20&ndash;25, 40, 50 and 50&ndash;100.
+        </div>
         <div class="note-box">
           The Unconference is also the deadline for the KR 3.1 prototype, which the source document schedules to be shown there.
         </div>
@@ -790,8 +900,8 @@
       <div class="kr-summary">
         <div class="kr-expand-icon">&#9654;</div>
         <div class="kr-summary-text">
-          <div class="kr-summary-title">KR 4.4 &mdash; Thought leadership: the podcast. One channel only.<span class="status-tag gap">owner gap in Feb</span></div>
-          <div class="kr-summary-meta">Baseline 0 &middot; 1 episode / month = 6 &middot; Diane to end Jan, then ?</div>
+          <div class="kr-summary-title">KR 4.4 &mdash; Thought leadership: the podcast. One channel only.<span class="status-tag started">1 recorded &middot; owner gap from mid-Jan</span></div>
+          <div class="kr-summary-meta">Baseline 0 &middot; 1 episode / month = 6 &middot; Diane to 15 Jan, then ?</div>
         </div>
         <div class="kr-minibar"><div class="kr-minibar-fill fill-c4" style="width:0%"></div></div>
         <div class="kr-pct" style="color:#66bb6a">0%</div>
@@ -800,7 +910,7 @@
         <div class="kr-detail-grid">
           <div class="kr-detail-item"><label>Baseline</label><span>0</span></div>
           <div class="kr-detail-item"><label>Target</label><span>1 episode / month = 6</span></div>
-          <div class="kr-detail-item"><label>Owner</label><span>Diane (to end Jan), then <strong>?</strong></span></div>
+          <div class="kr-detail-item"><label>Owner</label><span>Diane (to 15 Jan), then <strong>?</strong></span></div>
           <div class="kr-detail-item"><label>Channel</label><span>The podcast &mdash; one channel only</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c4" style="width:0%"></div></div>
@@ -808,6 +918,12 @@
           <h5>Related fixed dates</h5>
           <div class="milestone"><div class="milestone-dot pending">&middot;</div>October 2026 &mdash; 3 episodes recorded before episode 1 publishes <span class="ptag p">P</span></div>
           <div class="milestone"><div class="milestone-dot pending">&middot;</div>2&ndash;6 Nov 2026 &mdash; Sommet de l'Action <span class="ptag v">V</span></div>
+          <h5>Guests in view</h5>
+          <div class="milestone"><div class="milestone-dot pending">&middot;</div>H&eacute;l&egrave;ne Micheau, Marie-Violaine Bouchet, Alexis Kovalenko, Lan Levy</div>
+        </div>
+        <div class="note-box diaries">
+          <strong>From the Diaries:</strong> the plan said 3 episodes recorded by October. Tam confirmed on 5 Nov that the kit is ready and episode 1 is recorded; episodes 2 and 3 are not yet.
+          <span class="src">Diane &middot; 11 Sep, 30 Sep, 9 Oct &middot; Tam &middot; 20 Oct &middot; Duc &middot; 15 Sep, 22 Sep</span>
         </div>
         <div class="note-box gap">
           <strong>Six monthly episodes means one is due in February, and the owner field for February is a question mark in the source document.</strong>
@@ -843,6 +959,10 @@
           <div class="kr-detail-item"><label>Sequence</label><span>Impact Hub APAC first; Teal community if capacity</span></div>
         </div>
         <div class="kr-progress-bar"><div class="kr-progress-fill fill-c5" style="width:0%"></div></div>
+        <div class="note-box">
+          <strong>The Unis bot does not count here.</strong> It is UnIqueS&rsquo;s own internal tool and was already counted in the previous cycle. This KR needs an outside organisation using a second brain.
+          <span class="src">Tam &middot; 5 Nov</span>
+        </div>
       </div>
     </div>
 
@@ -878,46 +998,51 @@
 <div id="tab-timeline" class="tab-panel">
   <div class="panel">
     <h3>Fixed dates</h3>
-    <div class="panel-sub">Taken from the fixed-dates table in the team's OKR document, with its own tags kept. The two rows in red are the ones that constrain other Key Results: the Anthropic deadline is external, and Diane's last day removes a co-owner from KR 3.2 and KR 4.4 one month before the cycle closes.</div>
+    <div class="panel-sub">Taken from the fixed-dates table in the team's OKR document, with its own tags kept. The two rows in red are the ones that constrain other Key Results: the certification deadline also gates the customer story (KR 1.2), and Diane's last day removes a co-owner from KR 3.2 and KR 4.4 six weeks before the cycle closes. Dates changed on 5 Nov are marked as confirmed by Tam.</div>
     <div class="row-list">
       <div class="row-item">
         <div class="row-key">15 Sep 2026</div>
-        <div class="row-val">Verify Anthropic joint-customer proof mechanism (KR 1.3).</div>
+        <div class="row-val">Verify Anthropic joint-customer proof mechanism (KR 1.3). <strong>Passed, no report in the Diaries.</strong></div>
         <div><span class="ptag p">P</span></div>
-      </div>
-      <div class="row-item">
-        <div class="row-key">17&ndash;18 Oct 2026</div>
-        <div class="row-val">Unconference (KR 4.2); the KR 3.1 prototype is shown here.</div>
-        <div><span class="ptag v">V</span></div>
       </div>
       <div class="row-item">
         <div class="row-key">October 2026</div>
-        <div class="row-val">3 podcast episodes recorded before episode 1 publishes (KR 4.4).</div>
+        <div class="row-val">3 podcast episodes recorded before episode 1 publishes (KR 4.4). <strong>Passed, none reported.</strong></div>
         <div><span class="ptag p">P</span></div>
       </div>
-      <div class="row-item">
-        <div class="row-key">31 Oct 2026</div>
-        <div class="row-val">Vysta website + LinkedIn + Facebook live (KR 2.4).</div>
-        <div><span class="ptag p">P</span></div>
-      </div>
-      <div class="row-item">
+            <div class="row-item">
         <div class="row-key">2&ndash;6 Nov 2026</div>
         <div class="row-val">Sommet de l'Action (France, mostly online, English).</div>
         <div><span class="ptag v">V</span></div>
       </div>
       <div class="row-item">
-        <div class="row-key">30 Nov 2026</div>
-        <div class="row-val">PNV contract signed under Vysta (KR 2.1).</div>
-        <div><span class="ptag p">P</span></div>
+        <div class="row-key">11&ndash;17 Nov 2026</div>
+        <div class="row-val">Phnom Penh research mission with PN Cambodia, led by Tam with Duc and Phuong (PN / PNV / Vysta scope of work, KR 2.1). Added from the Diaries, 3 Nov.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">28 Nov 2026</div>
+        <div class="row-val">Unconference at Offy for 30 participants (KR 4.2), moved from 17&ndash;18 Oct. The KR 3.1 prototype was due to be shown here.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
+        <div class="row-key">31 Dec 2026</div>
+        <div class="row-val">Sponsorship contract paperwork finished (KR 2.2). Vysta website finished on Tam&rsquo;s side (KR 2.4), moved from 31 Oct by Tam on 5 Nov.</div>
+        <div></div>
       </div>
       <div class="row-item hard">
+        <div class="row-key">15 Dec 2026</div>
+        <div class="row-val"><strong>10 people CCA-F certified</strong> (KR 1.1), extended deadline confirmed by Tam on 5 Nov. Currently 1, with 2 committed by Tam and Diane.</div>
+        <div></div>
+      </div>
+      <div class="row-item">
         <div class="row-key">31 Dec 2026</div>
-        <div class="row-val"><strong>Anthropic deadline: 10 certified</strong> (KR 1.1). Currently 1, with 2 committed by Tam and Diane.</div>
+        <div class="row-val">Anthropic partnership closed (Objective 1).</div>
         <div><span class="ptag v">V</span></div>
       </div>
       <div class="row-item hard">
-        <div class="row-key">31 Jan 2027</div>
-        <div class="row-val"><strong>Diane's internship ends</strong> &mdash; KR 3.2 and KR 4.4 need a February owner.</div>
+        <div class="row-key">15 Jan 2027</div>
+        <div class="row-val"><strong>Diane's internship ends</strong> (confirmed by Tam on 5 Nov) &mdash; KR 3.2 and KR 4.4 need an owner for the last six weeks.</div>
         <div><span class="ptag v">V</span></div>
       </div>
       <div class="row-item">
@@ -994,7 +1119,7 @@
       </div>
       <div class="row-item">
         <div class="row-key">Owners</div>
-        <div class="row-val">Every Key Result names an owner. Two of them lose a co-owner on 31 January.</div>
+        <div class="row-val">Every Key Result names an owner. Two of them lose a co-owner on 15 January.</div>
         <div></div>
       </div>
       <div class="row-item">
@@ -1008,7 +1133,7 @@
 
 <div class="footer">
   UnIqueS Development &middot; OKR cycle September 2026 &ndash; February 2027<br>
-  Built 3 September 2026 from the team's OKR document &middot; figures mirror that document, including its blanks<br>
+  Built 3 September 2026 from the team's OKR document &middot; check-in 5 November 2026 from Offinity Diaries posts by Tam, Diane and Duc<br>
   Previous cycle: <a href="UnIqueS_OKR_Dashboard_Aug31.html">March &ndash; August 2026, closed at 73%</a>
 </div>
 
@@ -1034,6 +1159,179 @@
     if (event.target.tagName === 'A') return;
     card.classList.toggle('expanded');
   }
+
+  // ══════════ STEP-BASED SCORING ══════════
+  // To update: change a step's status to 'done', 'doing' or 'todo'. Scores recalculate on load.
+  // w = importance: 3 outcome or unlocking step, 2 main step, 1 supporting step.
+  // ev = where the status comes from (Diaries post or Tam's confirmation).
+  const STEPS = {
+    '1.1': [
+      ['Write to all 9 named candidates and confirm Tam\'s own exam', 2, 'doing', 'Duc, 28 Sep: "I see activity"; Drive: Tam\'s CCAF study notes D2-D4, 19-29 Oct'],
+      ['Get 9 written commitments, each with a target exam month', 3, 'todo', 'Duc, 28 Sep: unsure 10 candidates will be reached'],
+      ['Duc Q&A panel on the exam experience', 1, 'done', 'Tam, 3 Sep'],
+      ['Exam fee sponsorship open to every candidate', 1, 'done', 'Duc, 1 Sep'],
+      ['Weekly study group set up', 2, 'done', 'Diane, 9 Oct: beginners group with Vi and Dung'],
+      ['Study sessions run every week', 2, 'doing', 'Diane, 9 Oct'],
+      ['Wave 1: 4 candidates book exam slots', 2, 'todo', ''],
+      ['Wave 1 exams sat', 3, 'todo', ''],
+      ['Wave 2: remaining candidates book exams', 2, 'todo', ''],
+      ['Wave 2 exams sat, cumulative 7', 3, 'todo', ''],
+      ['Chase every remaining candidate to a booked date', 1, 'todo', ''],
+      ['Final exams sat: 10 certified by 15 Dec', 3, 'todo', 'Currently 1 of 10'],
+      ['Confirm the final count with Anthropic', 1, 'todo', '']
+    ],
+    '1.2': [
+      ['Briefing note on Anthropic\'s requirements', 1, 'done', 'Diane, 11 Sep'],
+      ['Officience agrees the scope and to publish', 2, 'doing', 'Brain: 14 Sep meeting, Duc/Tam/Diane picked 3 candidate stories; no formal OK to publish yet'],
+      ['Interview the people involved', 2, 'done', 'Diane, 9 Oct: 4 interviews'],
+      ['Collect the adoption data', 2, 'done', 'Diane, 9 Oct: full data from Vi'],
+      ['Draft the story', 2, 'doing', 'Drive: "Customer story - Tam", 26 Oct'],
+      ['Publish the story', 3, 'todo', 'Blocked until 10 are certified (Diane, 30 Sep)']
+    ],
+    '1.3': [
+      ['Ask Duc which deployments could qualify', 1, 'doing', 'Brain: assigned to Duc on 14 Sep, no answer recorded'],
+      ['Verify and document the proof mechanism', 2, 'doing', 'Brain: rule documented (register each job in Partner Hub); 15 Sep check with Anthropic not recorded'],
+      ['Confirm the 2 qualifying joint customers', 3, 'todo', ''],
+      ['Submit the evidence to Anthropic', 3, 'todo', '']
+    ],
+    '2.1': [
+      ['Agree the scope of work with PN, PNV and Vysta', 3, 'doing', 'PN asked for a proposal (Tam, 29 Sep); PNV-Vysta sync (Duc, 26 Oct)'],
+      ['Write the research plan', 1, 'done', 'Brain: plan dated 13 Oct; Drive: updated 2 Nov'],
+      ['Alumni interviews', 2, 'doing', 'Brain: Thanh Phong 17 Oct, Tuan, Thao Lan'],
+      ['Review the Nanyang students\' research report', 1, 'doing', 'Email: received 26 Oct'],
+      ['Phnom Penh research mission', 2, 'todo', '11-17 Nov, with Duc and Phuong'],
+      ['Proposal for the PN AI project written and sent', 2, 'doing', 'Drive: Cambodia research framework 3-4 Nov'],
+      ['PNV training for students and teachers delivered', 3, 'todo', 'PNV asked to add the teachers (Tam, 29 Sep)'],
+      ['Set up the internship coordination', 1, 'todo', '']
+    ],
+    '2.2': [
+      ['Work out the sponsorship and tax-refund route', 2, 'doing', 'Tam, 20 Oct: mécénat via Officience France; brain 19 Oct: go-ahead, Minh waits for Tam\'s amounts; paperwork by 31 Dec'],
+      ['Price the programme to reach €12k', 2, 'doing', 'Tam, 20 Oct: about €12k a year, two years'],
+      ['Sponsorship contract signed: €12k', 3, 'todo', 'Paperwork must be finished by 31 Dec; counted as UnIqueS revenue (Tam, 5 Nov)']
+    ],
+    '2.3': [
+      ['Shortlist of at least 4 paid prospects', 2, 'todo', 'Not reported'],
+      ['Approach xBrain', 1, 'todo', 'Not reported'],
+      ['Scope the NVC offer in Đà Nẵng', 1, 'todo', ''],
+      ['Send a proposal', 2, 'todo', ''],
+      ['1 paid client closed', 3, 'todo', '']
+    ],
+    '2.4': [
+      ['Name who builds the Vysta channels', 2, 'done', 'Email 21 Oct: Tam builds the site with Tran (External Relations)'],
+      ['Vysta LinkedIn page live', 2, 'doing', 'Vysta questionnaire, 2 Nov: page exists but inactive'],
+      ['Vysta Facebook page live', 2, 'done', 'Vysta questionnaire, 2 Nov: page exists'],
+      ['Clone the UnIqueS site for Vysta, write the content', 2, 'doing', 'Drive: kick-off meeting 30 Oct, discovery questionnaire filled by 2 Nov'],
+      ['Vysta website finished on Tam\'s side', 3, 'todo', 'Due 31 Dec (Tam, 5 Nov); going live early 2027 depends on Vysta']
+    ],
+    '3.1': [
+      ['Cut the Marketplace brief down to a few screens', 1, 'done', 'Confirmed by Tam, 5 Nov'],
+      ['Wireframe', 2, 'done', 'Confirmed by Tam, 5 Nov'],
+      ['Build the presentation page / prototype', 2, 'done', 'Confirmed by Tam, 5 Nov'],
+      ['Click-through works end to end', 1, 'done', 'Confirmed by Tam, 5 Nov'],
+      ['Rehearse the demo', 1, 'todo', ''],
+      ['Shown to at least 5 partners', 3, 'todo', '']
+    ],
+    '3.2': [
+      ['Named list of 6 interested partners', 2, 'doing', 'Brain: brief of 27 Sep lists 6 providers (NEED, Tron Lanh, UnIqueS, Nam, Thao, Olivier); none agreed yet'],
+      ['Partner ecosystem map', 1, 'todo', ''],
+      ['5 partners committed', 2, 'todo', ''],
+      ['Self-serve onboarding, so it survives Diane leaving', 2, 'todo', ''],
+      ['6 to 8 partners live', 2, 'todo', ''],
+      ['10 partners live', 3, 'todo', '']
+    ],
+    '4.1': [
+      ['Choose the 4 packages and define each', 2, 'todo', 'Not reported'],
+      ['Photos and case studies, packages 1 and 2', 2, 'todo', ''],
+      ['Packages 1 and 2 live', 2, 'todo', ''],
+      ['Photos and case studies, packages 3 and 4', 2, 'todo', ''],
+      ['All 4 packages live', 3, 'todo', '']
+    ],
+    '4.2': [
+      ['Fix the date', 1, 'done', '28 Nov (Diane, 9 Oct)'],
+      ['Book the venue', 2, 'done', 'Offy'],
+      ['Design the format', 2, 'done', 'Open Space Technology (Tam, 20 Oct)'],
+      ['Invitation out: landing page live', 2, 'done', 'Tam, 20 Oct'],
+      ['Invite guests', 2, 'doing', '28 confirmed on 30 Sep, figure questioned by Duc'],
+      ['Registration, logistics, day-of roles', 2, 'done', 'Diane, 30 Sep'],
+      ['Fill the 30 places plus no-show buffer', 1, 'todo', 'Size set at 30 by Tam, 5 Nov'],
+      ['Deliver the Unconference', 3, 'todo', '28 Nov'],
+      ['Feedback and follow-up within 72 hours', 1, 'todo', '']
+    ],
+    '4.3': [
+      ['Approach UEH and UEF; find a third university', 2, 'todo', 'Not reported'],
+      ['UEH workshop delivered', 3, 'todo', ''],
+      ['UEF workshop delivered', 3, 'todo', ''],
+      ['Third workshop delivered', 3, 'todo', '']
+    ],
+    '4.4': [
+      ['Plan, format and guest list', 2, 'done', 'Diane, 11 Sep and 9 Oct'],
+      ['Recording kit ready', 1, 'done', 'Confirmed by Tam, 5 Nov'],
+      ['Episode 1 recorded, with Tam', 2, 'done', 'Confirmed by Tam, 5 Nov'],
+      ['Episodes 2 and 3 recorded', 2, 'doing', 'Gmail: guest Alexis Kovalenko invited for November; podcast meeting 4 Nov'],
+      ['Episodes 1 to 3 published', 3, 'todo', ''],
+      ['Production process written down for handover', 1, 'todo', ''],
+      ['Episodes 4 to 6 published', 3, 'todo', '']
+    ],
+    '5.1': [
+      ['Agree the Impact Hub APAC plan and name 5 users', 2, 'todo', 'Brain 24 Sep: Impact Hub APAC interested only; PNV teachers asked for a chatbot. Unis bot not counted (internal, Tam 5 Nov)'],
+      ['Deploy the second brain', 2, 'todo', ''],
+      ['5 users active', 3, 'todo', ''],
+      ['Usage evidence captured', 1, 'todo', '']
+    ],
+    '5.2': [
+      ['Decide a baseline and a target, or park it', 3, 'todo', 'Brain 14 Sep: Claude team usage stats can be downloaded, a ready source'],
+      ['Define what adoption looks like in evidence', 2, 'todo', ''],
+      ['Gather the evidence', 3, 'todo', '']
+    ]
+  };
+
+  (function scoreBoard() {
+    const credit = { done: 1, doing: 0.5, todo: 0 };
+    const pctOf = steps => {
+      let tot = 0, got = 0;
+      steps.forEach(([, w, s]) => { tot += w; got += w * credit[s]; });
+      return tot ? Math.round(100 * got / tot) : 0;
+    };
+    const objScores = {};
+    let all = [];
+    document.querySelectorAll('.kr-card').forEach(card => {
+      const m = card.querySelector('.kr-summary-title').textContent.match(/KR (\d)\.(\d)/);
+      if (!m) return;
+      const id = m[1] + '.' + m[2], steps = STEPS[id];
+      if (!steps) return;
+      const p = pctOf(steps);
+      (objScores[m[1]] = objScores[m[1]] || []).push(p);
+      all.push(p);
+      card.querySelector('.kr-pct').textContent = p + '%';
+      card.querySelector('.kr-minibar-fill').style.width = p + '%';
+      const big = card.querySelector('.kr-progress-fill');
+      if (big) big.style.width = p + '%';
+      const box = document.createElement('div');
+      box.className = 'steps-box';
+      const done = steps.filter(s => s[2] === 'done').length;
+      box.innerHTML = '<h5>Steps &middot; ' + done + ' of ' + steps.length + ' done &middot; ' + p + '%</h5>' +
+        steps.map(([t, w, s, ev]) => {
+          const dot = s === 'done' ? '<div class="milestone-dot done">&#10003;</div>'
+                    : s === 'doing' ? '<div class="milestone-dot doing">&frac12;</div>'
+                    : '<div class="milestone-dot pending">&middot;</div>';
+          return '<div class="step-row">' + dot + '<span class="step-txt">' + t +
+            (ev ? '<span class="step-ev">' + ev + '</span>' : '') + '</span><span class="step-w' + (w === 3 ? ' w3' : '') + '">' + w + '</span></div>';
+        }).join('');
+      const bar = card.querySelector('.kr-progress-bar');
+      bar.parentNode.insertBefore(box, bar.nextSibling);
+    });
+    const avg = a => Math.round(a.reduce((x, y) => x + y, 0) / a.length);
+    document.querySelectorAll('.obj-mini').forEach((mini, i) => {
+      const s = objScores[String(i + 1)];
+      if (!s) return;
+      const p = avg(s);
+      mini.querySelector('.obj-mini-fill').style.width = p + '%';
+      mini.querySelector('.obj-mini-pct').textContent = p + '%';
+    });
+    const overall = avg(all);
+    document.querySelector('.ring-label').textContent = overall + '%';
+    document.querySelector('.ring-fill').setAttribute('stroke-dashoffset', (314.16 * (1 - overall / 100)).toFixed(2));
+  })();
 </script>
 
 </body>
