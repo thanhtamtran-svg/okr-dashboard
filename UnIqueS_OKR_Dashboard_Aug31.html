@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UnIqueS Development — Tam's OKR Dashboard — Mar–Aug 2026</title>
+<title>UnIqueS Development — OKR Dashboard — Mar–Aug 2026</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -21,15 +21,14 @@
 
   /* ── Header ── */
   .header {
-    text-align: center;
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e8a44a;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 20px; padding: 4px 2px 18px;
+    border-bottom: 1px solid #ece5dc;
   }
-  .header h1 { font-size: 22px; font-weight: 700; color: #c47a2a; }
-  .header .logo { display: block; height: 56px; width: auto; margin: 0 auto 6px; }
-  .header .subtitle { font-size: 14px; color: #8a8580; margin-top: 2px; }
-  .header .date { font-size: 12px; color: #b0a99f; margin-top: 6px; }
+  .header .logo { display: block; height: 40px; width: auto; flex-shrink: 0; }
+  .header .brand-sep { width: 1px; align-self: stretch; background: #e6dfd6; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #2d2a26; line-height: 1.2; letter-spacing: -0.2px; }
+  .header .subtitle { font-size: 14px; color: #6b6560; margin-top: 3px; }
 
   /* ── Cycle switcher ── */
   .cycle-switch {
@@ -45,14 +44,14 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
   .cycle-switch .cs-label {
-    font-size: 10px; font-weight: 700; color: #b0a99f;
+    font-size: 11px; font-weight: 700; color: #736d67;
     text-transform: uppercase; letter-spacing: .6px; padding: 0 8px;
   }
   .cycle-switch a, .cycle-switch .cs-cur {
-    font-size: 12px; padding: 7px 14px; border-radius: 8px;
+    font-size: 13px; padding: 7px 14px; border-radius: 8px;
     text-decoration: none; font-weight: 500; white-space: nowrap;
   }
-  .cycle-switch a { color: #8a8580; transition: all .2s; }
+  .cycle-switch a { color: #6b6560; transition: all .2s; }
   .cycle-switch a:hover { background: #faf8f5; color: #4a4540; }
   .cycle-switch .cs-cur { background: #c47a2a; color: white; font-weight: 600; }
 
@@ -73,9 +72,9 @@
     background: transparent;
     border-radius: 8px;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
-    color: #8a8580;
+    color: #6b6560;
     cursor: pointer;
     transition: all 0.2s;
   }
@@ -105,9 +104,9 @@
     font-size: 26px; font-weight: 700; color: #c47a2a;
   }
   .overall-text h2 { font-size: 18px; font-weight: 600; }
-  .overall-text p { font-size: 13px; color: #8a8580; margin-top: 2px; }
+  .overall-text p { font-size: 14px; color: #6b6560; margin-top: 2px; }
   .badge {
-    display: inline-block; font-size: 11px; font-weight: 600;
+    display: inline-block; font-size: 12px; font-weight: 600;
     padding: 2px 10px; border-radius: 12px; margin-top: 6px;
   }
   .badge.up { background: #e8f5e9; color: #2e7d32; }
@@ -131,7 +130,7 @@
   .obj-mini:hover { border-color: #e8a44a; transform: translateY(-1px); }
   .obj-mini.selected { border-color: #c47a2a; }
   .obj-mini-icon { font-size: 20px; margin-bottom: 6px; }
-  .obj-mini-title { font-size: 12px; font-weight: 600; color: #4a4540; line-height: 1.3; margin-bottom: 8px; }
+  .obj-mini-title { font-size: 13px; font-weight: 600; color: #4a4540; line-height: 1.3; margin-bottom: 8px; }
   .obj-mini-bar { height: 6px; background: #ebe6df; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
   .obj-mini-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
   .obj-mini-pct { font-size: 18px; font-weight: 700; }
@@ -169,7 +168,7 @@
   .obj-detail-header .icon.o3 { background: #fff3e0; }
   .obj-detail-header .icon.o4 { background: #e8f5e9; }
   .obj-detail-header h3 { font-size: 16px; font-weight: 600; flex: 1; }
-  .obj-description { font-size: 12px; color: #8a8580; margin-bottom: 16px; padding-left: 48px; font-style: italic; }
+  .obj-description { font-size: 13.5px; color: #6b6560; margin-bottom: 16px; padding-left: 48px; font-style: italic; }
 
   /* ── KR Cards (clickable/expandable) ── */
   .kr-card {
@@ -193,19 +192,19 @@
   .kr-expand-icon {
     width: 20px; height: 20px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: #b0a99f;
+    font-size: 12px; color: #736d67;
     transition: transform 0.2s;
   }
   .kr-card.expanded .kr-expand-icon { transform: rotate(90deg); color: #c47a2a; }
   .kr-summary-text { flex: 1; }
-  .kr-summary-title { font-size: 13px; font-weight: 500; color: #2d2a26; }
-  .kr-summary-meta { font-size: 11px; color: #b0a99f; margin-top: 2px; }
-  .kr-pct { font-size: 16px; font-weight: 700; flex-shrink: 0; min-width: 48px; text-align: right; }
+  .kr-summary-title { font-size: 15px; font-weight: 500; color: #2d2a26; }
+  .kr-summary-meta { font-size: 12.5px; color: #736d67; margin-top: 2px; }
+  .kr-pct { font-size: 17px; font-weight: 700; flex-shrink: 0; min-width: 48px; text-align: right; }
   .kr-minibar { width: 80px; height: 5px; background: #ebe6df; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
   .kr-minibar-fill { height: 100%; border-radius: 3px; }
 
   .status-tag {
-    display: inline-block; font-size: 10px; font-weight: 600;
+    display: inline-block; font-size: 11px; font-weight: 600;
     padding: 1px 7px; border-radius: 6px; margin-left: 6px; vertical-align: middle;
   }
   .status-tag.on-track { background: #e8f5e9; color: #2e7d32; }
@@ -229,11 +228,11 @@
     margin-bottom: 12px;
   }
   .kr-detail-item label {
-    font-size: 10px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px; color: #b0a99f; display: block; margin-bottom: 2px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #736d67; display: block; margin-bottom: 2px;
   }
   .kr-detail-item span {
-    font-size: 13px; color: #2d2a26;
+    font-size: 14px; color: #2d2a26;
   }
   .kr-detail-item a { color: #c47a2a; text-decoration: none; font-weight: 500; }
   .kr-detail-item a:hover { text-decoration: underline; }
@@ -245,21 +244,21 @@
 
   .kr-milestones { margin-top: 10px; }
   .kr-milestones h5 {
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px; color: #b0a99f; margin-bottom: 6px;
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #736d67; margin-bottom: 6px;
   }
   .milestone {
     display: flex; align-items: flex-start; gap: 8px;
-    padding: 4px 0; font-size: 12px; color: #4a4540;
+    padding: 4px 0; font-size: 14px; color: #4a4540;
   }
   .milestone-dot {
     width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 9px; margin-top: 1px;
+    font-size: 10px; margin-top: 2px;
   }
   .milestone-dot.done { background: #e8f5e9; color: #2e7d32; }
-  .milestone-dot.pending { background: #f5f0ea; color: #b0a99f; }
-  .milestone a { color: #c47a2a; text-decoration: none; }
+  .milestone-dot.pending { background: #f5f0ea; color: #736d67; }
+  .milestone a { color: #a8661f; text-decoration: none; }
   .milestone a:hover { text-decoration: underline; }
 
   /* ── Social Media Panel ── */
@@ -292,15 +291,15 @@
   .social-icon.web { background: #fff3e0; }
   .social-card-name { font-size: 14px; font-weight: 600; }
   .social-big-num { font-size: 32px; font-weight: 700; color: #2d2a26; }
-  .social-big-label { font-size: 11px; color: #8a8580; margin-bottom: 10px; }
+  .social-big-label { font-size: 12px; color: #6b6560; margin-bottom: 10px; }
   .social-stats { display: flex; gap: 16px; }
   .social-stat { text-align: center; }
   .social-stat-val { font-size: 14px; font-weight: 600; color: #2d2a26; }
-  .social-stat-label { font-size: 10px; color: #b0a99f; }
-  .social-growth { font-size: 11px; font-weight: 600; color: #2e7d32; margin-top: 8px; }
+  .social-stat-label { font-size: 11.5px; color: #736d67; }
+  .social-growth { font-size: 12px; font-weight: 600; color: #2e7d32; margin-top: 8px; }
   .social-link {
     display: inline-block; margin-top: 8px;
-    font-size: 11px; color: #c47a2a; text-decoration: none; font-weight: 500;
+    font-size: 12.5px; color: #a8661f; text-decoration: none; font-weight: 500;
   }
   .social-link:hover { text-decoration: underline; }
 
@@ -319,19 +318,19 @@
   .post-list { list-style: none; }
   .post-item {
     display: flex; align-items: flex-start; gap: 10px;
-    padding: 8px 0; border-bottom: 1px solid #f5f0ea; font-size: 12px;
+    padding: 8px 0; border-bottom: 1px solid #f5f0ea; font-size: 13.5px;
   }
   .post-item:last-child { border-bottom: none; }
-  .post-date { min-width: 56px; color: #b0a99f; font-weight: 500; flex-shrink: 0; }
+  .post-date { min-width: 56px; color: #736d67; font-weight: 500; flex-shrink: 0; }
   .post-title { flex: 1; color: #4a4540; line-height: 1.4; }
   .post-type {
-    font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
     flex-shrink: 0;
   }
   .post-type.photo { background: #e3f2fd; color: #1565c0; }
   .post-type.reel { background: #f3e5f5; color: #7b1fa2; }
   .post-type.article { background: #fff3e0; color: #e65100; }
-  .post-reach { min-width: 60px; text-align: right; color: #8a8580; flex-shrink: 0; }
+  .post-reach { min-width: 60px; text-align: right; color: #6b6560; flex-shrink: 0; }
 
   /* ── Timeline Panel ── */
   .timeline-container {
@@ -349,11 +348,11 @@
     border-bottom: 1px solid #f5f0ea;
   }
   .week-row:last-child { border-bottom: none; }
-  .week-label { font-size: 12px; font-weight: 600; color: #c47a2a; padding-top: 2px; }
-  .week-date { font-size: 10px; color: #b0a99f; }
+  .week-label { font-size: 13px; font-weight: 600; color: #a8661f; padding-top: 2px; }
+  .week-date { font-size: 11.5px; color: #736d67; }
   .week-items { display: flex; flex-wrap: wrap; gap: 6px; }
   .week-chip {
-    font-size: 11px; padding: 3px 10px; border-radius: 6px;
+    font-size: 12px; padding: 3px 10px; border-radius: 6px;
     background: #f5f0ea; color: #4a4540;
   }
   .week-chip.highlight { background: #e8f5e9; color: #2e7d32; font-weight: 500; }
@@ -371,7 +370,7 @@
   .next-steps h3 { font-size: 15px; font-weight: 600; color: #c47a2a; margin-bottom: 12px; }
   .next-steps ul { list-style: none; }
   .next-steps li {
-    font-size: 13px; color: #4a4540; padding: 6px 0 6px 20px;
+    font-size: 14px; color: #4a4540; padding: 6px 0 6px 20px;
     position: relative; line-height: 1.5;
   }
   .next-steps li::before {
@@ -379,9 +378,9 @@
   }
 
   .footer {
-    text-align: center; margin-top: 24px; font-size: 11px; color: #c0b8ae;
+    text-align: center; margin-top: 24px; font-size: 12px; color: #736d67;
   }
-  .footer a { color: #c47a2a; text-decoration: none; }
+  .footer a { color: #8f5617; text-decoration: none; }
 
   /* Responsive */
   @media (max-width: 700px) {
@@ -394,7 +393,7 @@
   .milestone-dot.warn { background: #fff3e0; color: #e65100; }
   .note-box {
     background: #fdf6ec; border-left: 3px solid #e8a44a; border-radius: 6px;
-    padding: 10px 12px; margin-top: 12px; font-size: 12px; color: #6b6560; line-height: 1.55;
+    padding: 10px 12px; margin-top: 12px; font-size: 14px; color: #6b6560; line-height: 1.6;
   }
   .note-box.danger { background: #fdecec; border-left-color: #c62828; }
   .note-box strong { color: #4a4540; }
@@ -409,18 +408,18 @@
   }
   .emerging-head h3 { font-size: 16px; font-weight: 600; color: #2d2a26; }
   .tag-unscored {
-    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 10px;
+    font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px;
     background: #e8f5e9; color: #2e7d32; text-transform: uppercase; letter-spacing: .4px;
   }
-  .emerging-sub { font-size: 12.5px; color: #8a8580; margin-bottom: 16px; line-height: 1.6; }
+  .emerging-sub { font-size: 13.5px; color: #6b6560; margin-bottom: 16px; line-height: 1.6; }
   .em-item { padding: 12px 0; border-bottom: 1px solid #f0ece7; }
   .em-item:last-child { border-bottom: none; }
   .em-item h6 { font-size: 13.5px; font-weight: 600; color: #2d2a26; margin-bottom: 4px; }
-  .em-item p { font-size: 12.5px; color: #6b6560; line-height: 1.6; }
-  .em-next { font-size: 11.5px; color: #8a8580; margin-top: 4px; font-style: italic; }
+  .em-item p { font-size: 14px; color: #6b6560; line-height: 1.6; }
+  .em-next { font-size: 12.5px; color: #6b6560; margin-top: 4px; font-style: italic; }
   .fb-panel { background: white; border-radius: 16px; padding: 22px; margin-top: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
   .fb-panel h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
-  .fb-panel ul { font-size: 13px; color: #4a4540; list-style: none; padding: 0; }
+  .fb-panel ul { font-size: 14px; color: #4a4540; list-style: none; padding: 0; }
   .fb-panel li { padding: 8px 0; border-bottom: 1px solid #f0ece7; line-height: 1.6; }
   .fb-panel li:last-child { border-bottom: none; }
   .gap-row { background: #fdf6ec !important; }
@@ -431,9 +430,12 @@
 <body>
 
 <div class="header">
-  <h1><img class="logo" src="uniques-logo.png" alt="UnIqueS">Development</h1>
-  <div class="subtitle">Tam's OKR Dashboard</div>
-  <div class="date">Cycle close: 31 August 2026 &middot; data verified 2 September 2026</div>
+  <img class="logo" src="uniques-logo.png" alt="UnIqueS">
+  <span class="brand-sep" aria-hidden="true"></span>
+  <div>
+    <h1>OKR Dashboard</h1>
+    <div class="subtitle">UnIqueS Development</div>
+  </div>
 </div>
 
 <!-- Cycle switcher -->
@@ -1000,7 +1002,7 @@
 
   <div class="social-detail" id="social-linkedin">
     <h4 style="font-size:14px;font-weight:600;margin-bottom:4px;">&#128279; LinkedIn &mdash; posts since 5 May 2026</h4>
-    <p style="font-size:12px;color:#8a8580;margin-bottom:12px;">Newest first. Impressions as reported by Page analytics.</p>
+    <p style="font-size:12px;color:#6b6560;margin-bottom:12px;">Newest first. Impressions as reported by Page analytics.</p>
     <ul class="post-list">
       <li class="post-item"><span class="post-date">Aug 20</span><span class="post-title">VI&#7878;C H&#7884;C DI&#7876;N RA "GI&#7918;A" CH&#218;NG TA, V&#192; AI L&#192; M&#7896;T C&#7896;NG S&#7920; T&#431; DUY</span><span class="post-type photo">Image</span><span class="post-reach">52 imp</span></li>
       <li class="post-item"><span class="post-date">Aug 18</span><span class="post-title">Learning in the AI Era &mdash; series continues</span><span class="post-type photo">Image</span><span class="post-reach">&mdash;</span></li>
@@ -1038,7 +1040,7 @@
 
   <div class="social-detail" id="social-facebook">
     <h4 style="font-size:14px;font-weight:600;margin-bottom:4px;">&#128218; Facebook</h4>
-    <p style="font-size:12px;color:#8a8580;margin-bottom:12px;">Page followers grew from 9 to 19 between 5 May and 7 Aug.</p>
+    <p style="font-size:12px;color:#6b6560;margin-bottom:12px;">Page followers grew from 9 to 19 between 5 May and 7 Aug.</p>
     <div class="note-box danger">
       <strong>Post count not verified.</strong> The Facebook feed loads lazily and shows relative timestamps ("4 hours ago"), and the Business Suite published-posts view returned "content isn't available". Two retrieval routes were attempted and abandoned rather than guessing a figure. The 14-post count from the 5 May snapshot is therefore the last verified number; the true count today is higher but unknown. To fill this in: open Meta Business Suite manually and read the published-posts list.
     </div>
@@ -1046,7 +1048,7 @@
 
   <div class="social-detail" id="social-website">
     <h4 style="font-size:14px;font-weight:600;margin-bottom:4px;">&#127760; uniques.vn &mdash; Insights</h4>
-    <p style="font-size:12px;color:#8a8580;margin-bottom:12px;">All 6 published articles, read from the live site on 7 Aug 2026.</p>
+    <p style="font-size:12px;color:#6b6560;margin-bottom:12px;">All 6 published articles, read from the live site on 7 Aug 2026.</p>
     <ul class="post-list">
       <li class="post-item"><span class="post-date">30 Jun 26</span><span class="post-title">The Cognitive Debt Crisis: Why AI Speed is Making Your Brain Go Soft (and How to Stop It)</span><span class="post-type article">Essay</span><span class="post-reach">new</span></li>
       <li class="post-item"><span class="post-date">13 Apr 26</span><span class="post-title">The End of the Expert Leader: Why AI Transformation is a Systemic Evolution, Not a Tool Upgrade</span><span class="post-type article">Article</span><span class="post-reach">&mdash;</span></li>
@@ -1388,7 +1390,7 @@
   </div>
 
   <div class="fb-panel">
-    <h3 style="color:#8a8580;">How this close was scored</h3>
+    <h3 style="color:#6b6560;">How this close was scored</h3>
     <ul>
       <li><strong>Method:</strong> each objective is the mean of its KRs; the headline is the mean of the three objectives &mdash; the same method used in the March, May and August snapshots, so the 27 &rarr; 44 &rarr; 65 &rarr; 70 series is comparable throughout.</li>
       <li><strong>KR 1.1 scope corrected at close.</strong> PNV sessions and the Impact Hub community Flow Game were moved out of Objective 1, which is scoped "in Officience". This lowered KR 1.1 from 50% to 46% and raised KR 2.1 and 3.4. The correction was made deliberately, knowing it reduced the headline.</li>
